@@ -1,0 +1,121 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, X, ArrowUpRight, Sparkles } from "lucide-react";
+
+export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navLinks = [
+    { href: "/", label: "Beranda" },
+    { href: "/services", label: "Layanan" },
+    { href: "/portfolio", label: "Portofolio" },
+    { href: "/team", label: "Tim" },
+    { href: "/articles", label: "Artikel" },
+    { href: "/gallery", label: "Galeri" },
+    { href: "/about", label: "Tentang Kami" },
+  ];
+
+  return (
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-[#020611]/85 backdrop-blur-xl border-b border-blue-500/20 py-3.5 shadow-2xl"
+          : "bg-transparent py-5"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between">
+        {/* Brand Logo */}
+        <Link href="/" className="group flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-500 to-[#61adff] p-0.5 shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform duration-200">
+            <div className="w-full h-full bg-[#020611] rounded-[10px] flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-[#4c91ff]" />
+            </div>
+          </div>
+          <span className="text-xl font-extrabold text-white tracking-tight">
+            Solvia.<span className="text-nova-blue">Nova</span>
+          </span>
+        </Link>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-950/20 border border-blue-500/20 backdrop-blur-md">
+          {navLinks.map((link) => {
+            const active = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all duration-200 ${
+                  active
+                    ? "bg-blue-600 text-white shadow-md shadow-blue-600/40"
+                    : "text-slate-300 hover:text-white hover:bg-blue-600/20"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Action Button */}
+        <div className="hidden md:flex items-center gap-4">
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 rounded-xl shadow-lg shadow-blue-600/30 transition-all hover:scale-105"
+          >
+            Konsultasi
+            <ArrowUpRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        {/* Mobile Menu Toggle */}
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="md:hidden p-2 rounded-xl bg-blue-950/30 border border-blue-500/20 text-white hover:bg-blue-900/30 transition-colors"
+          aria-label="Toggle Menu"
+        >
+          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
+
+      {/* Mobile Drawer */}
+      {mobileOpen && (
+        <div className="md:hidden bg-[#020611]/95 backdrop-blur-2xl border-b border-blue-500/20 px-6 py-6 space-y-3">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setMobileOpen(false)}
+              className={`block px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                pathname === link.href
+                  ? "bg-blue-600 text-white"
+                  : "text-slate-300 hover:bg-blue-600/20 hover:text-white"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <Link
+            href="/contact"
+            onClick={() => setMobileOpen(false)}
+            className="block text-center px-4 py-3 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 transition-colors mt-4"
+          >
+            Hubungi Kami
+          </Link>
+        </div>
+      )}
+    </header>
+  );
+}

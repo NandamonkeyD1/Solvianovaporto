@@ -1,0 +1,8 @@
+Options -Indexes
+Options +FollowSymLinks
+
+RewriteEngine On
+
+# Redirect everything to public/
+RewriteCond %{REQUEST_URI} !^/Portofolio_Solvia/public/
+RewriteRule ^(.*)$ public/$1 [L]

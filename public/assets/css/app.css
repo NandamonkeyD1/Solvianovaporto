@@ -1,0 +1,428 @@
+/* ============================================================
+   Solvia Nova — Main CSS
+   Custom styles & AOS animations
+   TailwindCSS loaded via CDN in HTML head
+   ============================================================ */
+
+/* ============================================================
+   BASE RESETS & CUSTOM PROPERTIES
+   ============================================================ */
+:root {
+  --bg-primary: #060816;
+  --bg-secondary: #0F172A;
+  --accent-blue: #3B82F6;
+  --glow: rgba(59, 130, 246, 0.35);
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: #f8fafc;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5);
+}
+
+/* ============================================================
+   SELECTION
+   ============================================================ */
+::selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: #fff;
+}
+
+/* ============================================================
+   TYPOGRAPHY — ARTICLE CONTENT
+   ============================================================ */
+.article-content {
+  line-height: 1.8;
+  font-size: 1rem;
+}
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4 {
+  color: #f1f5f9;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+.article-content h2 { font-size: 1.5rem; }
+.article-content h3 { font-size: 1.25rem; }
+.article-content p {
+  color: #94a3b8;
+  margin-bottom: 1.25rem;
+}
+.article-content a {
+  color: #60a5fa;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.article-content a:hover { color: #93c5fd; }
+.article-content ul,
+.article-content ol {
+  color: #94a3b8;
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.article-content li { margin-bottom: 0.5rem; }
+.article-content blockquote {
+  border-left: 3px solid #3b82f6;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  background: rgba(59, 130, 246, 0.05);
+  border-radius: 0 0.75rem 0.75rem 0;
+  color: #cbd5e1;
+  font-style: italic;
+}
+.article-content code {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.375rem;
+  font-size: 0.875em;
+  color: #93c5fd;
+  font-family: 'Fira Code', 'Cascadia Code', monospace;
+}
+.article-content pre {
+  background: #0F172A;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+.article-content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #e2e8f0;
+}
+.article-content img {
+  border-radius: 0.75rem;
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.article-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+.article-content th {
+  background: rgba(59, 130, 246, 0.1);
+  color: #93c5fd;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.article-content td {
+  padding: 0.75rem 1rem;
+  color: #94a3b8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.article-content hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 2rem 0;
+}
+
+/* ============================================================
+   LINE CLAMP UTILITIES
+   ============================================================ */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* ============================================================
+   AOS ANIMATIONS — LIGHTWEIGHT CUSTOM
+   ============================================================ */
+[data-aos] {
+  opacity: 0;
+  transition-property: opacity, transform;
+  transition-duration: 0.6s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-aos].aos-animate {
+  opacity: 1;
+  transform: none !important;
+}
+[data-aos="fade-up"] { transform: translateY(24px); }
+[data-aos="fade-down"] { transform: translateY(-24px); }
+[data-aos="fade-right"] { transform: translateX(-24px); }
+[data-aos="fade-left"] { transform: translateX(24px); }
+[data-aos="fade-in"] { transform: none; }
+[data-aos="zoom-in"] { transform: scale(0.95); }
+
+/* Delay utilities */
+[data-aos-delay="80"]  { transition-delay: 80ms; }
+[data-aos-delay="100"] { transition-delay: 100ms; }
+[data-aos-delay="200"] { transition-delay: 200ms; }
+[data-aos-delay="300"] { transition-delay: 300ms; }
+[data-aos-delay="400"] { transition-delay: 400ms; }
+
+/* ============================================================
+   NAVBAR HEIGHT UTILITY
+   ============================================================ */
+#navbar { min-height: 72px; }
+
+/* ============================================================
+   GLASSMORPHISM CARD
+   ============================================================ */
+.glass-card {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+}
+
+/* ============================================================
+   GLOW EFFECTS
+   ============================================================ */
+.glow-blue {
+  box-shadow: 0 0 40px rgba(59, 130, 246, 0.2);
+}
+.glow-blue-sm {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
+/* ============================================================
+   BUTTON STYLES
+   ============================================================ */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 24px rgba(59, 130, 246, 0.3);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-primary:hover {
+  background: #3b82f6;
+  box-shadow: 0 4px 32px rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
+}
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================================
+   FORM INPUTS
+   ============================================================ */
+.form-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: var(--font-sans);
+}
+.form-input:focus {
+  border-color: rgba(59, 130, 246, 0.5);
+}
+.form-input::placeholder {
+  color: #475569;
+}
+
+/* ============================================================
+   BADGE / TAG
+   ============================================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid;
+}
+.badge-blue {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+}
+.badge-emerald {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+}
+
+/* ============================================================
+   SECTION DIVIDER
+   ============================================================ */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+}
+
+/* ============================================================
+   GRID BACKGROUND PATTERN
+   ============================================================ */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(59, 130, 246, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ============================================================
+   SWIPER GALLERY OVERRIDES
+   ============================================================ */
+.swiper-pagination-bullet {
+  background: rgba(255, 255, 255, 0.3) !important;
+  opacity: 1 !important;
+}
+.swiper-pagination-bullet-active {
+  background: #3b82f6 !important;
+}
+
+/* ============================================================
+   MASONRY GALLERY
+   ============================================================ */
+.masonry-grid {
+  columns: 2;
+  column-gap: 1rem;
+}
+@media (min-width: 768px) {
+  .masonry-grid { columns: 3; }
+}
+@media (min-width: 1024px) {
+  .masonry-grid { columns: 4; }
+}
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+}
+
+/* ============================================================
+   ADMIN SIDEBAR TRANSITION
+   ============================================================ */
+aside {
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   LOADING SKELETON
+   ============================================================ */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.5rem;
+}
+
+/* ============================================================
+   PULSE ANIMATION
+   ============================================================ */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+}
+.pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+/* ============================================================
+   HERO FLOATING ANIMATION
+   ============================================================ */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+.float-animation {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ============================================================
+   RESPONSIVE UTILITIES
+   ============================================================ */
+@media (max-width: 640px) {
+  .article-content h2 { font-size: 1.25rem; }
+  .article-content h3 { font-size: 1.1rem; }
+}
+
+/* ============================================================
+   PRINT STYLES
+   ============================================================ */
+@media print {
+  nav, footer, .no-print { display: none !important; }
+  body { background: white; color: black; }
+}

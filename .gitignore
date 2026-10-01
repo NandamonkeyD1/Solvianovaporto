@@ -1,0 +1,35 @@
+# Next.js build output
+.next/
+out/
+build/
+
+# Dependencies
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and temp files
+*.log
+*.tmp
+*.cache
+php_errors.log
+error_log
+
+# Local environment / secrets
+.env
+.env.*
+.env.local
+.env.development.local
+.env.production.local
+
+# Local storage contents
+storage/*
+!storage/.gitkeep

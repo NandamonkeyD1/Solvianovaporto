@@ -1,0 +1,42 @@
+CREATE TABLE IF NOT EXISTS solvianova_db.invoices (
+  id              INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  invoice_number  VARCHAR(50)  NOT NULL UNIQUE,
+  invoice_date    DATE         NOT NULL,
+  client_name     VARCHAR(200) NOT NULL,
+  client_address  TEXT         NULL,
+  client_email    VARCHAR(150) NULL,
+  client_phone    VARCHAR(50)  NULL,
+  project_name    VARCHAR(200) NOT NULL,
+  project_package VARCHAR(200) NULL,
+  project_duration VARCHAR(200) NULL,
+  payment_method  VARCHAR(200) NULL,
+  subtotal        BIGINT       NOT NULL DEFAULT 0,
+  discount        BIGINT       NOT NULL DEFAULT 0,
+  total           BIGINT       NOT NULL DEFAULT 0,
+  bank_name       VARCHAR(100) NULL,
+  bank_account    VARCHAR(100) NULL,
+  bank_holder     VARCHAR(200) NULL,
+  bank_type       VARCHAR(100) NULL,
+  notes           TEXT         NULL,
+  signatory_name  VARCHAR(200) NULL,
+  signatory_role  VARCHAR(200) NULL,
+  signature_image VARCHAR(255) NULL,
+  status          ENUM('draft','sent','paid','cancelled') NOT NULL DEFAULT 'draft',
+  created_at      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at      DATETIME     NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS solvianova_db.invoice_items (
+  id          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  invoice_id  INT UNSIGNED NOT NULL,
+  description VARCHAR(300) NOT NULL,
+  details     TEXT         NULL,
+  qty         INT UNSIGNED NOT NULL DEFAULT 1,
+  price       BIGINT       NOT NULL DEFAULT 0,
+  total       BIGINT       NOT NULL DEFAULT 0,
+  sort_order  INT UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (id),
+  KEY idx_invoice_id (invoice_id),
+  CONSTRAINT fk_invoice_items_invoice FOREIGN KEY (invoice_id) REFERENCES invoices(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
