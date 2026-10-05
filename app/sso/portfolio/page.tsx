@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Plus, Edit, Trash2, X, Check, Search, Image as ImageIcon, ExternalLink } from "lucide-react";
 import { portfolioData, Portfolio } from "@/lib/data";
+import ImageUploader from "@/components/ImageUploader";
 
 export default function PortfolioAdminPage() {
   const [items, setItems] = useState<Portfolio[]>(portfolioData);
@@ -276,17 +277,11 @@ export default function PortfolioAdminPage() {
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">URL Foto Visual / Gambar Project</label>
-                <input
-                  type="text"
-                  required
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
-                  placeholder="https://images.unsplash.com/..."
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
-                />
-              </div>
+              <ImageUploader
+                value={image}
+                onChange={setImage}
+                label="Foto Visual / Gambar Project"
+              />
 
               <div className="grid grid-cols-2 gap-3">
                 <div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Plus, Edit, Trash2, X, Check, Search, Image as ImageIcon } from "lucide-react";
+import ImageUploader from "@/components/ImageUploader";
 
 interface GalleryItem {
   id: string;
@@ -247,16 +248,11 @@ export default function GalleryAdminPage() {
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">URL Gambar (opsional)</label>
-                <input
-                  type="text"
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
-                  placeholder="https://images.unsplash.com/..."
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
-                />
-              </div>
+              <ImageUploader
+                value={image}
+                onChange={setImage}
+                label="Foto Dokumen / Galeri"
+              />
 
               <div className="pt-4 flex justify-end gap-3 border-t border-slate-800">
                 <button
