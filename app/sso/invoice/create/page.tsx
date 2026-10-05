@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Plus, Trash2, Check, FileText, Printer, Building2, CreditCard } from "lucide-react";
+import ImageUploader from "@/components/ImageUploader";
 
 interface LineItem {
   id: string;
@@ -56,9 +57,19 @@ export default function CreateInvoicePage() {
   // 7. Catatan & Signature
   const [notes, setNotes] = useState("Pembayaran harap dilakukan sesuai termin yang disepakati.");
   const [signatory, setSignatory] = useState("Solvia Nova Official");
+  const [signatureImage, setSignatureImage] = useState("");
 
   const [toast, setToast] = useState<string | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  // Automatically load saved global signature from localStorage
+  useEffect(() => {
+    const savedSig = localStorage.getItem("solvia_signature_image");
+    const savedName = localStorage.getItem("solvia_signatory_name");
+
+    if (savedSig) setSignatureImage(savedSig);
+    if (savedName) setSignatory(savedName);
+  }, []);
 
   const addItem = () => {
     const newItem: LineItem = {
@@ -106,6 +117,14 @@ export default function CreateInvoicePage() {
     if (!clientName || !projectName) {
       alert("Mohon isi Nama Klien dan Nama Project terlebih dahulu.");
       return;
+    }
+
+    // Persist signature image if updated
+    if (signatureImage) {
+      localStorage.setItem("solvia_signature_image", signatureImage);
+    }
+    if (signatory) {
+      localStorage.setItem("solvia_signatory_name", signatory);
     }
 
     setToast("Invoice baru berhasil dibuat dan disimpan!");
@@ -523,13 +542,13 @@ export default function CreateInvoicePage() {
           </div>
         </div>
 
-        {/* 6. Catatan & Signature */}
+        {/* 6. Catatan & Signature Permanent Selector */}
         <div className="bg-[#0E1526]/90 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl space-y-6">
           <h2 className="text-sm font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-4">
-            Catatan & Penandatangan
+            Tanda Tangan & Catatan (Tersimpan Otomatis)
           </h2>
 
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div>
               <label className="block text-xs font-bold text-slate-300 mb-1.5">
                 Catatan Tambahan
@@ -542,16 +561,31 @@ export default function CreateInvoicePage() {
               />
             </div>
 
-            <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                Penandatangan Official
-              </label>
-              <input
-                type="text"
-                value={signatory}
-                onChange={(e) => setSignatory(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+            <div className="p-4 bg-slate-900/60 border border-slate-800 rounded-2xl space-y-4">
+              <div className="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center justify-between">
+                <span>Tanda Tangan Digital & Stempel Invoice</span>
+                <span className="text-[10px] text-slate-400 font-normal">
+                  (Otomatis terpasang di setiap invoice, bisa diubah di Pengaturan)
+                </span>
+              </div>
+
+              <ImageUploader
+                value={signatureImage}
+                onChange={setSignatureImage}
+                label="File Tanda Tangan / Stempel Digital"
               />
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                  Penandatangan Official
+                </label>
+                <input
+                  type="text"
+                  value={signatory}
+                  onChange={(e) => setSignatory(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500 font-semibold"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -673,12 +707,23 @@ export default function CreateInvoicePage() {
                 </div>
               </div>
 
+              {/* Signature Image & Official Stamp Block */}
               <div className="pt-8 border-t flex justify-between items-end text-xs text-slate-500">
                 <div>Status: <span className="font-bold text-blue-600">{status}</span></div>
-                <div className="text-center font-bold">
+                <div className="text-center font-bold space-y-1">
                   <div>Solvia Nova Official</div>
-                  <div className="h-12"></div>
-                  <div>({signatory})</div>
+                  <div className="h-16 flex items-center justify-center my-1">
+                    {signatureImage ? (
+                      <img
+                        src={signatureImage}
+                        alt="Tanda Tangan Digital"
+                        className="max-h-16 max-w-40 object-contain mx-auto"
+                      />
+                    ) : (
+                      <div className="h-10 border-b border-dashed border-slate-300 w-32 mx-auto"></div>
+                    )}
+                  </div>
+                  <div className="text-slate-900">({signatory})</div>
                 </div>
               </div>
             </div>
