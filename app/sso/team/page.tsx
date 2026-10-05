@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Edit, Trash2, X, Check, Search } from "lucide-react";
+import { Plus, Edit, Trash2, X, Check, Search, UserCheck } from "lucide-react";
+import ImageUploader from "@/components/ImageUploader";
 
 interface TeamMember {
   id: string;
@@ -9,23 +10,34 @@ interface TeamMember {
   position: string;
   email: string;
   avatar: string;
+  skills: string[];
 }
 
 export default function TeamAdminPage() {
   const [members, setMembers] = useState<TeamMember[]>([
     {
       id: "1",
-      name: "Sri Wahyu Widagdo",
-      position: "CEO",
+      name: "Solvia Nova",
+      position: "Founder & CEO",
       email: "ceo@solvianova.id",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
+      skills: ["PHP", "System Architecture", "Business Strategy", "Project Management"],
     },
     {
       id: "2",
-      name: "Ridho Muhammad Wahid",
-      position: "Technical Support Engineer",
-      email: "ridho@solvianova.id",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+      name: "Dev Team Lead",
+      position: "Lead Fullstack Developer",
+      email: "dev@solvianova.id",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
+      skills: ["Laravel", "React", "Vue.js", "MySQL", "Docker", "Redis"],
+    },
+    {
+      id: "3",
+      name: "Design Team Lead",
+      position: "UI/UX & Visual Designer",
+      email: "design@solvianova.id",
+      avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
+      skills: ["Figma", "Framer", "TailwindCSS", "Motion Design", "Prototyping"],
     },
   ]);
 
@@ -38,6 +50,7 @@ export default function TeamAdminPage() {
   const [position, setPosition] = useState("");
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState("");
+  const [skillsInput, setSkillsInput] = useState("");
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -50,6 +63,7 @@ export default function TeamAdminPage() {
     setPosition("");
     setEmail("");
     setAvatar("");
+    setSkillsInput("React, Next.js, Node.js");
     setIsModalOpen(true);
   };
 
@@ -59,6 +73,7 @@ export default function TeamAdminPage() {
     setPosition(item.position);
     setEmail(item.email);
     setAvatar(item.avatar);
+    setSkillsInput(item.skills ? item.skills.join(", ") : "");
     setIsModalOpen(true);
   };
 
@@ -66,12 +81,18 @@ export default function TeamAdminPage() {
     e.preventDefault();
     if (!name || !position) return;
 
-    const avatarUrl = avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80";
+    const skillsArray = skillsInput
+      ? skillsInput.split(",").map((s) => s.trim()).filter(Boolean)
+      : ["Software Engineering"];
+
+    const avatarUrl = avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=600&q=80";
 
     if (editingItem) {
       setMembers(
         members.map((m) =>
-          m.id === editingItem.id ? { ...m, name, position, email, avatar: avatarUrl } : m
+          m.id === editingItem.id
+            ? { ...m, name, position, email, avatar: avatarUrl, skills: skillsArray }
+            : m
         )
       );
       showToast("Profil anggota tim berhasil diperbarui!");
@@ -82,6 +103,7 @@ export default function TeamAdminPage() {
         position,
         email: email || `${name.toLowerCase().replace(/\s+/g, "")}@solvianova.id`,
         avatar: avatarUrl,
+        skills: skillsArray,
       };
       setMembers([...members, newMember]);
       showToast("Anggota tim baru berhasil ditambahkan!");
@@ -115,8 +137,8 @@ export default function TeamAdminPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-white">Team</h1>
-          <p className="text-slate-400 text-xs mt-1">Kelola anggota tim core & divisi</p>
+          <h1 className="text-2xl font-black text-white">Team Management</h1>
+          <p className="text-slate-400 text-xs mt-1">Kelola foto visual profil, jabatan, dan keahlian anggota tim</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -134,50 +156,67 @@ export default function TeamAdminPage() {
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 shrink-0"
           >
             <Plus className="w-4 h-4" />
-            <span>Tambah Anggota</span>
+            <span>Tambah Anggota Tim</span>
           </button>
         </div>
       </div>
 
       {/* Team Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {filteredMembers.map((member) => (
           <div
             key={member.id}
-            className="bg-[#0E1526]/80 border border-slate-800 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 backdrop-blur-md shadow-xl"
+            className="bg-[#0E1526]/80 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between space-y-4 backdrop-blur-md shadow-xl"
           >
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl overflow-hidden bg-slate-800 border border-slate-700 shrink-0">
-                <img
-                  src={member.avatar}
-                  alt={member.name}
-                  className="w-full h-full object-cover"
-                />
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl overflow-hidden bg-slate-800 border-2 border-blue-500/30 shrink-0 shadow-lg">
+                  <img
+                    src={member.avatar}
+                    alt={member.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">{member.name}</h3>
+                  <div className="text-blue-400 text-xs font-bold mt-0.5">{member.position}</div>
+                  <div className="text-slate-400 text-[11px] font-mono mt-1">{member.email}</div>
+                </div>
               </div>
-              <div>
-                <h3 className="text-base font-bold text-white">{member.name}</h3>
-                <div className="text-blue-400 text-xs font-bold mt-0.5">{member.position}</div>
-                <div className="text-slate-400 text-[11px] font-mono mt-1">{member.email}</div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={() => handleOpenEditModal(member)}
+                  className="p-2 rounded-lg bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white transition-colors"
+                  title="Edit"
+                >
+                  <Edit className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => handleDelete(member.id)}
+                  className="p-2 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors"
+                  title="Hapus"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 self-end sm:self-center">
-              <button
-                onClick={() => handleOpenEditModal(member)}
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-500/10 hover:bg-blue-600 border border-blue-500/20 text-blue-400 hover:text-white text-xs font-bold transition-all"
-                title="Edit"
-              >
-                <Edit className="w-3.5 h-3.5" />
-                <span>Edit</span>
-              </button>
-              <button
-                onClick={() => handleDelete(member.id)}
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-red-500/10 hover:bg-red-600 border border-red-500/20 text-red-400 hover:text-white text-xs font-bold transition-all"
-                title="Hapus"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-                <span>Hapus</span>
-              </button>
+            {/* Keahlian & Skills Chips */}
+            <div className="pt-3 border-t border-slate-800/80 space-y-1.5">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                Keahlian & Technical Skills:
+              </span>
+              <div className="flex flex-wrap gap-1.5">
+                {member.skills?.map((skill, idx) => (
+                  <span
+                    key={idx}
+                    className="px-2.5 py-0.5 rounded-md bg-slate-900 border border-slate-700 text-blue-300 text-[11px] font-semibold"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         ))}
@@ -189,7 +228,7 @@ export default function TeamAdminPage() {
           <div className="bg-[#0A0E1A] border border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-6 shadow-2xl animate-in fade-in zoom-in duration-200">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <h2 className="text-lg font-bold text-white">
-                {editingItem ? "Edit Anggota Tim" : "Tambah Anggota Tim Baru"}
+                {editingItem ? "Edit Anggota Tim & Foto" : "Tambah Anggota Tim Baru"}
               </h2>
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -207,7 +246,7 @@ export default function TeamAdminPage() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Contoh: Sri Wahyu Widagdo"
+                  placeholder="Contoh: Solvia Nova"
                   className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
@@ -219,7 +258,7 @@ export default function TeamAdminPage() {
                   required
                   value={position}
                   onChange={(e) => setPosition(e.target.value)}
-                  placeholder="Contoh: Chief Executive Officer / Tech Lead"
+                  placeholder="Contoh: Founder & CEO / Lead Fullstack Developer"
                   className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
@@ -235,13 +274,20 @@ export default function TeamAdminPage() {
                 />
               </div>
 
+              {/* Photo Upload & URL component */}
+              <ImageUploader
+                value={avatar}
+                onChange={setAvatar}
+                label="Foto Profil Anggota Tim"
+              />
+
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">URL Avatar / Foto Profil</label>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Keahlian / Skills (pisahkan dengan koma)</label>
                 <input
                   type="text"
-                  value={avatar}
-                  onChange={(e) => setAvatar(e.target.value)}
-                  placeholder="https://images.unsplash.com/..."
+                  value={skillsInput}
+                  onChange={(e) => setSkillsInput(e.target.value)}
+                  placeholder="React, Next.js, System Architecture, PHP"
                   className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
@@ -258,7 +304,7 @@ export default function TeamAdminPage() {
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-lg shadow-blue-600/30"
                 >
-                  Simpan Anggota
+                  Simpan Anggota & Foto
                 </button>
               </div>
             </form>

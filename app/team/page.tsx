@@ -44,10 +44,22 @@ export default function TeamPage() {
               }`}
             >
               <div className="space-y-5">
-                {/* Header Tag & Icon */}
+                {/* Header Photo / Icon & Role Tag */}
                 <div className="flex items-center justify-between">
-                  <div className="w-14 h-14 rounded-2xl bg-blue-600/30 border border-blue-400/30 flex items-center justify-center text-[#61adff] group-hover:bg-blue-600 group-hover:text-white transition-colors shadow-lg">
-                    <IconComp className="w-7 h-7" />
+                  <div className="flex items-center gap-3">
+                    {member.photo ? (
+                      <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-blue-400/50 shadow-lg shrink-0 bg-slate-900 group-hover:scale-105 transition-transform">
+                        <img
+                          src={member.photo}
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-14 h-14 rounded-2xl bg-blue-600/30 border border-blue-400/30 flex items-center justify-center text-[#61adff] group-hover:bg-blue-600 group-hover:text-white transition-colors shadow-lg">
+                        <IconComp className="w-7 h-7" />
+                      </div>
+                    )}
                   </div>
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-bold border ${

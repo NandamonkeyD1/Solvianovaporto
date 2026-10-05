@@ -350,35 +350,40 @@ export const teamData: TeamMember[] = [
     name: "Solvia Nova",
     position: "Founder & CEO",
     bio: "Memimpin visi dan strategi Solvia Nova dalam membangun ekosistem digital yang berdampak. Berpengalaman lebih dari 5 tahun di industri teknologi dan digital business.",
-    skills: ["PHP", "System Architecture", "Business Strategy", "Project Management"]
+    skills: ["PHP", "System Architecture", "Business Strategy", "Project Management"],
+    photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80"
   },
   {
     id: "2",
-    name: "Dev Team",
+    name: "Dev Team Lead",
     position: "Lead Fullstack Developer",
     bio: "Membangun sistem dan aplikasi web dengan standar kode yang bersih dan performa tinggi. Spesialis dalam membangun aplikasi yang scalable.",
-    skills: ["Laravel", "React", "Vue.js", "MySQL", "Docker", "Redis"]
+    skills: ["Laravel", "React", "Vue.js", "MySQL", "Docker", "Redis"],
+    photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80"
   },
   {
     id: "3",
-    name: "Design Team",
-    position: "UI/UX Designer",
+    name: "Design Team Lead",
+    position: "UI/UX & Visual Designer",
     bio: "Merancang pengalaman pengguna yang intuitif dan visual yang premium untuk setiap produk digital yang kami bangun.",
-    skills: ["Figma", "Framer", "TailwindCSS", "Motion Design", "Prototyping"]
+    skills: ["Figma", "Framer", "TailwindCSS", "Motion Design", "Prototyping"],
+    photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80"
   },
   {
     id: "4",
-    name: "Content Team",
-    position: "Content Strategist",
+    name: "Content Strategist",
+    position: "Content & Growth Specialist",
     bio: "Membangun narasi brand yang kuat dan strategi konten yang menggerakkan audiens. Spesialis SEO dan digital marketing.",
-    skills: ["Copywriting", "SEO", "Social Media Strategy", "Analytics"]
+    skills: ["Copywriting", "SEO", "Social Media Strategy", "Analytics"],
+    photo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&q=80"
   },
   {
     id: "5",
-    name: "Analyst Team",
-    position: "System Analyst",
+    name: "System Analyst Lead",
+    position: "Lead System Analyst",
     bio: "Menjembatani kebutuhan bisnis dengan solusi teknis. Memastikan setiap sistem yang dibangun benar-benar menjawab masalah nyata.",
-    skills: ["Business Analysis", "ERD", "System Design", "Documentation", "QA"]
+    skills: ["Business Analysis", "ERD", "System Design", "Documentation", "QA"],
+    photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80"
   }
 ];
 
