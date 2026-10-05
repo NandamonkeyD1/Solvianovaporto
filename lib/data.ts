@@ -448,3 +448,56 @@ export const articlesData: Article[] = [
     image: "/assets/images/article-2.jpg"
   }
 ];
+
+export interface GalleryItem {
+  id: string;
+  title: string;
+  category: string;
+  date: string;
+  image: string;
+}
+
+export const galleryData: GalleryItem[] = [
+  {
+    id: "1",
+    title: "Solusi Reklame & Advertising Digital",
+    category: "Branding & Advertising",
+    date: "10 Sep 2026",
+    image: "https://images.unsplash.com/photo-1542744094-3a31216955a4?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "2",
+    title: "NovaDex – Direktori UMKM Salatiga",
+    category: "Web Application",
+    date: "02 Sep 2026",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "3",
+    title: "Dapur Ceria – Sistem Manajemen Bakery",
+    category: "Point of Sale",
+    date: "25 Aug 2026",
+    image: "https://images.unsplash.com/photo-1556742049-0a675659e9cf?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "4",
+    title: "DasterKu – Website Grosir Daster Wanita",
+    category: "E-Commerce",
+    date: "18 Aug 2026",
+    image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "5",
+    title: "WorkTrack – Sistem Manajemen Karyawan dan Payroll",
+    category: "HR Management",
+    date: "10 Aug 2026",
+    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "6",
+    title: "MitraMan – Sistem Manajemen Mitra & Honorarium",
+    category: "Enterprise System",
+    date: "01 Aug 2026",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
+  },
+];
