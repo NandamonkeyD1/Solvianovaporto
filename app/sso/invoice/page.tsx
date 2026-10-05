@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Plus, Eye, Edit, Trash2 } from "lucide-react";
 
+import Link from "next/link";
+
 export default function InvoiceAdminPage() {
   const [invoices] = useState([
     {
@@ -60,10 +62,13 @@ export default function InvoiceAdminPage() {
           <h2 className="text-xl font-bold text-white">Invoice</h2>
           <p className="text-slate-400 text-xs mt-0.5">Kelola invoice client</p>
         </div>
-        <button className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25">
+        <Link
+          href="/sso/invoice/create"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25"
+        >
           <Plus className="w-4 h-4" />
           <span>Buat Invoice Baru</span>
-        </button>
+        </Link>
       </div>
 
       {/* Invoice Table Container */}
