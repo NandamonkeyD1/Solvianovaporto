@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import MobileFloatingBar from "@/components/MobileFloatingBar";
 
 export default function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -16,6 +17,7 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
       {!isAuthOrAdmin && <Navbar />}
       <main className="flex-grow relative z-10">{children}</main>
       {!isAuthOrAdmin && <Footer />}
+      {!isAuthOrAdmin && <MobileFloatingBar />}
     </>
   );
 }

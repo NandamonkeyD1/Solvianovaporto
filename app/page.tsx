@@ -59,18 +59,18 @@ export default function Home() {
               Solvia Nova membantu bisnis membangun sistem digital, website, aplikasi, dan branding modern dengan visual premium dan performa profesional.
             </p>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap gap-4">
+            {/* Action Buttons (Mobile Friendly Full Width Stack) */}
+            <div className="flex flex-col sm:flex-row flex-wrap gap-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold rounded-xl transition-all duration-200 shadow-xl shadow-blue-600/40 hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold rounded-xl transition-all duration-200 shadow-xl shadow-blue-600/40 hover:-translate-y-0.5 text-center w-full sm:w-auto"
               >
                 Konsultasi Gratis
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/portfolio"
-                className="inline-flex items-center gap-2 px-7 py-3.5 bg-blue-950/60 hover:bg-blue-900/80 border border-blue-400/40 text-white font-bold rounded-xl backdrop-blur-md transition-all duration-200 shadow-lg"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-blue-950/60 hover:bg-blue-900/80 border border-blue-400/40 text-white font-bold rounded-xl backdrop-blur-md transition-all duration-200 shadow-lg text-center w-full sm:w-auto"
               >
                 Lihat Portfolio
               </Link>
