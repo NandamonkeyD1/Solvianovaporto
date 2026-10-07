@@ -4,27 +4,27 @@ import { servicesData } from "@/lib/data";
 
 export default function ServicesPage() {
   return (
-    <div className="pt-32 pb-24 max-w-7xl mx-auto px-6 lg:px-8 space-y-16">
+    <div className="pt-24 sm:pt-32 pb-28 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-16">
       {/* Header Centered */}
-      <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/40 text-blue-300 text-xs font-bold tracking-wider uppercase">
+      <div className="text-center space-y-3 sm:space-y-4 max-w-3xl mx-auto">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/40 text-blue-300 text-[10px] sm:text-xs font-bold tracking-wider uppercase">
           <Sparkles className="w-3.5 h-3.5" />
           Layanan & Solusi Digital Solvia Nova
         </div>
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight">
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight">
           Solusi Digital <span className="text-nova-blue">Terpadu & Modern</span>
         </h1>
-        <p className="text-blue-100 text-sm sm:text-base leading-relaxed font-medium">
+        <p className="text-blue-100 text-xs sm:text-base leading-relaxed font-medium">
           Pengembangan software custom, sistem enterprise ERP, jaringan sensor IoT industri, hingga program mentoring teknis IT privat.
         </p>
       </div>
 
       {/* Services Grid (6 Balanced Cards in 3 Columns) */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {servicesData.map((svc) => (
           <div
             key={svc.id}
-            className="group bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-3xl p-8 space-y-6 hover:border-blue-400/70 hover:bg-[#08183c]/90 transition-all duration-300 shadow-2xl flex flex-col justify-between hover:-translate-y-1"
+            className="group bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-3xl p-6 sm:p-8 space-y-5 sm:space-y-6 hover:border-blue-400/70 hover:bg-[#08183c]/90 transition-all duration-300 shadow-2xl flex flex-col justify-between hover:-translate-y-1"
           >
             <div className="space-y-5">
               <div className="w-14 h-14 rounded-2xl bg-blue-600/30 border border-blue-400/40 flex items-center justify-center text-[#61adff] group-hover:bg-blue-600 group-hover:text-white transition-colors shadow-lg">

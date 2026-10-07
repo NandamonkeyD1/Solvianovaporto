@@ -32,11 +32,11 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#020611]/85 backdrop-blur-xl border-b border-blue-500/20 py-3.5 shadow-2xl"
-          : "bg-transparent py-5"
+          ? "bg-[#020611]/90 backdrop-blur-xl border-b border-blue-500/20 py-2.5 sm:py-3.5 shadow-2xl"
+          : "bg-transparent py-3.5 sm:py-5"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo */}
         <Link href="/" className="group flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-500 to-[#61adff] p-0.5 shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform duration-200">

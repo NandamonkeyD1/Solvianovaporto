@@ -30,23 +30,23 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="pt-32 pb-20 max-w-7xl mx-auto px-6 lg:px-8 space-y-16">
-      <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold tracking-wider uppercase">
+    <div className="pt-24 sm:pt-32 pb-28 sm:pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-16">
+      <div className="text-center space-y-3 sm:space-y-4 max-w-3xl mx-auto">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] sm:text-xs font-semibold tracking-wider uppercase">
           Hubungi Tim Solvia.Nova
         </div>
-        <h1 className="text-4xl lg:text-6xl font-extrabold text-white">
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white">
           Mari Wujudkan <span className="text-nova-yellow">Solusi Anda</span>
         </h1>
-        <p className="text-slate-400 text-base leading-relaxed">
+        <p className="text-slate-300 text-xs sm:text-base leading-relaxed">
           Diskusikan kebutuhan proyek Web App, Custom System, atau solusi IoT Anda bersama kami.
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-12 items-start">
+      <div className="grid lg:grid-cols-2 gap-6 sm:gap-12 items-start">
         {/* Contact Info */}
-        <div className="space-y-8 bg-[#08183c]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
-          <h2 className="text-2xl font-bold text-white">Informasi Kontak</h2>
+        <div className="space-y-6 sm:space-y-8 bg-[#08183c]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-5 sm:p-8 shadow-2xl">
+          <h2 className="text-xl sm:text-2xl font-bold text-white">Informasi Kontak</h2>
           <p className="text-slate-300 text-sm leading-relaxed">
             Tim konsultan teknis kami siap mendengarkan kebutuhan bisnis Anda dan memberikan gambaran arsitektur sistem terbaik.
           </p>

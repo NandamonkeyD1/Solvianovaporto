@@ -20,8 +20,8 @@ export default function MobileFloatingBar() {
   ];
 
   return (
-    <div className="md:hidden fixed bottom-4 left-4 right-4 z-50">
-      <div className="bg-[#020611]/90 backdrop-blur-2xl border border-blue-500/30 rounded-2xl p-2.5 shadow-2xl flex items-center justify-between gap-1">
+    <div className="md:hidden fixed bottom-3 left-3 right-3 z-50">
+      <div className="bg-[#020611]/95 backdrop-blur-2xl border border-blue-400/40 rounded-2xl p-1.5 shadow-2xl shadow-blue-950/80 flex items-center justify-between gap-1">
         {navItems.map((item) => {
           const IconComp = item.icon;
           const active = pathname === item.href;
@@ -29,14 +29,14 @@ export default function MobileFloatingBar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center py-1.5 px-3 rounded-xl transition-all flex-1 ${
+              className={`flex flex-col items-center justify-center py-2 px-2.5 rounded-xl transition-all active:scale-95 flex-1 ${
                 active
-                  ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30"
+                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-600/40 border border-blue-400/30"
                   : "text-slate-400 hover:text-white hover:bg-blue-950/40"
               }`}
             >
               <IconComp className="w-4 h-4" />
-              <span className="text-[10px] font-bold mt-1 tracking-tight">{item.label}</span>
+              <span className="text-[10px] font-extrabold mt-0.5 tracking-tight">{item.label}</span>
             </Link>
           );
         })}
@@ -46,10 +46,10 @@ export default function MobileFloatingBar() {
           href="https://wa.me/6283148801578?text=Halo%20Solvia%20Nova,%20saya%20tertarik%20konsultasi%20pembuatan%20sistem%20digital."
           target="_blank"
           rel="noreferrer"
-          className="flex flex-col items-center justify-center py-1.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/30 shrink-0 font-bold"
+          className="flex flex-col items-center justify-center py-2 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow-lg shadow-emerald-900/50 shrink-0 font-extrabold active:scale-95 border border-emerald-400/30"
         >
           <PhoneCall className="w-4 h-4 animate-bounce" />
-          <span className="text-[10px] mt-1">WA Chat</span>
+          <span className="text-[10px] mt-0.5">WA Chat</span>
         </a>
       </div>
     </div>

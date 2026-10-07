@@ -32,28 +32,28 @@ import TestimonialCarousel from "@/components/TestimonialCarousel";
 
 export default function Home() {
   return (
-    <div className="space-y-24 pb-20">
+    <div className="space-y-16 sm:space-y-24 pb-28 sm:pb-20">
       {/* HERO SECTION */}
-      <section className="relative min-h-screen flex items-center pt-28 pb-16 overflow-hidden bg-transparent">
+      <section className="relative min-h-screen flex items-center pt-24 sm:pt-28 pb-12 sm:pb-16 overflow-hidden bg-transparent">
         {/* Glow ambient background lights */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-10 w-96 h-96 bg-[#4c91ff]/15 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-10 w-96 h-96 bg-[#2775ff]/20 rounded-full blur-3xl" />
+          <div className="absolute top-1/4 left-10 w-72 sm:w-96 h-72 sm:h-96 bg-[#4c91ff]/15 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 right-10 w-72 sm:w-96 h-72 sm:h-96 bg-[#2775ff]/20 rounded-full blur-3xl" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-12 grid lg:grid-cols-2 gap-16 items-center z-10">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center z-10">
           {/* Left Column */}
-          <div className="space-y-8">
-            <div className="inline-flex items-center gap-2.5 px-4.5 py-2 rounded-full border border-blue-400/40 bg-blue-950/40 backdrop-blur-md text-white text-xs font-bold uppercase tracking-widest shadow-lg">
+          <div className="space-y-6 sm:space-y-8">
+            <div className="inline-flex items-center gap-2 px-3.5 sm:px-4.5 py-1.5 sm:py-2 rounded-full border border-blue-400/40 bg-blue-950/40 backdrop-blur-md text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest shadow-lg">
               <span className="dot-glow" />
               Digital Solution & Software House Modern
             </div>
 
-            <h1 className="text-4xl lg:text-6xl font-black text-white leading-[1.05] tracking-tight drop-shadow-lg">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight sm:leading-[1.05] tracking-tight drop-shadow-lg">
               Transformasi Digital Modern Untuk Bisnis yang Ingin <span className="text-nova-blue">Naik Level.</span>
             </h1>
 
-            <p className="text-blue-100 text-base lg:text-lg leading-relaxed max-w-xl font-medium drop-shadow-md">
+            <p className="text-blue-100 text-xs sm:text-base leading-relaxed max-w-xl font-medium drop-shadow-md">
               <strong className="text-white font-extrabold">{visionPhilosophyData.filosofi}</strong>
               <br />
               Solvia Nova membantu bisnis membangun sistem digital, website, aplikasi, dan branding modern dengan visual premium dan performa profesional.
@@ -78,57 +78,57 @@ export default function Home() {
             </div>
 
             {/* MOBILE ACTION BUTTONS (Touch Optimized Mobile Card & Pill Layout) */}
-            <div className="flex sm:hidden flex-col gap-3 w-full pt-1">
+            <div className="flex sm:hidden flex-col gap-2.5 w-full pt-1">
               <a
                 href="https://wa.me/6283148801578?text=Halo%20Solvia%20Nova,%20saya%20tertarik%20konsultasi%20pembuatan%20sistem%20digital."
                 target="_blank"
                 rel="noreferrer"
-                className="w-full flex items-center justify-between px-5 py-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 text-white rounded-2xl shadow-xl shadow-emerald-900/40 active:scale-95 transition-all border border-emerald-400/30"
+                className="w-full flex items-center justify-between px-4 py-3.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 text-white rounded-2xl shadow-xl shadow-emerald-900/40 active:scale-95 transition-all border border-emerald-400/30"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                    <MessageSquare className="w-5 h-5 text-white animate-pulse" />
+                  <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                    <MessageSquare className="w-4.5 h-4.5 text-white animate-pulse" />
                   </div>
                   <div className="text-left">
-                    <div className="text-[10px] text-emerald-100 font-extrabold uppercase tracking-wider">⚡ Respon Cepat & Free Audit</div>
-                    <div className="text-sm font-black text-white">Konsultasi WA Instant</div>
+                    <div className="text-[9px] text-emerald-100 font-extrabold uppercase tracking-wider">⚡ Respon Cepat & Free Audit</div>
+                    <div className="text-xs font-black text-white">Konsultasi WA Instant</div>
                   </div>
                 </div>
-                <ArrowRight className="w-5 h-5 text-emerald-200" />
+                <ArrowRight className="w-4.5 h-4.5 text-emerald-200" />
               </a>
 
-              <div className="grid grid-cols-2 gap-2.5">
+              <div className="grid grid-cols-2 gap-2">
                 <Link
                   href="/contact"
-                  className="flex items-center justify-center gap-2 py-3.5 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold rounded-xl shadow-md border border-blue-400/30 active:scale-95 transition-all text-center"
+                  className="flex items-center justify-center gap-1.5 py-3 px-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold rounded-xl shadow-md border border-blue-400/30 active:scale-95 transition-all text-center"
                 >
-                  <Zap className="w-4 h-4 text-yellow-300" />
+                  <Zap className="w-3.5 h-3.5 text-yellow-300" />
                   <span>Form Proyek</span>
                 </Link>
                 <Link
                   href="/portfolio"
-                  className="flex items-center justify-center gap-2 py-3.5 px-4 bg-blue-950/80 text-blue-200 hover:text-white text-xs font-bold rounded-xl border border-blue-500/30 active:scale-95 transition-all text-center"
+                  className="flex items-center justify-center gap-1.5 py-3 px-3 bg-blue-950/80 text-blue-200 hover:text-white text-xs font-bold rounded-xl border border-blue-500/30 active:scale-95 transition-all text-center"
                 >
-                  <Briefcase className="w-4 h-4 text-blue-400" />
+                  <Briefcase className="w-3.5 h-3.5 text-blue-400" />
                   <span>Portofolio</span>
                 </Link>
               </div>
             </div>
 
             {/* Category Chips */}
-            <div className="flex flex-wrap gap-2.5 pt-2">
-              <div className="chip-3d text-white font-bold">Website Development</div>
-              <div className="chip-3d text-white font-bold">System Development</div>
-              <div className="chip-3d text-white font-bold">Branding & Creative</div>
-              <div className="chip-3d text-white font-bold">Automation & AI</div>
+            <div className="flex flex-wrap gap-2 pt-1">
+              <div className="chip-3d text-white font-bold text-[10px] py-1 px-2.5">Website Development</div>
+              <div className="chip-3d text-white font-bold text-[10px] py-1 px-2.5">System Development</div>
+              <div className="chip-3d text-white font-bold text-[10px] py-1 px-2.5">Branding & Creative</div>
+              <div className="chip-3d text-white font-bold text-[10px] py-1 px-2.5">Automation & AI</div>
             </div>
 
-            {/* Stats row */}
-            <div className="flex flex-wrap gap-8 pt-6 border-t border-blue-400/20">
+            {/* Stats row (Clean 2x2 grid on mobile, flex row on desktop) */}
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-4 sm:gap-8 pt-5 border-t border-blue-400/20">
               {trustIndicatorsData.map((item) => (
-                <div key={item.title}>
-                  <div className="text-3xl font-black text-white drop-shadow-md">{item.stat}</div>
-                  <div className="text-blue-200 text-xs font-bold mt-0.5">{item.title}</div>
+                <div key={item.title} className="space-y-0.5">
+                  <div className="text-2xl sm:text-3xl font-black text-white drop-shadow-md">{item.stat}</div>
+                  <div className="text-blue-200 text-[11px] sm:text-xs font-bold leading-snug">{item.title}</div>
                 </div>
               ))}
             </div>
