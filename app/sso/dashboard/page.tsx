@@ -66,12 +66,14 @@ export default function SSODashboardPage() {
         <div className="bg-[#0E1526]/80 border border-slate-800/80 rounded-2xl p-5 space-y-3 backdrop-blur-md">
           <div className="flex items-center justify-between">
             <span className="text-slate-400 text-xs font-semibold">Pesan Belum Dibaca</span>
-            <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+            <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
               <Mail className="w-5 h-5" />
             </div>
           </div>
-          <div className="text-3xl font-black text-amber-400">31</div>
-          <div className="text-amber-400/80 text-[11px] font-medium">Perlu Respon Segera</div>
+          <div className="text-3xl font-black text-emerald-400">0</div>
+          <div className="text-emerald-400/80 text-[11px] font-bold flex items-center gap-1">
+            <span>✓ 100% Leads Ter-Followup</span>
+          </div>
         </div>
       </div>
 
