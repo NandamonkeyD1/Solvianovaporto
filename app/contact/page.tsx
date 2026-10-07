@@ -150,24 +150,14 @@ export default function ContactPage() {
               />
             </div>
 
-            {/* DESKTOP SUBMIT BUTTON */}
-            <button
-              type="submit"
-              disabled={status === "loading"}
-              className="hidden sm:flex w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs tracking-wider uppercase transition-all shadow-lg shadow-blue-600/40 hover:shadow-blue-500/60 hover:-translate-y-0.5 items-center justify-center gap-2 border border-blue-400/30"
-            >
-              {status === "loading" ? "Mengirim Pesan..." : "Kirim Form Pesan Proyek"}
-              <Send className="w-4 h-4" />
-            </button>
-
-            {/* MOBILE SUBMIT & WA CTA */}
-            <div className="flex sm:hidden flex-col gap-3">
+            {/* UNIFIED SUBMIT & WA ACTION */}
+            <div className="space-y-3 pt-2">
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-sm transition-all shadow-lg shadow-blue-900/40 active:scale-95 flex items-center justify-center gap-2 border border-blue-400/30"
+                className="w-full py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs sm:text-sm transition-all shadow-lg shadow-blue-600/30 hover:-translate-y-0.5 flex items-center justify-center gap-2 border border-blue-400/30 active:scale-95"
               >
-                {status === "loading" ? "Mengirim..." : "⚡ Kirim Form Sekarang"}
+                {status === "loading" ? "Mengirim Pesan..." : "Kirim Form Pesan Proyek"}
                 <Send className="w-4 h-4" />
               </button>
 
@@ -175,7 +165,7 @@ export default function ContactPage() {
                 href="https://wa.me/6283148801578?text=Halo%20Solvia%20Nova,%20saya%20ingin%20konsultasi%20langsung."
                 target="_blank"
                 rel="noreferrer"
-                className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs active:scale-95 transition-all text-center flex items-center justify-center gap-2 shadow-md"
+                className="w-full py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white font-semibold text-xs active:scale-95 transition-all text-center flex items-center justify-center gap-2"
               >
                 <span>Atau Chat Langsung via WhatsApp</span>
               </a>

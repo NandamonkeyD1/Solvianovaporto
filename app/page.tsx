@@ -59,68 +59,30 @@ export default function Home() {
               Solvia Nova membantu bisnis membangun sistem digital, website, aplikasi, dan branding modern dengan visual premium dan performa profesional.
             </p>
 
-            {/* DESKTOP ACTION BUTTONS */}
-            <div className="hidden sm:flex items-center gap-4 pt-2">
+            {/* UNIFIED HERO ACTION BUTTONS */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-2 w-full sm:w-auto">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2.5 px-8 py-4 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold rounded-2xl transition-all duration-200 shadow-xl shadow-blue-600/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 text-sm border border-blue-400/30 tracking-wide"
+                className="px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-sm shadow-xl shadow-blue-600/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 border border-blue-400/30 flex items-center justify-center gap-2.5 active:scale-95 transition-all text-center"
               >
                 <span>Konsultasi Gratis</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/portfolio"
-                className="inline-flex items-center gap-2 px-7 py-4 bg-blue-950/40 hover:bg-blue-900/60 border border-blue-400/30 hover:border-blue-400/60 text-white font-bold rounded-2xl backdrop-blur-md transition-all duration-200 shadow-lg hover:-translate-y-0.5 text-sm"
+                className="px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-slate-200 hover:text-white font-bold text-sm backdrop-blur-md flex items-center justify-center gap-2 active:scale-95 transition-all text-center"
               >
                 <span>Lihat Portofolio</span>
                 <Briefcase className="w-4 h-4 text-blue-400" />
               </Link>
             </div>
 
-            {/* MOBILE ACTION BUTTONS (Touch Optimized Mobile Card & Pill Layout) */}
-            <div className="flex sm:hidden flex-col gap-2.5 w-full pt-1">
-              <a
-                href="https://wa.me/6283148801578?text=Halo%20Solvia%20Nova,%20saya%20tertarik%20konsultasi%20pembuatan%20sistem%20digital."
-                target="_blank"
-                rel="noreferrer"
-                className="w-full flex items-center justify-between px-4 py-3.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 text-white rounded-2xl shadow-xl shadow-emerald-900/40 active:scale-95 transition-all border border-emerald-400/30"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                    <MessageSquare className="w-4.5 h-4.5 text-white animate-pulse" />
-                  </div>
-                  <div className="text-left">
-                    <div className="text-[9px] text-emerald-100 font-extrabold uppercase tracking-wider">⚡ Respon Cepat & Free Audit</div>
-                    <div className="text-xs font-black text-white">Konsultasi WA Instant</div>
-                  </div>
-                </div>
-                <ArrowRight className="w-4.5 h-4.5 text-emerald-200" />
-              </a>
-
-              <div className="grid grid-cols-2 gap-2">
-                <Link
-                  href="/contact"
-                  className="flex items-center justify-center gap-1.5 py-3 px-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold rounded-xl shadow-md border border-blue-400/30 active:scale-95 transition-all text-center"
-                >
-                  <Zap className="w-3.5 h-3.5 text-yellow-300" />
-                  <span>Form Proyek</span>
-                </Link>
-                <Link
-                  href="/portfolio"
-                  className="flex items-center justify-center gap-1.5 py-3 px-3 bg-blue-950/80 text-blue-200 hover:text-white text-xs font-bold rounded-xl border border-blue-500/30 active:scale-95 transition-all text-center"
-                >
-                  <Briefcase className="w-3.5 h-3.5 text-blue-400" />
-                  <span>Portofolio</span>
-                </Link>
-              </div>
-            </div>
-
             {/* Category Chips */}
-            <div className="flex flex-wrap gap-2 pt-1">
-              <div className="chip-3d text-white font-bold text-[10px] py-1 px-2.5">Website Development</div>
-              <div className="chip-3d text-white font-bold text-[10px] py-1 px-2.5">System Development</div>
-              <div className="chip-3d text-white font-bold text-[10px] py-1 px-2.5">Branding & Creative</div>
-              <div className="chip-3d text-white font-bold text-[10px] py-1 px-2.5">Automation & AI</div>
+            <div className="flex flex-wrap gap-2 pt-2">
+              <div className="chip-3d text-white font-bold text-[10px] sm:text-xs py-1.5 px-3">Website Development</div>
+              <div className="chip-3d text-white font-bold text-[10px] sm:text-xs py-1.5 px-3">System Development</div>
+              <div className="chip-3d text-white font-bold text-[10px] sm:text-xs py-1.5 px-3">Branding & Creative</div>
+              <div className="chip-3d text-white font-bold text-[10px] sm:text-xs py-1.5 px-3">Automation & AI</div>
             </div>
 
             {/* Stats row (Clean 2x2 grid on mobile, flex row on desktop) */}
@@ -471,11 +433,11 @@ export default function Home() {
           <p className="text-blue-100 text-sm lg:text-base max-w-xl mx-auto font-medium">
             Konsultasikan kebutuhan digital bisnis Anda bersama tim Solvia Nova. Gratis, tanpa komitmen.
           </p>
-          {/* DESKTOP CTA BUTTONS */}
-          <div className="hidden sm:flex items-center justify-center gap-4 pt-4">
+          {/* UNIFIED CTA BUTTONS */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 pt-4 max-w-md sm:max-w-none mx-auto">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2.5 px-8 py-4 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold rounded-2xl shadow-xl shadow-blue-600/40 transition-all hover:scale-105 border border-blue-400/30 text-sm tracking-wide"
+              className="px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-sm shadow-xl shadow-blue-600/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 border border-blue-400/30 flex items-center justify-center gap-2.5 active:scale-95 transition-all w-full sm:w-auto"
             >
               <span>Mulai Proyek Sekarang</span>
               <ArrowRight className="w-4 h-4" />
@@ -484,31 +446,11 @@ export default function Home() {
               href="https://wa.me/6283148801578"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2.5 px-8 py-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-extrabold rounded-2xl shadow-xl shadow-emerald-600/40 transition-all hover:scale-105 border border-emerald-400/30 text-sm"
+              className="px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm shadow-xl shadow-emerald-600/30 hover:-translate-y-0.5 border border-emerald-400/30 flex items-center justify-center gap-2.5 active:scale-95 transition-all w-full sm:w-auto"
             >
               <MessageSquare className="w-4 h-4 text-white" />
               <span>Konsultasi WhatsApp</span>
             </a>
-          </div>
-
-          {/* MOBILE CTA BUTTONS (Stacked Touch Pills) */}
-          <div className="flex sm:hidden flex-col gap-3 pt-2 w-full">
-            <a
-              href="https://wa.me/6283148801578"
-              target="_blank"
-              rel="noreferrer"
-              className="w-full flex items-center justify-center gap-2.5 py-4 px-6 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 text-white font-extrabold text-sm rounded-2xl shadow-xl shadow-emerald-900/40 border border-emerald-400/30 active:scale-95 transition-all text-center"
-            >
-              <MessageSquare className="w-5 h-5 text-emerald-200 animate-bounce" />
-              <span>Hubungi via WhatsApp Instant</span>
-            </a>
-            <Link
-              href="/contact"
-              className="w-full flex items-center justify-center gap-2 py-3.5 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-xs rounded-xl shadow-md border border-blue-400/30 active:scale-95 transition-all text-center"
-            >
-              <span>Form Detail Kebutuhan Proyek</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
           </div>
         </div>
       </section>
