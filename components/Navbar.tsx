@@ -69,13 +69,13 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Action Button */}
+        {/* Action Button for Desktop */}
         <div className="hidden md:flex items-center gap-4">
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 rounded-xl shadow-lg shadow-blue-600/30 transition-all hover:scale-105"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl shadow-lg shadow-blue-600/30 transition-all hover:scale-105 border border-blue-400/30"
           >
-            Konsultasi
+            <span>Konsultasi Proyek</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -83,37 +83,56 @@ export default function Navbar() {
         {/* Mobile Menu Toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden p-2 rounded-xl bg-blue-950/30 border border-blue-500/20 text-white hover:bg-blue-900/30 transition-colors"
+          className="md:hidden p-2.5 rounded-xl bg-blue-950/50 border border-blue-500/30 text-white hover:bg-blue-900/40 transition-colors shadow-md active:scale-95"
           aria-label="Toggle Menu"
         >
-          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {mobileOpen ? <X className="w-6 h-6 text-blue-400" /> : <Menu className="w-6 h-6 text-white" />}
         </button>
       </div>
 
       {/* Mobile Drawer */}
       {mobileOpen && (
-        <div className="md:hidden bg-[#020611]/95 backdrop-blur-2xl border-b border-blue-500/20 px-6 py-6 space-y-3">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
+        <div className="md:hidden bg-[#020611]/95 backdrop-blur-2xl border-b border-blue-500/20 px-6 py-6 space-y-4 shadow-2xl animate-in fade-in slide-in-from-top-4 duration-200">
+          <div className="grid grid-cols-1 gap-1.5">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all active:scale-98 ${
+                  pathname === link.href
+                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30 border border-blue-400/40"
+                    : "text-slate-300 hover:bg-blue-900/30 hover:text-white border border-transparent"
+                }`}
+              >
+                <span>{link.label}</span>
+                <ArrowUpRight className="w-4 h-4 opacity-50" />
+              </Link>
+            ))}
+          </div>
+
+          {/* Mobile Specific Action Buttons */}
+          <div className="pt-3 border-t border-blue-500/20 space-y-2.5">
+            <a
+              href="https://wa.me/6283148801578?text=Halo%20Solvia%20Nova,%20saya%20tertarik%20konsultasi%20proyek."
+              target="_blank"
+              rel="noreferrer"
               onClick={() => setMobileOpen(false)}
-              className={`block px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
-                pathname === link.href
-                  ? "bg-blue-600 text-white"
-                  : "text-slate-300 hover:bg-blue-600/20 hover:text-white"
-              }`}
+              className="flex items-center justify-center gap-2.5 w-full py-3.5 px-4 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 shadow-lg shadow-emerald-900/40 border border-emerald-400/30 active:scale-95 transition-all text-center"
             >
-              {link.label}
+              <Sparkles className="w-4 h-4 text-emerald-200" />
+              <span>Chat WhatsApp (Respon Cepat)</span>
+            </a>
+
+            <Link
+              href="/contact"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-center gap-2 w-full py-3.5 px-4 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-blue-600 to-indigo-600 shadow-md border border-blue-400/30 active:scale-95 transition-all text-center"
+            >
+              <span>Form Konsultasi Proyek</span>
+              <ArrowUpRight className="w-4 h-4" />
             </Link>
-          ))}
-          <Link
-            href="/contact"
-            onClick={() => setMobileOpen(false)}
-            className="block text-center px-4 py-3 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 transition-colors mt-4"
-          >
-            Hubungi Kami
-          </Link>
+          </div>
         </div>
       )}
     </header>

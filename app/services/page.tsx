@@ -54,11 +54,22 @@ export default function ServicesPage() {
             </div>
 
             <div className="pt-6">
+              {/* DESKTOP BUTTON */}
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center gap-2 w-full py-3.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white text-xs font-bold rounded-xl transition-all shadow-lg shadow-blue-600/30"
+                className="hidden sm:inline-flex items-center justify-center gap-2 w-full py-3.5 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold rounded-xl transition-all shadow-lg shadow-blue-600/30 hover:scale-[1.02] border border-blue-400/30"
               >
                 <span>Konsultasikan Solusi Ini</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              {/* MOBILE BUTTON */}
+              <Link
+                href="https://wa.me/6283148801578?text=Halo%20Solvia%20Nova,%20saya%20tertarik%20dengan%20layanan%20ini."
+                target="_blank"
+                rel="noreferrer"
+                className="flex sm:hidden items-center justify-center gap-2 w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs font-black rounded-2xl shadow-md border border-emerald-400/30 active:scale-95 transition-all text-center"
+              >
+                <span>💬 Tanya Layanan via WA</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -77,10 +88,12 @@ export default function ServicesPage() {
             Tim konsultan teknis Solvia Nova siap menganalisis alur bisnis Anda dan merancang sistem digital yang scalable, aman, dan efisien.
           </p>
         </div>
-        <div className="pt-2 flex flex-wrap justify-center gap-4">
+
+        {/* DESKTOP BUTTONS */}
+        <div className="hidden sm:flex flex-wrap justify-center gap-4 pt-2">
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white text-xs font-bold rounded-xl transition-all shadow-xl shadow-blue-600/30 hover:scale-105"
+            className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold rounded-xl transition-all shadow-xl shadow-blue-600/30 hover:scale-105 border border-blue-400/30"
           >
             <span>Konsultasi Gratis Sekarang</span>
             <ArrowRight className="w-4 h-4" />
@@ -89,10 +102,28 @@ export default function ServicesPage() {
             href="https://wa.me/6283148801578"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-all shadow-xl shadow-emerald-600/30 hover:scale-105"
+            className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold rounded-xl transition-all shadow-xl shadow-emerald-600/30 hover:scale-105 border border-emerald-400/30"
           >
             <span>Chat via WhatsApp</span>
           </a>
+        </div>
+
+        {/* MOBILE BUTTONS */}
+        <div className="flex sm:hidden flex-col gap-3 pt-2 w-full">
+          <a
+            href="https://wa.me/6283148801578"
+            target="_blank"
+            rel="noreferrer"
+            className="w-full flex items-center justify-center gap-2 py-4 px-6 bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-black text-xs rounded-2xl shadow-xl border border-emerald-400/30 active:scale-95 transition-all text-center"
+          >
+            <span>💬 Konsultasi WA Instant</span>
+          </a>
+          <Link
+            href="/contact"
+            className="w-full flex items-center justify-center gap-2 py-3.5 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-xs rounded-xl shadow-md border border-blue-400/30 active:scale-95 transition-all text-center"
+          >
+            <span>Form Konsultasi Proyek</span>
+          </Link>
         </div>
       </div>
     </div>
