@@ -29,6 +29,7 @@ import {
 import TeamCarousel from "@/components/TeamCarousel";
 import PartnerCarousel from "@/components/PartnerCarousel";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
+import Model3DViewer from "@/components/Model3DViewer";
 
 export default function Home() {
   return (
@@ -96,63 +97,28 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right Column: Interactive Dashboard Mockup */}
-          <div className="relative hidden lg:block">
+          {/* Right Column: Interactive 3D Model Showcase */}
+          <div className="relative w-full max-w-lg mx-auto lg:max-w-none">
             <div className="relative">
-              <div className="absolute inset-0 bg-blue-500/20 rounded-3xl blur-3xl scale-110" />
-              <div className="relative bg-[#020611]/90 backdrop-blur-xl border border-blue-400/40 rounded-2xl p-6 shadow-2xl space-y-5">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500" />
-                    <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                    <div className="w-3 h-3 rounded-full bg-green-500" />
-                  </div>
-                  <div className="text-blue-200 text-xs font-mono font-bold">solvianova.3d.dashboard</div>
-                </div>
+              {/* Glow ambient background aura */}
+              <div className="absolute inset-0 bg-blue-500/20 rounded-3xl blur-3xl scale-105 pointer-events-none" />
 
-                <div className="grid grid-cols-3 gap-3">
-                  {[
-                    ["Total Projects", "50+", "↑ 12%", "text-blue-400"],
-                    ["Active Clients", "28", "↑ 8%", "text-emerald-400"],
-                    ["Performance", "99.9%", "↑ 24%", "text-violet-400"],
-                  ].map(([t, v, c, colorClass]) => (
-                    <div key={t} className="bg-blue-950/40 rounded-xl p-3 border border-blue-400/20">
-                      <div className="text-blue-200 text-xs font-semibold mb-1.5">{t}</div>
-                      <div className="text-white font-extrabold text-xl">{v}</div>
-                      <div className={`text-xs mt-1 font-bold ${colorClass}`}>{c}</div>
-                    </div>
-                  ))}
-                </div>
+              {/* 3D Model Viewer Card */}
+              <Model3DViewer modelPath="/assets/3D/Meshy_AI_Azure_Invitation_1012015755_texture.glb" />
 
-                <div className="bg-blue-950/40 rounded-xl p-4 border border-blue-400/20">
-                  <div className="text-blue-200 text-xs font-bold mb-3">Project Delivery Rate & System Efficiency</div>
-                  <div className="flex items-end gap-2 h-16">
-                    {[60, 80, 55, 90, 75, 95, 70, 88, 65, 92, 78, 100].map((h, i) => (
-                      <div
-                        key={i}
-                        className="flex-1 bg-blue-500/50 rounded-sm hover:bg-blue-400 transition-colors"
-                        style={{ height: `${h}%` }}
-                      />
-                    ))}
-                  </div>
+              {/* Quick Stat Floating Badges beneath the 3D model */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-4">
+                <div className="bg-[#020611]/85 backdrop-blur-xl rounded-2xl p-3 border border-blue-400/30 text-center shadow-lg">
+                  <div className="text-white font-black text-base sm:text-lg">50+</div>
+                  <div className="text-blue-300 text-[10px] sm:text-xs font-semibold">Proyek Sukses</div>
                 </div>
-
-                <div className="space-y-2">
-                  {[
-                    ["E-Commerce Platform", "Next.js WebApp", "Selesai"],
-                    ["ERP Manufacturing System", "Enterprise ERP", "Selesai"],
-                    ["HR Management System", "Dashboard POS", "Aktif"],
-                  ].map(([name, cat, status]) => (
-                    <div key={name} className="flex items-center justify-between py-2 border-b border-blue-400/10">
-                      <div>
-                        <div className="text-white text-xs font-bold">{name}</div>
-                        <div className="text-blue-200 text-xs">{cat}</div>
-                      </div>
-                      <span className={`text-xs font-extrabold ${status === "Selesai" ? "text-emerald-400" : "text-blue-400"}`}>
-                        {status}
-                      </span>
-                    </div>
-                  ))}
+                <div className="bg-[#020611]/85 backdrop-blur-xl rounded-2xl p-3 border border-blue-400/30 text-center shadow-lg">
+                  <div className="text-emerald-400 font-black text-base sm:text-lg">99.9%</div>
+                  <div className="text-blue-300 text-[10px] sm:text-xs font-semibold">Uptime Server</div>
+                </div>
+                <div className="bg-[#020611]/85 backdrop-blur-xl rounded-2xl p-3 border border-blue-400/30 text-center shadow-lg">
+                  <div className="text-cyan-400 font-black text-base sm:text-lg">3D & Web</div>
+                  <div className="text-blue-300 text-[10px] sm:text-xs font-semibold">Solusi Digital</div>
                 </div>
               </div>
             </div>
