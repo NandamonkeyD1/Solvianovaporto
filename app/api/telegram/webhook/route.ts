@@ -3,6 +3,21 @@ import { portfolioData } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
+export async function GET() {
+  const hasToken = Boolean(process.env.TELEGRAM_BOT_TOKEN);
+  const hasChatId = Boolean(process.env.TELEGRAM_ADMIN_CHAT_ID);
+
+  return NextResponse.json({
+    status: "online",
+    service: "Solvia Nova Telegram Admin Bot Webhook",
+    configured: {
+      botToken: hasToken,
+      adminChatId: hasChatId,
+    },
+    commands: ["/start", "/stats", "/leads", "/portfolio", "/invoices", "/help"],
+  });
+}
+
 interface TelegramUpdate {
   update_id: number;
   message?: {
