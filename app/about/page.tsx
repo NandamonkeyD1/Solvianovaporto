@@ -21,7 +21,7 @@ export default function AboutPage() {
           {
             icon: ShieldCheck,
             title: "Analisis Berbasis Problem",
-            desc: "Kami tidak sekadar menulis kode. Kami mendalami alur bisnis Anda untuk merancang arsitektur sistem yang tepat sasaran."
+            desc: "Kami tidak sekadar menulis kode. Kami mendalami alur bisnis Anda untuk merancang solusi sistem digital yang tepat sasaran."
           },
           {
             icon: Zap,

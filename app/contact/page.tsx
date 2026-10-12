@@ -48,7 +48,7 @@ export default function ContactPage() {
         <div className="space-y-6 sm:space-y-8 bg-[#08183c]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-5 sm:p-8 shadow-2xl">
           <h2 className="text-xl sm:text-2xl font-bold text-white">Informasi Kontak</h2>
           <p className="text-slate-300 text-sm leading-relaxed">
-            Tim konsultan teknis kami siap mendengarkan kebutuhan bisnis Anda dan memberikan gambaran arsitektur sistem terbaik.
+            Tim konsultan teknis kami siap mendengarkan kebutuhan bisnis Anda dan memberikan gambaran solusi sistem digital terbaik.
           </p>
 
           <div className="space-y-6 pt-4">

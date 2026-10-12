@@ -163,9 +163,9 @@ export const servicesData: Service[] = [
     name: "Mentoring & IT Coaching",
     category: "Mentoring & Education",
     shortDesc: "Program mentoring teknis 1-on-1 & bimbingan skripsi / up-skilling tim IT perusahaan.",
-    description: "Bimbingan privat software engineering, arsitektur Next.js fullstack, IoT, dan konsultasi proyek IT.",
+    description: "Bimbingan privat software engineering, rekayasa Next.js fullstack, IoT, dan konsultasi proyek IT.",
     icon: "GraduationCap",
-    features: ["Mentoring Next.js & Fullstack", "Arsitektur System & Database", "Bimbingan Tugas Akhir & Skripsi", "Up-skilling Tim IT Internal"]
+    features: ["Mentoring Next.js & Fullstack", "Rancang Bangun Sistem & Database", "Bimbingan Tugas Akhir & Skripsi", "Up-skilling Tim IT Internal"]
   },
   {
     id: "branding-creative",
@@ -431,7 +431,7 @@ export const articlesData: Article[] = [
   {
     id: "1",
     slug: "membangun-sistem-iot-skala-industri",
-    title: "Panduan Membangun Arsitektur IoT Skala Industri yang Andal",
+    title: "Panduan Membangun Ekosistem IoT Solusi Digital Skala Industri yang Andal",
     category: "IoT & Cloud",
     date: "10 September 2026",
     readTime: "5 min read",

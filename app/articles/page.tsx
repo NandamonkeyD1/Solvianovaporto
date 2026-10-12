@@ -13,7 +13,7 @@ export default function ArticlesPage() {
           Wawasan & <span className="text-nova-yellow">Berita Digital</span>
         </h1>
         <p className="text-slate-400 text-base leading-relaxed">
-          Temukan wawasan mendalam mengenai arsitektur sistem, WebGL 3D, IoT skala industri, dan tren teknologi modern.
+          Temukan wawasan mendalam mengenai ekosistem solusi digital, WebGL 3D, IoT skala industri, dan tren teknologi modern.
         </p>
       </div>
 

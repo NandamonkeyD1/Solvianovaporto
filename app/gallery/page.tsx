@@ -20,7 +20,7 @@ export default function GalleryPage() {
           Dokumentasi Karya & <span className="text-nova-blue">Visual Solvia Nova</span>
         </h1>
         <p className="text-blue-100 text-sm sm:text-base leading-relaxed font-medium">
-          Koleksi dokumentasi visual dari antarmuka aplikasi, sistem kustom enterprise, dan arsitektur produk digital kami.
+          Koleksi dokumentasi visual dari antarmuka aplikasi, sistem kustom enterprise, dan pengembangan produk solusi digital kami.
         </p>
       </div>
 
@@ -78,9 +78,9 @@ export default function GalleryPage() {
           </div>
         </div>
 
-        {/* Single High-Performance 3D Showcase (On-demand switcher) */}
+        {/* Single High-Performance Automated 3D Showcase */}
         <div className="max-w-4xl mx-auto">
-          <Model3DViewer defaultModelId="azure" showTabs={true} className="!h-[460px]" />
+          <Model3DViewer className="!h-[460px]" />
         </div>
       </div>
 

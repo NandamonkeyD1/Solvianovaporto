@@ -1,86 +1,64 @@
 "use client";
 
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { Sparkles, Box, Layers, Eye } from "lucide-react";
+import { Sparkles, Box } from "lucide-react";
 
-export type ModelAssetId = "azure" | "ribbon" | "dual";
-
-export interface ModelOption {
-  id: ModelAssetId;
+export interface ModelShowcaseItem {
+  id: "azure" | "ribbon";
   name: string;
-  shortName: string;
   badge: string;
   path: string;
   description: string;
   details: string;
 }
 
-export const SOLVIA_3D_ASSETS: ModelOption[] = [
+export const SHOWCASE_MODELS: ModelShowcaseItem[] = [
   {
     id: "azure",
     name: "Solvia Azure Emblem",
-    shortName: "Azure Emblem",
-    badge: "Solvia Core",
+    badge: "Solvia Digital Solution",
     path: "/assets/3D/Meshy_AI_Azure_Invitation_1012015755_texture.glb",
-    description: "Emblem utama Solvia Nova berarsitektur geometris modern",
-    details: "14.5 MB • GLTF 2.0 • PBR Texture",
+    description: "Emblem utama Solvia Nova — Simbol Inovasi Solusi Digital Modern",
+    details: "14.5 MB • GLTF 2.0 • Solusi Digital",
   },
   {
     id: "ribbon",
     name: "Radiant Ribbon Runner",
-    shortName: "Selendang 3D",
-    badge: "Ribbon Runner",
+    badge: "Selendang 3D Dinamis",
     path: "/assets/3D/Meshy_AI_Radiant_Ribbon_Runner_1012035542_texture.glb",
-    description: "Asset 3D selendang & pita dinamis beraura keemasan",
-    details: "101 MB • Dynamic Mesh • High Detail",
-  },
-  {
-    id: "dual",
-    name: "Dual Synergy (Emblem + Selendang)",
-    shortName: "Dual 3D",
-    badge: "Kombinasi 3D",
-    path: "dual",
-    description: "Sinergi visual Azure Emblem dan Selendang Dinamis dalam satu semesta",
-    details: "Multi-Mesh • Full Ambient Experience",
+    description: "Selendang 3D Dinamis — Aliran Energi & Kreativitas Digital",
+    details: "Dynamic Mesh • High Detail • Visual Imersif",
   },
 ];
 
 interface Model3DViewerProps {
-  modelPath?: string;
-  defaultModelId?: ModelAssetId;
   className?: string;
-  showTabs?: boolean;
 }
 
-// Module-level cache for loaded GLTF objects to avoid re-fetching 100MB files
+// Module-level cache for loaded GLTF objects
 const gltfObjectCache = new Map<string, THREE.Group>();
 
-export default function Model3DViewer({
-  modelPath,
-  defaultModelId = "azure",
-  className = "",
-  showTabs = true,
-}: Model3DViewerProps) {
+export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Determine initial model ID based on props
-  const initialId: ModelAssetId = useMemo(() => {
-    if (modelPath?.includes("Ribbon")) return "ribbon";
-    if (modelPath?.includes("Azure")) return "azure";
-    return defaultModelId;
-  }, [modelPath, defaultModelId]);
-
-  const [activeModelId, setActiveModelId] = useState<ModelAssetId>(initialId);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loadProgress, setLoadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
-  const currentModel = useMemo(() => {
-    return SOLVIA_3D_ASSETS.find((m) => m.id === activeModelId) || SOLVIA_3D_ASSETS[0];
-  }, [activeModelId]);
+  const currentModel = SHOWCASE_MODELS[activeIndex];
+
+  // Autonomous automation: Automatically rotate/alternate between 3D assets every 9 seconds
+  useEffect(() => {
+    const autoTimer = setInterval(() => {
+      setActiveIndex((prev) => (prev === 0 ? 1 : 0));
+    }, 9000);
+
+    return () => clearInterval(autoTimer);
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -116,12 +94,12 @@ export default function Model3DViewer({
     // 1. Scene Setup
     const scene = new THREE.Scene();
 
-    // 2. Camera Setup (Fixed camera position, non-interactive)
+    // 2. Camera Setup (Fixed ideal viewing angle, non-interactive)
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(0, 1.2, 4.8);
     camera.lookAt(0, 0, 0);
 
-    // 3. WebGL Renderer (Optimized pixel ratio for performance)
+    // 3. WebGL Renderer (Lightweight & optimized pixel ratio)
     const isMobile = window.innerWidth < 768;
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -142,7 +120,7 @@ export default function Model3DViewer({
     const hemiLight = new THREE.HemisphereLight(0x7ebbff, 0x0a1936, 1.8);
     scene.add(hemiLight);
 
-    // Key Light (Clean White)
+    // Key Light
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.6);
     keyLight.position.set(5, 7, 6);
     scene.add(keyLight);
@@ -162,16 +140,11 @@ export default function Model3DViewer({
     cyanUplight.position.set(-3, -2, 2);
     scene.add(cyanUplight);
 
-    // 5. Model Groups
-    const azureRoot = new THREE.Group();
-    const ribbonRoot = new THREE.Group();
-    scene.add(azureRoot);
-    scene.add(ribbonRoot);
+    // 5. Model Root Group
+    const modelGroup = new THREE.Group();
+    scene.add(modelGroup);
 
-    const loaders = new GLTFLoader();
-    const isDual = activeModelId === "dual";
-    const needAzure = activeModelId === "azure" || isDual;
-    const needRibbon = activeModelId === "ribbon" || isDual;
+    const loader = new GLTFLoader();
 
     // Helper to normalize and center GLTF object
     const normalizeModel = (object: THREE.Group, targetScaleFactor: number) => {
@@ -202,30 +175,22 @@ export default function Model3DViewer({
       return object;
     };
 
-    // Load helper with cache
-    const loadGLBModel = (
-      url: string,
-      scaleFactor: number,
-      targetGroup: THREE.Group,
-      onDone: () => void,
-      onError: (err: unknown) => void
-    ) => {
-      if (gltfObjectCache.has(url)) {
-        const cached = gltfObjectCache.get(url)!.clone(true);
-        normalizeModel(cached, scaleFactor);
-        targetGroup.add(cached);
-        onDone();
-        return;
-      }
+    const targetUrl = currentModel.path;
 
-      loaders.load(
-        url,
+    if (gltfObjectCache.has(targetUrl)) {
+      const cached = gltfObjectCache.get(targetUrl)!.clone(true);
+      normalizeModel(cached, 2.3);
+      modelGroup.add(cached);
+      setLoading(false);
+    } else {
+      loader.load(
+        targetUrl,
         (gltf) => {
           const raw = gltf.scene;
-          gltfObjectCache.set(url, raw.clone(true));
-          normalizeModel(raw, scaleFactor);
-          targetGroup.add(raw);
-          onDone();
+          gltfObjectCache.set(targetUrl, raw.clone(true));
+          normalizeModel(raw, 2.3);
+          modelGroup.add(raw);
+          setLoading(false);
         },
         (xhr) => {
           if (xhr.total > 0) {
@@ -233,49 +198,9 @@ export default function Model3DViewer({
           }
         },
         (err) => {
-          onError(err);
-        }
-      );
-    };
-
-    let pendingLoads = 0;
-    if (needAzure) pendingLoads++;
-    if (needRibbon) pendingLoads++;
-
-    const checkComplete = () => {
-      pendingLoads--;
-      if (pendingLoads <= 0) {
-        setLoading(false);
-      }
-    };
-
-    const azurePath = "/assets/3D/Meshy_AI_Azure_Invitation_1012015755_texture.glb";
-    const ribbonPath = "/assets/3D/Meshy_AI_Radiant_Ribbon_Runner_1012035542_texture.glb";
-
-    if (needAzure) {
-      const scale = isDual ? 1.9 : 2.3;
-      loadGLBModel(
-        azurePath,
-        scale,
-        azureRoot,
-        checkComplete,
-        (err) => {
-          console.error("Failed to load Azure 3D model:", err);
-          checkComplete();
-        }
-      );
-    }
-
-    if (needRibbon) {
-      const scale = isDual ? 2.5 : 2.3;
-      loadGLBModel(
-        ribbonPath,
-        scale,
-        ribbonRoot,
-        checkComplete,
-        (err) => {
-          console.error("Failed to load Ribbon 3D model:", err);
-          checkComplete();
+          console.error("Failed to load 3D model:", err);
+          setError("Model 3D otomatis dialihkan ke mode fallback");
+          setLoading(false);
         }
       );
     }
@@ -286,7 +211,7 @@ export default function Model3DViewer({
 
     // Ribbon Path 1: Primary Flowing Blue Ribbon
     const ribbonPoints1: THREE.Vector3[] = [];
-    const pointsCount1 = 160;
+    const pointsCount1 = 120;
     for (let i = 0; i <= pointsCount1; i++) {
       const t = i / pointsCount1;
       const angle = t * Math.PI * 4.2;
@@ -362,7 +287,7 @@ export default function Model3DViewer({
 
     // Ribbon Path 2: Golden Accent Silk Ribbon (Counter-Twisting)
     const ribbonPoints2: THREE.Vector3[] = [];
-    const pointsCount2 = 140;
+    const pointsCount2 = 100;
     for (let i = 0; i <= pointsCount2; i++) {
       const t = i / pointsCount2;
       const angle = -t * Math.PI * 3.8 + 1.2;
@@ -374,7 +299,7 @@ export default function Model3DViewer({
     }
     const curve2 = new THREE.CatmullRomCurve3(ribbonPoints2);
     const tubeGeo2 = new THREE.TubeGeometry(curve2, 70, 0.04, 10, false);
- 
+
     const ribbonMat2 = new THREE.ShaderMaterial({
       vertexShader: ribbonVertexShader,
       fragmentShader: ribbonFragmentShader,
@@ -422,7 +347,7 @@ export default function Model3DViewer({
     baseGroup.add(ringInner);
 
     // Floating Stardust Particles
-    const dustCount = 110;
+    const dustCount = 100;
     const dustPositions = new Float32Array(dustCount * 3);
     const dustColors = new Float32Array(dustCount * 3);
     const cGold = new THREE.Color(0xffde59);
@@ -476,7 +401,7 @@ export default function Model3DViewer({
     );
     observer.observe(container);
 
-    // 9. Autonomous Animation Loop (Non-interactive, pure ambient motion)
+    // 9. Fully Autonomous Animation Loop
     let animId: number;
     const clock = new THREE.Clock();
 
@@ -490,28 +415,13 @@ export default function Model3DViewer({
       ribbonMat1.uniforms.uTime.value = elapsed;
       ribbonMat2.uniforms.uTime.value = elapsed;
 
-      // Autonomous rotation for Azure Emblem
-      if (needAzure) {
-        azureRoot.rotation.y = elapsed * 0.42;
-        azureRoot.position.y = Math.sin(elapsed * 1.5) * 0.08;
-      }
-
-      // Autonomous rotation for Ribbon Runner model
-      if (needRibbon) {
-        if (isDual) {
-          // Counter-twisting rotation around Azure in Dual mode
-          ribbonRoot.rotation.y = -elapsed * 0.35;
-          ribbonRoot.position.y = Math.sin(elapsed * 1.3 + 1.0) * 0.07;
-          ribbonRoot.rotation.x = Math.sin(elapsed * 0.6) * 0.06;
-        } else {
-          ribbonRoot.rotation.y = elapsed * 0.38;
-          ribbonRoot.position.y = Math.sin(elapsed * 1.4) * 0.09;
-        }
-      }
+      // Pure Autonomous Rotation: Smooth auto-rotation & floating bob
+      modelGroup.rotation.y = elapsed * 0.4;
+      modelGroup.position.y = Math.sin(elapsed * 1.4) * 0.08;
 
       // Counter-rotating flowing 3D Ribbon Selendang
-      ribbonContainer.rotation.y = -elapsed * 0.32;
-      ribbonContainer.rotation.x = Math.sin(elapsed * 0.5) * 0.08;
+      ribbonContainer.rotation.y = -elapsed * 0.3;
+      ribbonContainer.rotation.x = Math.sin(elapsed * 0.5) * 0.07;
       ribbonContainer.position.y = Math.sin(elapsed * 1.2) * 0.05;
 
       // Base ring rotation
@@ -543,7 +453,7 @@ export default function Model3DViewer({
       dustMat.dispose();
       renderer.dispose();
     };
-  }, [activeModelId]);
+  }, [activeIndex]);
 
   return (
     <div
@@ -556,42 +466,34 @@ export default function Model3DViewer({
         className="w-full h-full block pointer-events-none z-10"
       />
 
-      {/* Top Bar: Badge (Left) & Model Switcher (Right) */}
-      <div className="absolute top-3.5 left-3.5 right-3.5 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
-        {/* Left Badge */}
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#020611]/85 border border-blue-400/40 backdrop-blur-md shadow-lg">
+      {/* Top Automated Presentation Status Bar (No manual buttons) */}
+      <div className="absolute top-3.5 left-3.5 right-3.5 z-20 flex items-center justify-between pointer-events-none">
+        {/* Left Badge with pulse */}
+        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#020611]/90 border border-blue-400/40 backdrop-blur-md shadow-lg">
           <div className="w-2 h-2 rounded-full bg-[#ffde59] shadow-[0_0_10px_#ffde59] animate-pulse" />
           <span className="text-[10px] sm:text-[11px] font-extrabold text-white tracking-wide uppercase">
             {currentModel.badge}
           </span>
         </div>
 
-        {/* Right Switcher Pill Tabs (Interactive Buttons) */}
-        {showTabs && (
-          <div className="flex items-center gap-1 bg-[#020611]/90 backdrop-blur-md p-1 rounded-2xl border border-blue-400/30 shadow-lg pointer-events-auto">
-            {SOLVIA_3D_ASSETS.map((m) => {
-              const isActive = activeModelId === m.id;
-              return (
-                <button
-                  key={m.id}
-                  type="button"
-                  onClick={() => setActiveModelId(m.id)}
-                  aria-pressed={isActive}
-                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-bold transition-all duration-200 flex items-center gap-1.5 active:scale-95 ${
-                    isActive
-                      ? "bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/30 border border-blue-300/40"
-                      : "text-blue-200/80 hover:text-white hover:bg-blue-900/40"
-                  }`}
-                >
-                  {m.id === "azure" && <Sparkles className="w-3 h-3 text-[#ffde59]" />}
-                  {m.id === "ribbon" && <Layers className="w-3 h-3 text-[#38bdf8]" />}
-                  {m.id === "dual" && <Eye className="w-3 h-3 text-emerald-400" />}
-                  <span>{m.shortName}</span>
-                </button>
-              );
-            })}
+        {/* Right Automated Status Indicator */}
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#020611]/85 border border-blue-400/30 backdrop-blur-md shadow-lg">
+          <span className="text-[10px] font-mono text-blue-300 font-bold">
+            Auto-Showcase {activeIndex + 1}/{SHOWCASE_MODELS.length}
+          </span>
+          <div className="flex gap-1 items-center">
+            <span
+              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                activeIndex === 0 ? "bg-[#ffde59] w-3" : "bg-blue-600"
+              }`}
+            />
+            <span
+              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                activeIndex === 1 ? "bg-[#ffde59] w-3" : "bg-blue-600"
+              }`}
+            />
           </div>
-        )}
+        </div>
       </div>
 
       {/* Loading Overlay */}
@@ -606,16 +508,14 @@ export default function Model3DViewer({
           </div>
           <div className="text-center space-y-1">
             <div className="text-xs font-bold text-white tracking-wide">
-              Memuat {currentModel.name}...
+              Menyiapkan {currentModel.name}...
             </div>
             {loadProgress > 0 && (
               <div className="text-[11px] font-mono text-[#ffde59] font-bold">
                 {loadProgress}%
               </div>
             )}
-            <div className="text-[10px] text-blue-300">
-              {activeModelId === "ribbon" ? "Asset 3D Selendang Dinamis" : "Asset 3D Solvia Nova"}
-            </div>
+            <div className="text-[10px] text-blue-300">Solvia Nova Digital Solution</div>
           </div>
         </div>
       )}
@@ -626,14 +526,14 @@ export default function Model3DViewer({
           <div className="w-12 h-12 rounded-2xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-[#ffde59]">
             <Sparkles className="w-6 h-6" />
           </div>
-          <div className="text-white font-bold text-sm">Solvia Nova 3D Solution</div>
+          <div className="text-white font-bold text-sm">Solvia Nova Digital Solution</div>
           <p className="text-slate-400 text-xs max-w-xs">
-            Arsitektur digital 3D modern dengan performa tinggi untuk bisnis Anda.
+            Solusi digital 3D modern dengan performa tinggi untuk bisnis Anda.
           </p>
         </div>
       )}
 
-      {/* Bottom Dynamic Ambient Tag */}
+      {/* Bottom Automated Presentation Tag */}
       <div className="absolute bottom-3.5 left-3.5 right-3.5 z-20 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-[11px] text-blue-200/90 bg-[#020611]/85 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-blue-400/30 shadow-lg pointer-events-none">
         <div className="flex items-center gap-2 min-w-0">
           <Sparkles className="w-3.5 h-3.5 text-[#ffde59] shrink-0" />
@@ -643,6 +543,7 @@ export default function Model3DViewer({
         </div>
         <div className="flex items-center gap-2 text-[10px] font-mono text-[#ffde59] font-bold shrink-0">
           <span>{currentModel.details}</span>
+          <span className="text-blue-400">• Rotasi Otomatis</span>
         </div>
       </div>
     </div>

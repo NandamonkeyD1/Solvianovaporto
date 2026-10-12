@@ -103,8 +103,8 @@ export default function Home() {
               {/* Glow ambient background aura */}
               <div className="absolute inset-0 bg-blue-500/20 rounded-3xl blur-3xl scale-105 pointer-events-none" />
 
-              {/* 3D Model Viewer Card (Supports Azure Emblem, Radiant Ribbon Runner, and Dual Synergy) */}
-              <Model3DViewer defaultModelId="azure" />
+              {/* 3D Model Viewer Card (Automated rotation between Azure Emblem and Radiant Ribbon) */}
+              <Model3DViewer />
 
               {/* Quick Stat Floating Badges beneath the 3D model */}
               <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-4">
