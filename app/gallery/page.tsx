@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles, Image as ImageIcon, X, Calendar, Tag } from "lucide-react";
+import { Sparkles, Image as ImageIcon, X, Calendar, Tag, Box, Layers } from "lucide-react";
 import { galleryData, GalleryItem } from "@/lib/data";
+import Model3DViewer from "@/components/Model3DViewer";
 
 export default function GalleryPage() {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
@@ -58,6 +59,29 @@ export default function GalleryPage() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* 3D INTERACTIVE ASSETS SHOWCASE */}
+      <div className="bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-3xl p-8 lg:p-12 space-y-8 shadow-2xl">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-[#61adff] text-xs font-bold uppercase">
+              <Box className="w-3.5 h-3.5 text-[#ffde59]" />
+              Koleksi Asset Visual 3D
+            </div>
+            <h2 className="text-2xl lg:text-3xl font-black text-white">
+              Model 3D & Selendang Digital Solvia Nova
+            </h2>
+            <p className="text-blue-100 text-xs sm:text-sm font-medium">
+              Eksplorasi asset 3D premium yang memperkuat estetika interaktif dan identitas visual ekosistem Solvia Nova.
+            </p>
+          </div>
+        </div>
+
+        {/* Single High-Performance 3D Showcase (On-demand switcher) */}
+        <div className="max-w-4xl mx-auto">
+          <Model3DViewer defaultModelId="azure" showTabs={true} className="!h-[460px]" />
+        </div>
       </div>
 
       {/* LIGHTBOX MODAL */}

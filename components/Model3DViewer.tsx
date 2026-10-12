@@ -1,24 +1,86 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { Sparkles, Box } from "lucide-react";
+import { Sparkles, Box, Layers, Eye } from "lucide-react";
+
+export type ModelAssetId = "azure" | "ribbon" | "dual";
+
+export interface ModelOption {
+  id: ModelAssetId;
+  name: string;
+  shortName: string;
+  badge: string;
+  path: string;
+  description: string;
+  details: string;
+}
+
+export const SOLVIA_3D_ASSETS: ModelOption[] = [
+  {
+    id: "azure",
+    name: "Solvia Azure Emblem",
+    shortName: "Azure Emblem",
+    badge: "Solvia Core",
+    path: "/assets/3D/Meshy_AI_Azure_Invitation_1012015755_texture.glb",
+    description: "Emblem utama Solvia Nova berarsitektur geometris modern",
+    details: "14.5 MB • GLTF 2.0 • PBR Texture",
+  },
+  {
+    id: "ribbon",
+    name: "Radiant Ribbon Runner",
+    shortName: "Selendang 3D",
+    badge: "Ribbon Runner",
+    path: "/assets/3D/Meshy_AI_Radiant_Ribbon_Runner_1012035542_texture.glb",
+    description: "Asset 3D selendang & pita dinamis beraura keemasan",
+    details: "101 MB • Dynamic Mesh • High Detail",
+  },
+  {
+    id: "dual",
+    name: "Dual Synergy (Emblem + Selendang)",
+    shortName: "Dual 3D",
+    badge: "Kombinasi 3D",
+    path: "dual",
+    description: "Sinergi visual Azure Emblem dan Selendang Dinamis dalam satu semesta",
+    details: "Multi-Mesh • Full Ambient Experience",
+  },
+];
 
 interface Model3DViewerProps {
   modelPath?: string;
+  defaultModelId?: ModelAssetId;
   className?: string;
+  showTabs?: boolean;
 }
 
+// Module-level cache for loaded GLTF objects to avoid re-fetching 100MB files
+const gltfObjectCache = new Map<string, THREE.Group>();
+
 export default function Model3DViewer({
-  modelPath = "/assets/3D/Meshy_AI_Azure_Invitation_1012015755_texture.glb",
+  modelPath,
+  defaultModelId = "azure",
   className = "",
+  showTabs = true,
 }: Model3DViewerProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  // Determine initial model ID based on props
+  const initialId: ModelAssetId = useMemo(() => {
+    if (modelPath?.includes("Ribbon")) return "ribbon";
+    if (modelPath?.includes("Azure")) return "azure";
+    return defaultModelId;
+  }, [modelPath, defaultModelId]);
+
+  const [activeModelId, setActiveModelId] = useState<ModelAssetId>(initialId);
   const [loading, setLoading] = useState(true);
   const [loadProgress, setLoadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
+
+  const currentModel = useMemo(() => {
+    return SOLVIA_3D_ASSETS.find((m) => m.id === activeModelId) || SOLVIA_3D_ASSETS[0];
+  }, [activeModelId]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -44,25 +106,30 @@ export default function Model3DViewer({
       return;
     }
 
+    setLoading(true);
+    setLoadProgress(0);
+    setError(null);
+
     const width = container.clientWidth;
     const height = container.clientHeight || 480;
 
     // 1. Scene Setup
     const scene = new THREE.Scene();
 
-    // 2. Camera Setup (Fixed ideal viewing angle, no user interaction/orbit controls)
+    // 2. Camera Setup (Fixed camera position, non-interactive)
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(0, 1.2, 4.8);
     camera.lookAt(0, 0, 0);
 
-    // 3. WebGL Renderer
+    // 3. WebGL Renderer (Optimized pixel ratio for performance)
+    const isMobile = window.innerWidth < 768;
     const renderer = new THREE.WebGLRenderer({
       canvas,
-      antialias: true,
+      antialias: !isMobile,
       alpha: true,
       powerPreference: "high-performance",
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+    renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 1.35));
     renderer.setSize(width, height);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -95,71 +162,125 @@ export default function Model3DViewer({
     cyanUplight.position.set(-3, -2, 2);
     scene.add(cyanUplight);
 
-    // 5. Central Model Group
-    const modelRoot = new THREE.Group();
-    scene.add(modelRoot);
+    // 5. Model Groups
+    const azureRoot = new THREE.Group();
+    const ribbonRoot = new THREE.Group();
+    scene.add(azureRoot);
+    scene.add(ribbonRoot);
 
-    let mixer: THREE.AnimationMixer | null = null;
+    const loaders = new GLTFLoader();
+    const isDual = activeModelId === "dual";
+    const needAzure = activeModelId === "azure" || isDual;
+    const needRibbon = activeModelId === "ribbon" || isDual;
 
-    // Load GLB Model
-    const loader = new GLTFLoader();
-    loader.load(
-      modelPath,
-      (gltf) => {
-        const object = gltf.scene;
+    // Helper to normalize and center GLTF object
+    const normalizeModel = (object: THREE.Group, targetScaleFactor: number) => {
+      const box = new THREE.Box3().setFromObject(object);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
 
-        // Auto-center and normalize size
-        const box = new THREE.Box3().setFromObject(object);
-        const center = box.getCenter(new THREE.Vector3());
-        const size = box.getSize(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const targetScale = targetScaleFactor / (maxDim || 1);
+      object.scale.setScalar(targetScale);
 
-        const maxDim = Math.max(size.x, size.y, size.z);
-        const targetScale = 2.3 / (maxDim || 1);
-        object.scale.setScalar(targetScale);
+      object.position.x = -center.x * targetScale;
+      object.position.y = -center.y * targetScale;
+      object.position.z = -center.z * targetScale;
 
-        object.position.x = -center.x * targetScale;
-        object.position.y = -center.y * targetScale;
-        object.position.z = -center.z * targetScale;
-
-        // Enhance materials
-        object.traverse((child) => {
-          if ((child as THREE.Mesh).isMesh) {
-            const mesh = child as THREE.Mesh;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-            if (mesh.material) {
-              const mat = mesh.material as THREE.MeshStandardMaterial;
-              mat.roughness = Math.min(mat.roughness ?? 0.35, 0.55);
-              mat.metalness = Math.max(mat.metalness ?? 0.2, 0.35);
-            }
+      object.traverse((child) => {
+        if ((child as THREE.Mesh).isMesh) {
+          const mesh = child as THREE.Mesh;
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
+          if (mesh.material) {
+            const mat = mesh.material as THREE.MeshStandardMaterial;
+            mat.roughness = Math.min(mat.roughness ?? 0.35, 0.55);
+            mat.metalness = Math.max(mat.metalness ?? 0.2, 0.35);
           }
-        });
-
-        modelRoot.add(object);
-
-        // Check if model contains animations
-        if (gltf.animations && gltf.animations.length > 0) {
-          mixer = new THREE.AnimationMixer(object);
-          gltf.animations.forEach((clip) => {
-            mixer?.clipAction(clip).play();
-          });
         }
+      });
+      return object;
+    };
 
-        setLoading(false);
-      },
-      (xhr) => {
-        if (xhr.total > 0) {
-          setLoadProgress(Math.round((xhr.loaded / xhr.total) * 100));
+    // Load helper with cache
+    const loadGLBModel = (
+      url: string,
+      scaleFactor: number,
+      targetGroup: THREE.Group,
+      onDone: () => void,
+      onError: (err: unknown) => void
+    ) => {
+      if (gltfObjectCache.has(url)) {
+        const cached = gltfObjectCache.get(url)!.clone(true);
+        normalizeModel(cached, scaleFactor);
+        targetGroup.add(cached);
+        onDone();
+        return;
+      }
+
+      loaders.load(
+        url,
+        (gltf) => {
+          const raw = gltf.scene;
+          gltfObjectCache.set(url, raw.clone(true));
+          normalizeModel(raw, scaleFactor);
+          targetGroup.add(raw);
+          onDone();
+        },
+        (xhr) => {
+          if (xhr.total > 0) {
+            setLoadProgress(Math.round((xhr.loaded / xhr.total) * 100));
+          }
+        },
+        (err) => {
+          onError(err);
         }
-      },
-      (err) => {
-        console.error("Error loading GLB 3D model:", err);
-        setError("Model 3D sementara dialihkan ke mode fallback");
+      );
+    };
+
+    let pendingLoads = 0;
+    if (needAzure) pendingLoads++;
+    if (needRibbon) pendingLoads++;
+
+    const checkComplete = () => {
+      pendingLoads--;
+      if (pendingLoads <= 0) {
         setLoading(false);
       }
-    );
+    };
 
-    // 6. Dynamic 3D Ribbon / Selendang Swirling Around the Model (Autonomous Motion)
+    const azurePath = "/assets/3D/Meshy_AI_Azure_Invitation_1012015755_texture.glb";
+    const ribbonPath = "/assets/3D/Meshy_AI_Radiant_Ribbon_Runner_1012035542_texture.glb";
+
+    if (needAzure) {
+      const scale = isDual ? 1.9 : 2.3;
+      loadGLBModel(
+        azurePath,
+        scale,
+        azureRoot,
+        checkComplete,
+        (err) => {
+          console.error("Failed to load Azure 3D model:", err);
+          checkComplete();
+        }
+      );
+    }
+
+    if (needRibbon) {
+      const scale = isDual ? 2.5 : 2.3;
+      loadGLBModel(
+        ribbonPath,
+        scale,
+        ribbonRoot,
+        checkComplete,
+        (err) => {
+          console.error("Failed to load Ribbon 3D model:", err);
+          checkComplete();
+        }
+      );
+    }
+
+    // 6. Dynamic Procedural Silk Ribbons (Swirling Ambient Accents)
     const ribbonContainer = new THREE.Group();
     scene.add(ribbonContainer);
 
@@ -168,7 +289,7 @@ export default function Model3DViewer({
     const pointsCount1 = 160;
     for (let i = 0; i <= pointsCount1; i++) {
       const t = i / pointsCount1;
-      const angle = t * Math.PI * 4.2; // 2.1 helical wraps around model
+      const angle = t * Math.PI * 4.2;
       const radius = 1.7 + Math.sin(t * Math.PI * 3) * 0.45;
       const y = -1.3 + t * 2.8 + Math.cos(angle * 1.5) * 0.25;
       const x = Math.cos(angle) * radius;
@@ -176,9 +297,8 @@ export default function Model3DViewer({
       ribbonPoints1.push(new THREE.Vector3(x, y, z));
     }
     const curve1 = new THREE.CatmullRomCurve3(ribbonPoints1);
-    const tubeGeo1 = new THREE.TubeGeometry(curve1, 180, 0.075, 14, false);
+    const tubeGeo1 = new THREE.TubeGeometry(curve1, 80, 0.07, 10, false);
 
-    // Custom Ribbon Shader Material: Royal Blue with Golden Yellow (#FFDE59) Sheen Trims
     const ribbonVertexShader = `
       varying vec2 vUv;
       varying vec3 vNormal;
@@ -207,21 +327,14 @@ export default function Model3DViewer({
         vec3 normal = normalize(vNormal);
         vec3 viewDir = normalize(vViewPosition);
 
-        // Fresnel glow on ribbon edges
         float fresnel = pow(1.0 - max(dot(normal, viewDir), 0.0), 2.2);
-
-        // Animated wave color gradient
         float wave = sin(vUv.x * 24.0 - uTime * 2.5);
         vec3 col = mix(uColorBlue, uColorCyan, smoothstep(-0.6, 0.6, wave));
 
-        // Golden Yellow (#FFDE59) highlight trims along the ribbon crest
         float goldTrim = pow(smoothstep(0.4, 0.95, sin(vUv.x * 12.0 + uTime * 1.2)), 3.0);
         col = mix(col, uColorGold, goldTrim * 0.65);
 
-        // Add fresnel rim lighting
         col += mix(uColorCyan, uColorGold, 0.5) * fresnel * 0.75;
-
-        // Soft fade near tube tips
         float tipFade = smoothstep(0.0, 0.06, vUv.x) * smoothstep(1.0, 0.94, vUv.x);
         float alpha = (0.75 + fresnel * 0.25) * tipFade;
 
@@ -239,7 +352,7 @@ export default function Model3DViewer({
       uniforms: {
         uColorBlue: { value: new THREE.Color(0x1d4ed8) },
         uColorCyan: { value: new THREE.Color(0x38bdf8) },
-        uColorGold: { value: new THREE.Color(0xffde59) }, // Solvia Gold Accent
+        uColorGold: { value: new THREE.Color(0xffde59) },
         uTime: { value: 0 },
       },
     });
@@ -260,8 +373,8 @@ export default function Model3DViewer({
       ribbonPoints2.push(new THREE.Vector3(x, y, z));
     }
     const curve2 = new THREE.CatmullRomCurve3(ribbonPoints2);
-    const tubeGeo2 = new THREE.TubeGeometry(curve2, 140, 0.045, 12, false);
-
+    const tubeGeo2 = new THREE.TubeGeometry(curve2, 70, 0.04, 10, false);
+ 
     const ribbonMat2 = new THREE.ShaderMaterial({
       vertexShader: ribbonVertexShader,
       fragmentShader: ribbonFragmentShader,
@@ -270,9 +383,9 @@ export default function Model3DViewer({
       blending: THREE.AdditiveBlending,
       side: THREE.DoubleSide,
       uniforms: {
-        uColorBlue: { value: new THREE.Color(0xffde59) }, // Gold
-        uColorCyan: { value: new THREE.Color(0xfff3a1) }, // Pale Yellow
-        uColorGold: { value: new THREE.Color(0x38bdf8) }, // Cyan Accent
+        uColorBlue: { value: new THREE.Color(0xffde59) },
+        uColorCyan: { value: new THREE.Color(0xfff3a1) },
+        uColorGold: { value: new THREE.Color(0x38bdf8) },
         uTime: { value: 1.5 },
       },
     });
@@ -284,7 +397,7 @@ export default function Model3DViewer({
     const baseGroup = new THREE.Group();
     scene.add(baseGroup);
 
-    const ringOuterGeo = new THREE.RingGeometry(1.7, 1.76, 64);
+    const ringOuterGeo = new THREE.RingGeometry(1.7, 1.76, 48);
     const ringOuterMat = new THREE.MeshBasicMaterial({
       color: 0x38bdf8,
       side: THREE.DoubleSide,
@@ -296,9 +409,9 @@ export default function Model3DViewer({
     ringOuter.position.y = -1.35;
     baseGroup.add(ringOuter);
 
-    const ringInnerGeo = new THREE.RingGeometry(1.2, 1.24, 64);
+    const ringInnerGeo = new THREE.RingGeometry(1.2, 1.24, 48);
     const ringInnerMat = new THREE.MeshBasicMaterial({
-      color: 0xffde59, // Gold inner ring
+      color: 0xffde59,
       side: THREE.DoubleSide,
       transparent: true,
       opacity: 0.3,
@@ -308,8 +421,8 @@ export default function Model3DViewer({
     ringInner.position.y = -1.35;
     baseGroup.add(ringInner);
 
-    // Floating Stardust Particles around Ribbon
-    const dustCount = 220;
+    // Floating Stardust Particles
+    const dustCount = 110;
     const dustPositions = new Float32Array(dustCount * 3);
     const dustColors = new Float32Array(dustCount * 3);
     const cGold = new THREE.Color(0xffde59);
@@ -363,7 +476,7 @@ export default function Model3DViewer({
     );
     observer.observe(container);
 
-    // 9. Fully Autonomous Animation Loop (No manual controls / interaction)
+    // 9. Autonomous Animation Loop (Non-interactive, pure ambient motion)
     let animId: number;
     const clock = new THREE.Clock();
 
@@ -371,18 +484,30 @@ export default function Model3DViewer({
       animId = requestAnimationFrame(animate);
       if (!isVisible) return;
 
-      const dt = Math.min(clock.getDelta(), 0.05);
       const elapsed = clock.getElapsedTime();
-
-      if (mixer) mixer.update(dt);
 
       // Update Ribbon Shaders
       ribbonMat1.uniforms.uTime.value = elapsed;
       ribbonMat2.uniforms.uTime.value = elapsed;
 
-      // Pure Autonomous Motion: Smooth auto-rotation & floating bob
-      modelRoot.rotation.y = elapsed * 0.42;
-      modelRoot.position.y = Math.sin(elapsed * 1.5) * 0.08;
+      // Autonomous rotation for Azure Emblem
+      if (needAzure) {
+        azureRoot.rotation.y = elapsed * 0.42;
+        azureRoot.position.y = Math.sin(elapsed * 1.5) * 0.08;
+      }
+
+      // Autonomous rotation for Ribbon Runner model
+      if (needRibbon) {
+        if (isDual) {
+          // Counter-twisting rotation around Azure in Dual mode
+          ribbonRoot.rotation.y = -elapsed * 0.35;
+          ribbonRoot.position.y = Math.sin(elapsed * 1.3 + 1.0) * 0.07;
+          ribbonRoot.rotation.x = Math.sin(elapsed * 0.6) * 0.06;
+        } else {
+          ribbonRoot.rotation.y = elapsed * 0.38;
+          ribbonRoot.position.y = Math.sin(elapsed * 1.4) * 0.09;
+        }
+      }
 
       // Counter-rotating flowing 3D Ribbon Selendang
       ribbonContainer.rotation.y = -elapsed * 0.32;
@@ -418,12 +543,12 @@ export default function Model3DViewer({
       dustMat.dispose();
       renderer.dispose();
     };
-  }, [modelPath]);
+  }, [activeModelId]);
 
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-[400px] sm:h-[480px] lg:h-[500px] rounded-3xl overflow-hidden bg-gradient-to-b from-[#03091e]/85 via-[#020611]/90 to-[#020611] border border-blue-400/30 shadow-2xl backdrop-blur-xl ${className}`}
+      className={`relative w-full h-[420px] sm:h-[480px] lg:h-[510px] rounded-3xl overflow-hidden bg-gradient-to-b from-[#03091e]/85 via-[#020611]/90 to-[#020611] border border-blue-400/30 shadow-2xl backdrop-blur-xl ${className}`}
     >
       {/* 3D Canvas (Non-interactive, pure ambient visual) */}
       <canvas
@@ -431,12 +556,42 @@ export default function Model3DViewer({
         className="w-full h-full block pointer-events-none z-10"
       />
 
-      {/* Header Tag: Solvia 3D Showcase Badge */}
-      <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/70 border border-blue-400/40 backdrop-blur-md shadow-lg pointer-events-none">
-        <div className="w-2 h-2 rounded-full bg-[#ffde59] shadow-[0_0_10px_#ffde59] animate-pulse" />
-        <span className="text-[11px] font-extrabold text-white tracking-wide uppercase">
-          Solvia 3D <span className="text-[#ffde59]">Showcase</span>
-        </span>
+      {/* Top Bar: Badge (Left) & Model Switcher (Right) */}
+      <div className="absolute top-3.5 left-3.5 right-3.5 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+        {/* Left Badge */}
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#020611]/85 border border-blue-400/40 backdrop-blur-md shadow-lg">
+          <div className="w-2 h-2 rounded-full bg-[#ffde59] shadow-[0_0_10px_#ffde59] animate-pulse" />
+          <span className="text-[10px] sm:text-[11px] font-extrabold text-white tracking-wide uppercase">
+            {currentModel.badge}
+          </span>
+        </div>
+
+        {/* Right Switcher Pill Tabs (Interactive Buttons) */}
+        {showTabs && (
+          <div className="flex items-center gap-1 bg-[#020611]/90 backdrop-blur-md p-1 rounded-2xl border border-blue-400/30 shadow-lg pointer-events-auto">
+            {SOLVIA_3D_ASSETS.map((m) => {
+              const isActive = activeModelId === m.id;
+              return (
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() => setActiveModelId(m.id)}
+                  aria-pressed={isActive}
+                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-bold transition-all duration-200 flex items-center gap-1.5 active:scale-95 ${
+                    isActive
+                      ? "bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/30 border border-blue-300/40"
+                      : "text-blue-200/80 hover:text-white hover:bg-blue-900/40"
+                  }`}
+                >
+                  {m.id === "azure" && <Sparkles className="w-3 h-3 text-[#ffde59]" />}
+                  {m.id === "ribbon" && <Layers className="w-3 h-3 text-[#38bdf8]" />}
+                  {m.id === "dual" && <Eye className="w-3 h-3 text-emerald-400" />}
+                  <span>{m.shortName}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Loading Overlay */}
@@ -451,13 +606,16 @@ export default function Model3DViewer({
           </div>
           <div className="text-center space-y-1">
             <div className="text-xs font-bold text-white tracking-wide">
-              Menyiapkan Visual 3D & Selendang...
+              Memuat {currentModel.name}...
             </div>
             {loadProgress > 0 && (
               <div className="text-[11px] font-mono text-[#ffde59] font-bold">
                 {loadProgress}%
               </div>
             )}
+            <div className="text-[10px] text-blue-300">
+              {activeModelId === "ribbon" ? "Asset 3D Selendang Dinamis" : "Asset 3D Solvia Nova"}
+            </div>
           </div>
         </div>
       )}
@@ -475,15 +633,17 @@ export default function Model3DViewer({
         </div>
       )}
 
-      {/* Bottom Ambient Tag */}
-      <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between text-[11px] text-blue-200/90 bg-blue-950/60 backdrop-blur-md px-4 py-2 rounded-xl border border-blue-400/30 shadow-lg pointer-events-none">
-        <div className="flex items-center gap-1.5">
-          <Sparkles className="w-3.5 h-3.5 text-[#ffde59]" />
-          <span className="font-semibold text-white">Visual 3D & Selendang Sutra Dinamis</span>
+      {/* Bottom Dynamic Ambient Tag */}
+      <div className="absolute bottom-3.5 left-3.5 right-3.5 z-20 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-[11px] text-blue-200/90 bg-[#020611]/85 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-blue-400/30 shadow-lg pointer-events-none">
+        <div className="flex items-center gap-2 min-w-0">
+          <Sparkles className="w-3.5 h-3.5 text-[#ffde59] shrink-0" />
+          <span className="font-semibold text-white truncate text-[11px] sm:text-xs">
+            {currentModel.description}
+          </span>
         </div>
-        <span className="hidden sm:inline font-mono text-[10px] text-[#ffde59] font-bold">
-          Three.js • GLTF 3D
-        </span>
+        <div className="flex items-center gap-2 text-[10px] font-mono text-[#ffde59] font-bold shrink-0">
+          <span>{currentModel.details}</span>
+        </div>
       </div>
     </div>
   );

@@ -103,8 +103,8 @@ export default function Home() {
               {/* Glow ambient background aura */}
               <div className="absolute inset-0 bg-blue-500/20 rounded-3xl blur-3xl scale-105 pointer-events-none" />
 
-              {/* 3D Model Viewer Card */}
-              <Model3DViewer modelPath="/assets/3D/Meshy_AI_Azure_Invitation_1012015755_texture.glb" />
+              {/* 3D Model Viewer Card (Supports Azure Emblem, Radiant Ribbon Runner, and Dual Synergy) */}
+              <Model3DViewer defaultModelId="azure" />
 
               {/* Quick Stat Floating Badges beneath the 3D model */}
               <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-4">
