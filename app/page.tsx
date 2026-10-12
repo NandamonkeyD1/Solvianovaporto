@@ -46,12 +46,12 @@ export default function Home() {
           {/* Left Column */}
           <div className="space-y-6 sm:space-y-8">
             <div className="inline-flex items-center gap-2 px-3.5 sm:px-4.5 py-1.5 sm:py-2 rounded-full border border-blue-400/40 bg-blue-950/40 backdrop-blur-md text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest shadow-lg">
-              <span className="dot-glow" />
-              Digital Solution & Software House Modern
+              <span className="w-2 h-2 rounded-full bg-[#ffde59] shadow-[0_0_10px_#ffde59] animate-pulse" />
+              Digital Solution & 3D Interactive Studio
             </div>
 
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight sm:leading-[1.05] tracking-tight drop-shadow-lg">
-              Transformasi Digital Modern Untuk Bisnis yang Ingin <span className="text-nova-blue">Naik Level.</span>
+              Transformasi Digital Modern Untuk Bisnis yang Ingin <span className="text-nova-blue">Naik</span> <span className="text-nova-yellow">Level.</span>
             </h1>
 
             <p className="text-blue-100 text-xs sm:text-base leading-relaxed max-w-xl font-medium drop-shadow-md">

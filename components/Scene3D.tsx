@@ -10,6 +10,12 @@ export default function Scene3D() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // Check user preference for reduced motion
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const speedFactor = prefersReducedMotion ? 0.2 : 1.0;
+
     // 1. Renderer Setup
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -17,7 +23,7 @@ export default function Scene3D() {
       alpha: true,
       powerPreference: "high-performance",
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -25,7 +31,7 @@ export default function Scene3D() {
 
     // 2. Scene & Camera
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x020611); // Dark futuristic canvas
+    scene.background = new THREE.Color(0x020611); // Dark futuristic Solvia canvas
 
     const camera = new THREE.PerspectiveCamera(
       45,
@@ -38,7 +44,7 @@ export default function Scene3D() {
     const ribbonGroup = new THREE.Group();
     scene.add(ribbonGroup);
 
-    // 3. Shaders for "Slendang 3D" (Fluid Silk Waves)
+    // 3. Shaders for "Slendang 3D" (Fluid Silk Waves with Gold Accents #FFDE59)
     const silkVertexShader = `
       uniform float uTime;
       uniform vec2 uMouse;
@@ -81,7 +87,7 @@ export default function Scene3D() {
       uniform vec3 uColor1;
       uniform vec3 uColor2;
       uniform vec3 uColor3;
-      uniform vec3 uColor4;
+      uniform vec3 uColorGold;
       uniform float uTime;
       uniform float uOpacity;
 
@@ -95,11 +101,14 @@ export default function Scene3D() {
         
         vec3 col = mix(uColor1, uColor2, smoothstep(0.0, 0.45, grad));
         col = mix(col, uColor3, smoothstep(0.4, 0.85, grad));
-        col = mix(col, uColor4, smoothstep(0.8, 1.0, grad) * 0.6);
+
+        // Solvia Nova Golden Yellow (#FFDE59) accents along the waving folds
+        float goldHighlight = pow(smoothstep(0.55, 0.95, sin(vUv.x * 12.0 + vUv.y * 3.5 - uTime * 0.7)), 3.2);
+        col = mix(col, uColorGold, goldHighlight * 0.5);
 
         // Silk Sheen / Highlights along the folds
         float sheen = pow(abs(sin(vUv.y * 3.14159265)), 1.6);
-        col += vec3(0.5, 0.85, 1.0) * sheen * 0.5;
+        col += mix(vec3(0.5, 0.85, 1.0), uColorGold, 0.35) * sheen * 0.45;
 
         // Smooth fade at the edges for ethereal ribbon aesthetic
         float edgeFadeX = smoothstep(0.0, 0.08, vUv.x) * smoothstep(1.0, 0.92, vUv.x);
@@ -130,14 +139,14 @@ export default function Scene3D() {
       uniforms: {
         uTime: { value: 0 },
         uMouse: { value: new THREE.Vector2(0, 0) },
-        uWaveSpeed: { value: 0.75 },
+        uWaveSpeed: { value: 0.75 * speedFactor },
         uWaveFreq: { value: 0.16 },
         uWaveAmp: { value: 2.8 },
         uRibbonOffset: { value: 0.0 },
         uColor1: { value: new THREE.Color(0x0a2d75) }, // Deep Royal Blue
         uColor2: { value: new THREE.Color(0x1e6bff) }, // Solvia Blue
         uColor3: { value: new THREE.Color(0x38bdf8) }, // Electric Cyan
-        uColor4: { value: new THREE.Color(0x6366f1) }, // Indigo Accent
+        uColorGold: { value: new THREE.Color(0xffde59) }, // Solvia Gold #FFDE59
         uOpacity: { value: 0.72 },
       },
     });
@@ -147,7 +156,7 @@ export default function Scene3D() {
     ribbonGroup.add(mesh1);
     ribbons.push({ mesh: mesh1, material: mat1 });
 
-    // Ribbon 2: Slendang Luminous (Twisting Secondary Neon Ribbon)
+    // Ribbon 2: Slendang Luminous (Twisting Secondary Neon Ribbon with Gold Trims)
     const geo2 = new THREE.PlaneGeometry(48, 6.5, 150, 30);
     const mat2 = new THREE.ShaderMaterial({
       vertexShader: silkVertexShader,
@@ -159,14 +168,14 @@ export default function Scene3D() {
       uniforms: {
         uTime: { value: 0 },
         uMouse: { value: new THREE.Vector2(0, 0) },
-        uWaveSpeed: { value: 0.9 },
+        uWaveSpeed: { value: 0.9 * speedFactor },
         uWaveFreq: { value: 0.22 },
         uWaveAmp: { value: 2.2 },
         uRibbonOffset: { value: 2.4 },
         uColor1: { value: new THREE.Color(0x0c4a6e) }, // Azure
         uColor2: { value: new THREE.Color(0x06b6d4) }, // Neon Cyan
         uColor3: { value: new THREE.Color(0x60a5fa) }, // Sky Light
-        uColor4: { value: new THREE.Color(0x818cf8) }, // Soft Purple
+        uColorGold: { value: new THREE.Color(0xffde59) }, // Gold Accent
         uOpacity: { value: 0.65 },
       },
     });
@@ -188,14 +197,14 @@ export default function Scene3D() {
       uniforms: {
         uTime: { value: 0 },
         uMouse: { value: new THREE.Vector2(0, 0) },
-        uWaveSpeed: { value: 0.6 },
+        uWaveSpeed: { value: 0.6 * speedFactor },
         uWaveFreq: { value: 0.13 },
         uWaveAmp: { value: 2.4 },
         uRibbonOffset: { value: 4.5 },
         uColor1: { value: new THREE.Color(0x051a4a) },
         uColor2: { value: new THREE.Color(0x1d4ed8) },
         uColor3: { value: new THREE.Color(0x38bdf8) },
-        uColor4: { value: new THREE.Color(0x3b82f6) },
+        uColorGold: { value: new THREE.Color(0xffde59) },
         uOpacity: { value: 0.45 },
       },
     });
@@ -205,15 +214,14 @@ export default function Scene3D() {
     ribbonGroup.add(mesh3);
     ribbons.push({ mesh: mesh3, material: mat3 });
 
-    // 5. Ambient Floating Silk Dust / Sparkle Particles
-    const particleCount = 1800;
+    // 5. Ambient Floating Silk Dust / Sparkle Particles (Gold & Cyan)
+    const particleCount = 1600;
     const particlePos = new Float32Array(particleCount * 3);
     const particleCol = new Float32Array(particleCount * 3);
-    const particleSizes = new Float32Array(particleCount);
 
     const cCyan = new THREE.Color(0x38bdf8);
     const cBlue = new THREE.Color(0x60a5fa);
-    const cWhite = new THREE.Color(0xf1f5f9);
+    const cGold = new THREE.Color(0xffde59);
 
     for (let i = 0; i < particleCount; i++) {
       particlePos[i * 3] = (Math.random() - 0.5) * 48;
@@ -221,12 +229,10 @@ export default function Scene3D() {
       particlePos[i * 3 + 2] = (Math.random() - 0.5) * 20 - 2;
 
       const pick = Math.random();
-      const col = pick < 0.4 ? cCyan : pick < 0.8 ? cBlue : cWhite;
+      const col = pick < 0.4 ? cCyan : pick < 0.75 ? cBlue : cGold;
       particleCol[i * 3] = col.r;
       particleCol[i * 3 + 1] = col.g;
       particleCol[i * 3 + 2] = col.b;
-
-      particleSizes[i] = 0.5 + Math.random() * 2.2;
     }
 
     const particleGeo = new THREE.BufferGeometry();
@@ -245,13 +251,20 @@ export default function Scene3D() {
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
-    // 6. Interactive Cursor Tracking with Smooth Damping
+    // 6. Interactive Cursor Tracking & Scroll Integration
     const mouseTarget = new THREE.Vector2(0, 0);
     const mouseSmooth = new THREE.Vector2(0, 0);
+
+    let targetScrollY = 0;
+    let currentScrollY = 0;
 
     const handlePointerMove = (e: PointerEvent) => {
       mouseTarget.x = (e.clientX / window.innerWidth) * 2 - 1;
       mouseTarget.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    };
+
+    const handleScroll = () => {
+      targetScrollY = window.scrollY;
     };
 
     const handleResize = () => {
@@ -261,6 +274,7 @@ export default function Scene3D() {
     };
 
     window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleResize);
 
     // 7. Animation Loop
@@ -271,9 +285,10 @@ export default function Scene3D() {
       animId = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      // Smooth mouse interpolation
+      // Smooth mouse & scroll interpolation
       mouseSmooth.x += (mouseTarget.x - mouseSmooth.x) * 0.04;
       mouseSmooth.y += (mouseTarget.y - mouseSmooth.y) * 0.04;
+      currentScrollY += (targetScrollY - currentScrollY) * 0.05;
 
       // Update Ribbon Shaders
       ribbons.forEach((r) => {
@@ -281,13 +296,15 @@ export default function Scene3D() {
         r.material.uniforms.uMouse.value.copy(mouseSmooth);
       });
 
-      // Subtle group sway
+      // Subtle group sway & scroll parallax
       ribbonGroup.rotation.y = Math.sin(elapsed * 0.2) * 0.04 + mouseSmooth.x * 0.06;
       ribbonGroup.rotation.x = Math.cos(elapsed * 0.18) * 0.03 - mouseSmooth.y * 0.05;
+      ribbonGroup.position.y = -currentScrollY * 0.003;
+      ribbonGroup.rotation.z = Math.sin(currentScrollY * 0.0008) * 0.04;
 
       // Particles slow drift
-      particles.rotation.y = elapsed * 0.015;
-      particles.rotation.x = Math.sin(elapsed * 0.1) * 0.01;
+      particles.rotation.y = elapsed * 0.012;
+      particles.rotation.x = Math.sin(elapsed * 0.08) * 0.01;
 
       // Camera parallax tilt
       camera.position.x = mouseSmooth.x * 1.2;
@@ -302,7 +319,18 @@ export default function Scene3D() {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
+
+      // Memory cleanup
+      geo1.dispose();
+      mat1.dispose();
+      geo2.dispose();
+      mat2.dispose();
+      geo3.dispose();
+      mat3.dispose();
+      particleGeo.dispose();
+      particleMat.dispose();
       renderer.dispose();
     };
   }, []);
