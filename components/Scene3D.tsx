@@ -251,17 +251,9 @@ export default function Scene3D() {
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
-    // 6. Interactive Cursor Tracking & Scroll Integration
-    const mouseTarget = new THREE.Vector2(0, 0);
-    const mouseSmooth = new THREE.Vector2(0, 0);
-
+    // 6. Scroll Integration & Resize (Autonomous Motion, No Pointer/Mouse Sway)
     let targetScrollY = 0;
     let currentScrollY = 0;
-
-    const handlePointerMove = (e: PointerEvent) => {
-      mouseTarget.x = (e.clientX / window.innerWidth) * 2 - 1;
-      mouseTarget.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    };
 
     const handleScroll = () => {
       targetScrollY = window.scrollY;
@@ -273,32 +265,30 @@ export default function Scene3D() {
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
 
-    window.addEventListener("pointermove", handlePointerMove);
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleResize);
 
-    // 7. Animation Loop
+    // 7. Fully Autonomous Animation Loop
     const clock = new THREE.Clock();
     let animId: number;
+    const staticMouse = new THREE.Vector2(0, 0);
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      // Smooth mouse & scroll interpolation
-      mouseSmooth.x += (mouseTarget.x - mouseSmooth.x) * 0.04;
-      mouseSmooth.y += (mouseTarget.y - mouseSmooth.y) * 0.04;
+      // Smooth scroll interpolation
       currentScrollY += (targetScrollY - currentScrollY) * 0.05;
 
-      // Update Ribbon Shaders
+      // Update Ribbon Shaders (Pure Autonomous Time Waves)
       ribbons.forEach((r) => {
         r.material.uniforms.uTime.value = elapsed;
-        r.material.uniforms.uMouse.value.copy(mouseSmooth);
+        r.material.uniforms.uMouse.value.copy(staticMouse);
       });
 
       // Subtle group sway & scroll parallax
-      ribbonGroup.rotation.y = Math.sin(elapsed * 0.2) * 0.04 + mouseSmooth.x * 0.06;
-      ribbonGroup.rotation.x = Math.cos(elapsed * 0.18) * 0.03 - mouseSmooth.y * 0.05;
+      ribbonGroup.rotation.y = Math.sin(elapsed * 0.2) * 0.04;
+      ribbonGroup.rotation.x = Math.cos(elapsed * 0.18) * 0.03;
       ribbonGroup.position.y = -currentScrollY * 0.003;
       ribbonGroup.rotation.z = Math.sin(currentScrollY * 0.0008) * 0.04;
 
@@ -306,11 +296,7 @@ export default function Scene3D() {
       particles.rotation.y = elapsed * 0.012;
       particles.rotation.x = Math.sin(elapsed * 0.08) * 0.01;
 
-      // Camera parallax tilt
-      camera.position.x = mouseSmooth.x * 1.2;
-      camera.position.y = mouseSmooth.y * 0.8;
       camera.lookAt(0, 0, 0);
-
       renderer.render(scene, camera);
     };
 
@@ -318,7 +304,6 @@ export default function Scene3D() {
 
     return () => {
       cancelAnimationFrame(animId);
-      window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
 

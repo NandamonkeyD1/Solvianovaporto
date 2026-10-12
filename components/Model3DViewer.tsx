@@ -3,8 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { RotateCw, Sparkles, Box, Maximize2, ShieldCheck, Zap } from "lucide-react";
+import { Sparkles, Box } from "lucide-react";
 
 interface Model3DViewerProps {
   modelPath?: string;
@@ -20,9 +19,6 @@ export default function Model3DViewer({
   const [loading, setLoading] = useState(true);
   const [loadProgress, setLoadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
-  const [autoRotate, setAutoRotate] = useState(true);
-
-  const controlsRef = useRef<OrbitControls | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -54,9 +50,10 @@ export default function Model3DViewer({
     // 1. Scene Setup
     const scene = new THREE.Scene();
 
-    // 2. Camera Setup
+    // 2. Camera Setup (Fixed ideal viewing angle, no user interaction/orbit controls)
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(0, 1.2, 4.8);
+    camera.lookAt(0, 0, 0);
 
     // 3. WebGL Renderer
     const renderer = new THREE.WebGLRenderer({
@@ -98,18 +95,7 @@ export default function Model3DViewer({
     cyanUplight.position.set(-3, -2, 2);
     scene.add(cyanUplight);
 
-    // 5. OrbitControls
-    const controls = new OrbitControls(camera, canvas);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.autoRotate = autoRotate;
-    controls.autoRotateSpeed = 1.6;
-    controls.minDistance = 2.2;
-    controls.maxDistance = 7.5;
-    controls.maxPolarAngle = Math.PI / 2 + 0.15;
-    controlsRef.current = controls;
-
-    // 6. Central Model Group
+    // 5. Central Model Group
     const modelRoot = new THREE.Group();
     scene.add(modelRoot);
 
@@ -173,11 +159,11 @@ export default function Model3DViewer({
       }
     );
 
-    // 7. Dynamic 3D Ribbon / Selendang Swirling Around the Model
+    // 6. Dynamic 3D Ribbon / Selendang Swirling Around the Model (Autonomous Motion)
     const ribbonContainer = new THREE.Group();
     scene.add(ribbonContainer);
 
-    // Generate Silk Ribbon Path 1: Primary Flowing Blue Ribbon
+    // Ribbon Path 1: Primary Flowing Blue Ribbon
     const ribbonPoints1: THREE.Vector3[] = [];
     const pointsCount1 = 160;
     for (let i = 0; i <= pointsCount1; i++) {
@@ -294,7 +280,7 @@ export default function Model3DViewer({
     const ribbonMesh2 = new THREE.Mesh(tubeGeo2, ribbonMat2);
     ribbonContainer.add(ribbonMesh2);
 
-    // 8. Holographic Base Rings (Pedestal)
+    // 7. Holographic Base Rings (Pedestal)
     const baseGroup = new THREE.Group();
     scene.add(baseGroup);
 
@@ -356,15 +342,7 @@ export default function Model3DViewer({
     const dust = new THREE.Points(dustGeo, dustMat);
     scene.add(dust);
 
-    // 9. Scroll and Pointer Integration
-    let targetScrollY = 0;
-    let currentScrollY = 0;
-
-    const handleScroll = () => {
-      targetScrollY = window.scrollY;
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
+    // 8. Resize Handler
     const handleResize = () => {
       if (!container) return;
       const w = container.clientWidth;
@@ -385,7 +363,7 @@ export default function Model3DViewer({
     );
     observer.observe(container);
 
-    // 10. Animation Loop
+    // 9. Fully Autonomous Animation Loop (No manual controls / interaction)
     let animId: number;
     const clock = new THREE.Clock();
 
@@ -398,21 +376,18 @@ export default function Model3DViewer({
 
       if (mixer) mixer.update(dt);
 
-      // Scroll Damping
-      currentScrollY += (targetScrollY - currentScrollY) * 0.05;
-
       // Update Ribbon Shaders
       ribbonMat1.uniforms.uTime.value = elapsed;
       ribbonMat2.uniforms.uTime.value = elapsed;
 
-      // Dynamic Undulation of 3D Ribbon Selendang
-      ribbonContainer.rotation.y = elapsed * 0.35 + currentScrollY * 0.0015;
+      // Pure Autonomous Motion: Smooth auto-rotation & floating bob
+      modelRoot.rotation.y = elapsed * 0.42;
+      modelRoot.position.y = Math.sin(elapsed * 1.5) * 0.08;
+
+      // Counter-rotating flowing 3D Ribbon Selendang
+      ribbonContainer.rotation.y = -elapsed * 0.32;
       ribbonContainer.rotation.x = Math.sin(elapsed * 0.5) * 0.08;
       ribbonContainer.position.y = Math.sin(elapsed * 1.2) * 0.05;
-
-      // Floating idle motion for central model
-      modelRoot.position.y = Math.sin(elapsed * 1.4) * 0.07;
-      modelRoot.rotation.y = currentScrollY * 0.001;
 
       // Base ring rotation
       baseGroup.rotation.y = elapsed * 0.18;
@@ -420,7 +395,6 @@ export default function Model3DViewer({
       // Dust slow float
       dust.rotation.y = elapsed * 0.08;
 
-      controls.update();
       renderer.render(scene, camera);
     };
 
@@ -429,11 +403,9 @@ export default function Model3DViewer({
     return () => {
       cancelAnimationFrame(animId);
       observer.disconnect();
-      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
 
       // Memory cleanup
-      controls.dispose();
       tubeGeo1.dispose();
       ribbonMat1.dispose();
       tubeGeo2.dispose();
@@ -448,65 +420,28 @@ export default function Model3DViewer({
     };
   }, [modelPath]);
 
-  useEffect(() => {
-    if (controlsRef.current) {
-      controlsRef.current.autoRotate = autoRotate;
-    }
-  }, [autoRotate]);
-
-  const handleResetCamera = () => {
-    if (controlsRef.current) {
-      controlsRef.current.reset();
-      setAutoRotate(true);
-    }
-  };
-
   return (
     <div
       ref={containerRef}
       className={`relative w-full h-[400px] sm:h-[480px] lg:h-[500px] rounded-3xl overflow-hidden bg-gradient-to-b from-[#03091e]/85 via-[#020611]/90 to-[#020611] border border-blue-400/30 shadow-2xl backdrop-blur-xl ${className}`}
     >
-      {/* 3D Canvas */}
+      {/* 3D Canvas (Non-interactive, pure ambient visual) */}
       <canvas
         ref={canvasRef}
-        className="w-full h-full block cursor-grab active:cursor-grabbing z-10"
+        className="w-full h-full block pointer-events-none z-10"
       />
 
-      {/* Header Tag: Solvia 3D Interactive Badge */}
-      <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/70 border border-blue-400/40 backdrop-blur-md shadow-lg">
+      {/* Header Tag: Solvia 3D Showcase Badge */}
+      <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/70 border border-blue-400/40 backdrop-blur-md shadow-lg pointer-events-none">
         <div className="w-2 h-2 rounded-full bg-[#ffde59] shadow-[0_0_10px_#ffde59] animate-pulse" />
         <span className="text-[11px] font-extrabold text-white tracking-wide uppercase">
-          Solvia 3D <span className="text-[#ffde59]">Interactive</span>
+          Solvia 3D <span className="text-[#ffde59]">Showcase</span>
         </span>
-      </div>
-
-      {/* Top Right Controls */}
-      <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
-        <button
-          onClick={() => setAutoRotate(!autoRotate)}
-          className={`p-2 rounded-xl border backdrop-blur-md transition-all active:scale-95 text-xs font-semibold flex items-center gap-1.5 shadow-md ${
-            autoRotate
-              ? "bg-blue-600/50 border-blue-400/60 text-white shadow-blue-500/30"
-              : "bg-blue-950/50 border-blue-500/20 text-slate-300 hover:text-white"
-          }`}
-          title="Putar Otomatis"
-        >
-          <RotateCw className={`w-3.5 h-3.5 ${autoRotate ? "animate-spin" : ""}`} />
-          <span className="hidden sm:inline text-[10px]">Putar</span>
-        </button>
-
-        <button
-          onClick={handleResetCamera}
-          className="p-2 rounded-xl bg-blue-950/50 border border-blue-500/20 text-slate-300 hover:text-white backdrop-blur-md transition-all active:scale-95 text-xs shadow-md"
-          title="Reset Sudut Pandang"
-        >
-          <Maximize2 className="w-3.5 h-3.5" />
-        </button>
       </div>
 
       {/* Loading Overlay */}
       {loading && (
-        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#020611]/90 backdrop-blur-md space-y-4">
+        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#020611]/90 backdrop-blur-md space-y-4 pointer-events-none">
           <div className="relative w-16 h-16">
             <div className="absolute inset-0 rounded-full border-2 border-blue-500/20" />
             <div className="absolute inset-0 rounded-full border-2 border-t-[#ffde59] border-r-transparent animate-spin" />
@@ -516,7 +451,7 @@ export default function Model3DViewer({
           </div>
           <div className="text-center space-y-1">
             <div className="text-xs font-bold text-white tracking-wide">
-              Menyiapkan Model 3D & Selendang...
+              Menyiapkan Visual 3D & Selendang...
             </div>
             {loadProgress > 0 && (
               <div className="text-[11px] font-mono text-[#ffde59] font-bold">
@@ -529,7 +464,7 @@ export default function Model3DViewer({
 
       {/* Error Fallback Card */}
       {error && (
-        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#020611]/90 p-6 text-center space-y-3">
+        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#020611]/90 p-6 text-center space-y-3 pointer-events-none">
           <div className="w-12 h-12 rounded-2xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-[#ffde59]">
             <Sparkles className="w-6 h-6" />
           </div>
@@ -540,11 +475,11 @@ export default function Model3DViewer({
         </div>
       )}
 
-      {/* Bottom Floating Hint Bar */}
-      <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between text-[11px] text-blue-200/90 bg-blue-950/60 backdrop-blur-md px-4 py-2 rounded-xl border border-blue-400/30 shadow-lg">
+      {/* Bottom Ambient Tag */}
+      <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between text-[11px] text-blue-200/90 bg-blue-950/60 backdrop-blur-md px-4 py-2 rounded-xl border border-blue-400/30 shadow-lg pointer-events-none">
         <div className="flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5 text-[#ffde59]" />
-          <span className="font-semibold text-white">Sentuh & putar 360° • Selendang Dinamis</span>
+          <span className="font-semibold text-white">Visual 3D & Selendang Sutra Dinamis</span>
         </div>
         <span className="hidden sm:inline font-mono text-[10px] text-[#ffde59] font-bold">
           Three.js • GLTF 3D
