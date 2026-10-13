@@ -33,16 +33,16 @@ import Model3DViewer from "@/components/Model3DViewer";
 
 export default function Home() {
   return (
-    <div className="space-y-16 sm:space-y-24 pb-28 sm:pb-20">
+    <div className="w-full max-w-full overflow-x-hidden space-y-16 sm:space-y-24 pb-28 sm:pb-20">
       {/* HERO SECTION */}
-      <section className="relative min-h-screen flex items-center pt-24 sm:pt-28 pb-12 sm:pb-16 overflow-hidden bg-transparent">
+      <section className="relative w-full max-w-full min-h-screen flex items-center pt-24 sm:pt-28 pb-12 sm:pb-16 overflow-hidden bg-transparent">
         {/* Glow ambient background lights */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 left-10 w-72 sm:w-96 h-72 sm:h-96 bg-[#4c91ff]/15 rounded-full blur-3xl" />
           <div className="absolute bottom-1/4 right-10 w-72 sm:w-96 h-72 sm:h-96 bg-[#2775ff]/20 rounded-full blur-3xl" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center z-10">
+        <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center z-10">
           {/* Left Column */}
           <div className="space-y-6 sm:space-y-8">
             <div className="inline-flex items-center gap-2 px-3.5 sm:px-4.5 py-1.5 sm:py-2 rounded-full border border-blue-400/40 bg-blue-950/40 backdrop-blur-md text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest shadow-lg">
@@ -127,8 +127,8 @@ export default function Home() {
       </section>
 
       {/* TRUST INDICATORS BLOCK */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {trustIndicatorsData.map((t, idx) => (
             <div
               key={idx}
@@ -158,9 +158,9 @@ export default function Home() {
       </section>
 
       {/* ABOUT SECTION & CORE VALUES */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+      <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
         <div className="bg-gradient-to-br from-[#020611]/90 via-[#040d23]/90 to-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-12 space-y-8 sm:space-y-12 shadow-2xl">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-bold tracking-wider uppercase">
                 <Award className="w-3.5 h-3.5" />
@@ -202,7 +202,7 @@ export default function Home() {
               <h3 className="text-2xl font-black text-white">Prinsip & Nilai Utama Kami</h3>
               <p className="text-blue-100 text-xs font-medium">Fondasi yang mendasari setiap sistem dan produk digital yang kami hasilkan.</p>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {coreValuesData.map((val) => (
                 <div key={val.id} className="bg-blue-950/40 border border-blue-400/20 rounded-2xl p-6 space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-blue-600/30 border border-blue-400/30 flex items-center justify-center text-[#61adff]">
@@ -221,7 +221,7 @@ export default function Home() {
       </section>
 
       {/* SERVICES SECTION */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+      <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
         <div className="text-center space-y-3 sm:space-y-4 max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-3xl lg:text-5xl font-black text-white">
             Solusi Digital yang Kami <span className="text-nova-blue">Hadirkan</span>
@@ -231,7 +231,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {servicesData.map((svc) => (
             <div
               key={svc.id}
@@ -276,7 +276,7 @@ export default function Home() {
       </section>
 
       {/* PORTFOLIO SECTION */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+      <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
           <div className="space-y-2 sm:space-y-3 max-w-xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-[#61adff] text-xs font-bold tracking-wider uppercase">
@@ -295,7 +295,7 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {portfolioData.map((project) => (
             <div
               key={project.id}
@@ -344,7 +344,7 @@ export default function Home() {
       </section>
 
       {/* TEAM SECTION (AUTO SLIDE CAROUSEL WITH FOUNDER IN CENTER) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+      <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 pt-4">
           <div className="space-y-2 sm:space-y-3 max-w-xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-bold tracking-wider uppercase">
@@ -372,7 +372,7 @@ export default function Home() {
       </section>
 
       {/* TESTIMONIALS SECTION */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-gradient-to-br from-[#020611] to-[#040d23] border border-blue-400/30 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-12 backdrop-blur-xl space-y-6 sm:space-y-8 shadow-2xl">
           <div className="text-center space-y-2 sm:space-y-3 max-w-xl mx-auto">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/20 text-[#61adff] text-[10px] sm:text-xs font-bold uppercase">
@@ -388,7 +388,7 @@ export default function Home() {
       </section>
 
       {/* CTA SECTION */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="bg-gradient-to-r from-blue-950/90 via-[#020611] to-blue-900/90 border border-blue-400/30 rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-16 space-y-5 sm:space-y-6 backdrop-blur-xl shadow-2xl">
           <span className="px-3.5 sm:px-4 py-1.5 rounded-full bg-blue-500/20 text-blue-300 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
             Mulai Sekarang

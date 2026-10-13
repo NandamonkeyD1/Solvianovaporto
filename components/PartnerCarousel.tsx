@@ -7,7 +7,7 @@ export default function PartnerCarousel() {
   const doubledClients = [...trustedClientsData, ...trustedClientsData];
 
   return (
-    <div className="relative overflow-hidden w-full pt-4 pb-2">
+    <div className="relative overflow-hidden w-full max-w-full pt-4 pb-2 [contain:paint] [isolation:isolate]">
       {/* Left/Right Vignette Gradient Overlay for Smooth Edge Fading */}
       <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#020611] to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#020611] to-transparent z-10 pointer-events-none" />

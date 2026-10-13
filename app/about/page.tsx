@@ -2,7 +2,7 @@ import { Sparkles, ShieldCheck, Zap, Users } from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <div className="pt-24 sm:pt-32 pb-28 sm:pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-20">
+    <div className="pt-24 sm:pt-32 pb-28 sm:pb-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-20 overflow-x-hidden">
       <div className="text-center space-y-4 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold tracking-wider uppercase">
           Tentang Solvia.Nova
@@ -16,7 +16,7 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-5 sm:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8">
         {[
           {
             icon: ShieldCheck,

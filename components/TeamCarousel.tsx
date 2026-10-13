@@ -79,52 +79,48 @@ export default function TeamCarousel() {
         zIndex: 30,
         opacity: 1,
         filter: "brightness(1.1)",
+        visibility: "visible" as const,
       };
     } else if (diff === -1) {
       // IMMEDIATE LEFT
       return {
-        transform: "translateX(-55%) sm:translateX(-68%) scale(0.85) rotateY(8deg)",
+        transform: "translateX(-45%) scale(0.86) rotateY(6deg)",
         zIndex: 20,
-        opacity: 0.75,
+        opacity: 0.7,
         filter: "brightness(0.85)",
+        visibility: "visible" as const,
       };
     } else if (diff === 1) {
       // IMMEDIATE RIGHT
       return {
-        transform: "translateX(55%) sm:translateX(68%) scale(0.85) rotateY(-8deg)",
+        transform: "translateX(45%) scale(0.86) rotateY(-6deg)",
         zIndex: 20,
-        opacity: 0.75,
+        opacity: 0.7,
         filter: "brightness(0.85)",
-      };
-    } else if (diff < -1) {
-      // FAR LEFT
-      return {
-        transform: "translateX(-110%) scale(0.7) rotateY(16deg)",
-        zIndex: 10,
-        opacity: 0.25,
-        filter: "brightness(0.5)",
+        visibility: "visible" as const,
       };
     } else {
-      // FAR RIGHT
+      // FAR SIDES (Hidden completely on mobile to prevent document width expansion)
       return {
-        transform: "translateX(110%) scale(0.7) rotateY(-16deg)",
+        transform: diff < 0 ? "translateX(-80%) scale(0.65)" : "translateX(80%) scale(0.65)",
         zIndex: 10,
-        opacity: 0.25,
-        filter: "brightness(0.5)",
+        opacity: 0,
+        pointerEvents: "none" as const,
+        visibility: "hidden" as const,
       };
     }
   };
 
   return (
     <div
-      className="relative max-w-6xl mx-auto px-2 sm:px-4 py-4 select-none overflow-hidden md:overflow-visible"
+      className="relative w-full max-w-6xl mx-auto px-2 sm:px-4 py-4 select-none overflow-hidden [contain:paint] [isolation:isolate]"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
       {/* 3D Centered Stage */}
-      <div className="relative h-[460px] md:h-[520px] flex items-center justify-center perspective-[1000px] py-6">
+      <div className="relative w-full max-w-full overflow-hidden h-[460px] md:h-[520px] flex items-center justify-center [perspective:1000px] py-6">
         {orderedTeam.map((member, idx) => {
           const isCenter = idx === activeIndex;
           const isFounder = member.id === founder.id;

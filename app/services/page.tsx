@@ -4,7 +4,7 @@ import { servicesData } from "@/lib/data";
 
 export default function ServicesPage() {
   return (
-    <div className="pt-24 sm:pt-32 pb-28 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-16">
+    <div className="pt-24 sm:pt-32 pb-28 sm:pb-24 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-16 overflow-x-hidden">
       {/* Header Centered */}
       <div className="text-center space-y-3 sm:space-y-4 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/40 text-blue-300 text-[10px] sm:text-xs font-bold tracking-wider uppercase">
@@ -20,7 +20,7 @@ export default function ServicesPage() {
       </div>
 
       {/* Services Grid (6 Balanced Cards in 3 Columns) */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {servicesData.map((svc) => (
           <div
             key={svc.id}

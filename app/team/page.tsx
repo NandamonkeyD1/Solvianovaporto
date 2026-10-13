@@ -13,7 +13,7 @@ export default function TeamPage() {
   };
 
   return (
-    <div className="pt-24 sm:pt-32 pb-28 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-16">
+    <div className="pt-24 sm:pt-32 pb-28 sm:pb-24 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-16 overflow-x-hidden">
       {/* Header Section */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/40 text-blue-300 text-xs font-bold tracking-wider uppercase">
@@ -29,7 +29,7 @@ export default function TeamPage() {
       </div>
 
       {/* UNIFORM TEAM GRID */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {teamData.map((member) => {
           const isFounder = member.position.includes("Founder") || member.name.includes("Solvia");
           const IconComp = getRoleIcon(member.name, member.position);

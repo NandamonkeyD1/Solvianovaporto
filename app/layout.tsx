@@ -1,8 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
 import Scene3D from "@/components/Scene3D";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   title: "Solvia.Nova — 3D Digital Solution Studio",
@@ -18,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className="scroll-smooth">
+    <html lang="id" className="scroll-smooth overflow-x-hidden max-w-full w-full">
       <head>
         {/* Google Analytics 4 (GA4) Tracking Script */}
         <Script
@@ -36,7 +43,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className="bg-[#020611] text-white antialiased relative min-h-screen flex flex-col selection:bg-[#61adff] selection:text-[#020611]">
+      <body className="bg-[#020611] text-white antialiased relative min-h-screen flex flex-col selection:bg-[#61adff] selection:text-[#020611] overflow-x-hidden max-w-full w-full">
         {/* 3D Scene Canvas Background */}
         <Scene3D />
 

@@ -3,8 +3,8 @@ import { Sparkles, Mail, Phone, MapPin, Github, Instagram, Linkedin } from "luci
 
 export default function Footer() {
   return (
-    <footer className="relative z-10 border-t border-blue-500/20 bg-[#020611]/90 backdrop-blur-xl pt-12 sm:pt-16 pb-28 sm:pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="relative z-10 border-t border-blue-500/20 bg-[#020611]/90 backdrop-blur-xl pt-12 sm:pt-16 pb-28 sm:pb-12 w-full max-w-full overflow-x-hidden">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-10 pb-10 sm:pb-12 border-b border-blue-400/20">
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">

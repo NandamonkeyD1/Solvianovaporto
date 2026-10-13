@@ -30,7 +30,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="pt-24 sm:pt-32 pb-28 sm:pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-16">
+    <div className="pt-24 sm:pt-32 pb-28 sm:pb-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-16 overflow-x-hidden">
       <div className="text-center space-y-3 sm:space-y-4 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] sm:text-xs font-semibold tracking-wider uppercase">
           Hubungi Tim Solvia.Nova
@@ -43,7 +43,7 @@ export default function ContactPage() {
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6 sm:gap-12 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-12 items-start">
         {/* Contact Info */}
         <div className="space-y-6 sm:space-y-8 bg-[#08183c]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-5 sm:p-8 shadow-2xl">
           <h2 className="text-xl sm:text-2xl font-bold text-white">Informasi Kontak</h2>

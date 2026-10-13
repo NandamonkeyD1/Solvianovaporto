@@ -14,12 +14,12 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
     pathname === "/login";
 
   return (
-    <>
+    <div className="relative w-full max-w-full overflow-x-hidden min-h-screen flex flex-col">
       {!isAuthOrAdmin && <Navbar />}
-      <main className="flex-grow relative z-10">{children}</main>
+      <main className="flex-grow relative z-10 w-full max-w-full overflow-x-hidden">{children}</main>
       {!isAuthOrAdmin && <Footer />}
       {!isAuthOrAdmin && <MobileFloatingBar />}
       {!isAuthOrAdmin && <ChatbotNovi />}
-    </>
+    </div>
   );
 }

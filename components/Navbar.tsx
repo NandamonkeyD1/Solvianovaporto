@@ -47,21 +47,21 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
         scrolled
           ? "bg-[#020611]/90 backdrop-blur-xl border-b border-blue-500/20 py-2.5 sm:py-3.5 shadow-2xl"
-          : "bg-transparent py-3.5 sm:py-5"
+          : "bg-transparent py-3 sm:py-5"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo */}
-        <Link href="/" className="group flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-500 to-[#61adff] p-0.5 shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform duration-200">
+        <Link href="/" className="group flex items-center gap-2 sm:gap-2.5 shrink-0">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-500 to-[#61adff] p-0.5 shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform duration-200">
             <div className="w-full h-full bg-[#020611] rounded-[10px] flex items-center justify-center">
               <Sparkles className="w-4 h-4 text-[#4c91ff]" />
             </div>
           </div>
-          <span className="text-xl font-extrabold text-white tracking-tight">
+          <span className="text-lg sm:text-xl font-extrabold text-white tracking-tight">
             Solvia.<span className="text-nova-blue">Nova</span>
           </span>
         </Link>
@@ -100,10 +100,10 @@ export default function Navbar() {
         {/* Mobile Menu Toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden p-2.5 rounded-xl bg-blue-950/50 border border-blue-500/30 text-white hover:bg-blue-900/40 transition-colors shadow-md active:scale-95"
+          className="md:hidden p-2 rounded-xl bg-blue-950/50 border border-blue-500/30 text-white hover:bg-blue-900/40 transition-colors shadow-md active:scale-95 shrink-0"
           aria-label="Toggle Menu"
         >
-          {mobileOpen ? <X className="w-6 h-6 text-blue-400" /> : <Menu className="w-6 h-6 text-white" />}
+          {mobileOpen ? <X className="w-5 h-5 text-blue-400" /> : <Menu className="w-5 h-5 text-white" />}
         </button>
       </div>
 
