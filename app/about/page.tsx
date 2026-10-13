@@ -2,7 +2,7 @@ import { Sparkles, ShieldCheck, Zap, Users } from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <div className="pt-32 pb-20 max-w-7xl mx-auto px-6 lg:px-8 space-y-20">
+    <div className="pt-24 sm:pt-32 pb-28 sm:pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-20">
       <div className="text-center space-y-4 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold tracking-wider uppercase">
           Tentang Solvia.Nova

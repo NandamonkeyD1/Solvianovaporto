@@ -17,7 +17,7 @@ export default function ArticleDetailPage({ params }: Props) {
   }
 
   return (
-    <div className="pt-32 pb-20 max-w-3xl mx-auto px-6 lg:px-8 space-y-10">
+    <div className="pt-24 sm:pt-32 pb-28 sm:pb-20 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
       <Link
         href="/articles"
         className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors"

@@ -9,7 +9,7 @@ export default function GalleryPage() {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
 
   return (
-    <div className="pt-32 pb-24 max-w-7xl mx-auto px-6 lg:px-8 space-y-16">
+    <div className="pt-24 sm:pt-32 pb-28 sm:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-16">
       {/* Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/40 text-blue-300 text-xs font-bold tracking-wider uppercase">
@@ -80,7 +80,7 @@ export default function GalleryPage() {
 
         {/* Single High-Performance Automated 3D Showcase */}
         <div className="max-w-4xl mx-auto">
-          <Model3DViewer className="!h-[460px]" />
+          <Model3DViewer className="!h-[360px] sm:!h-[460px]" />
         </div>
       </div>
 
@@ -95,7 +95,7 @@ export default function GalleryPage() {
               <X className="w-5 h-5" />
             </button>
 
-            <div className="h-96 w-full rounded-2xl overflow-hidden border border-blue-400/20 bg-slate-900">
+            <div className="h-64 sm:h-96 w-full rounded-2xl overflow-hidden border border-blue-400/20 bg-slate-900">
               <img
                 src={selectedItem.image}
                 alt={selectedItem.title}

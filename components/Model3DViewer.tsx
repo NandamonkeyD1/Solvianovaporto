@@ -94,13 +94,14 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
     // 1. Scene Setup
     const scene = new THREE.Scene();
 
-    // 2. Camera Setup (Fixed ideal viewing angle, non-interactive)
+    const isMobile = window.innerWidth < 768;
+
+    // 2. Camera Setup (Adjusted framing for mobile vs desktop)
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 1.2, 4.8);
+    camera.position.set(0, isMobile ? 1.0 : 1.2, isMobile ? 5.4 : 4.8);
     camera.lookAt(0, 0, 0);
 
     // 3. WebGL Renderer (Lightweight & optimized pixel ratio)
-    const isMobile = window.innerWidth < 768;
     const renderer = new THREE.WebGLRenderer({
       canvas,
       antialias: !isMobile,
@@ -458,7 +459,7 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-[420px] sm:h-[480px] lg:h-[510px] rounded-3xl overflow-hidden bg-gradient-to-b from-[#03091e]/85 via-[#020611]/90 to-[#020611] border border-blue-400/30 shadow-2xl backdrop-blur-xl ${className}`}
+      className={`relative w-full h-[360px] sm:h-[480px] lg:h-[510px] rounded-3xl overflow-hidden bg-gradient-to-b from-[#03091e]/85 via-[#020611]/90 to-[#020611] border border-blue-400/30 shadow-2xl backdrop-blur-xl ${className}`}
     >
       {/* 3D Canvas (Non-interactive, pure ambient visual) */}
       <canvas

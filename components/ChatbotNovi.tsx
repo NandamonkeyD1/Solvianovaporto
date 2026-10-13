@@ -604,7 +604,7 @@ export default function ChatbotNovi() {
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Tulis pesan ke Novi..."
               disabled={isTyping}
-              className="flex-1 bg-blue-950/50 border border-blue-400/30 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-blue-300/50 focus:outline-none focus:border-[#ffde59] focus:ring-1 focus:ring-[#ffde59]/50 transition-all"
+              className="flex-1 bg-blue-950/50 border border-blue-400/30 rounded-xl px-3.5 py-2.5 text-sm sm:text-xs text-white placeholder-blue-300/50 focus:outline-none focus:border-[#ffde59] focus:ring-1 focus:ring-[#ffde59]/50 transition-all"
             />
             <button
               type="submit"

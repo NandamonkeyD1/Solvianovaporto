@@ -20,8 +20,8 @@ export default function MobileFloatingBar() {
   ];
 
   return (
-    <div className="md:hidden fixed bottom-3 left-3 right-3 z-50">
-      <div className="bg-[#020611]/95 backdrop-blur-2xl border border-blue-400/40 rounded-2xl p-1.5 shadow-2xl shadow-blue-950/80 flex items-center justify-between gap-1">
+    <div className="md:hidden fixed bottom-3 left-3 right-3 z-50 pb-[env(safe-area-inset-bottom,0px)]">
+      <div className="bg-[#020611]/95 backdrop-blur-2xl border border-blue-400/40 rounded-2xl p-1.5 shadow-2xl shadow-blue-950/80 flex items-center justify-between gap-1 ring-1 ring-white/10">
         {navItems.map((item) => {
           const IconComp = item.icon;
           const active = pathname === item.href;
