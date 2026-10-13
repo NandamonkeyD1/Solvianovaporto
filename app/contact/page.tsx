@@ -85,8 +85,8 @@ export default function ContactPage() {
         </div>
 
         {/* Contact Form */}
-        <div className="bg-[#08183c]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl space-y-6">
-          <h2 className="text-2xl font-bold text-white">Kirim Pesan</h2>
+        <div className="bg-[#08183c]/80 backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl space-y-5 sm:space-y-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-white">Kirim Pesan</h2>
 
           {status === "success" && (
             <div className="p-4 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-2">
@@ -103,50 +103,50 @@ export default function ContactPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-2">Nama Lengkap</label>
+              <label className="block text-xs font-semibold text-slate-300 mb-1.5 sm:mb-2">Nama Lengkap</label>
               <input
                 type="text"
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="Masukkan nama Anda"
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-3 sm:py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm sm:text-xs focus:outline-none focus:border-blue-500 transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-2">Alamat Email</label>
+              <label className="block text-xs font-semibold text-slate-300 mb-1.5 sm:mb-2">Alamat Email</label>
               <input
                 type="email"
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="nama@perusahaan.com"
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-3 sm:py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm sm:text-xs focus:outline-none focus:border-blue-500 transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-2">Subjek / Topik Proyek</label>
+              <label className="block text-xs font-semibold text-slate-300 mb-1.5 sm:mb-2">Subjek / Topik Proyek</label>
               <input
                 type="text"
                 required
                 value={formData.subject}
                 onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                placeholder="Konsultasi WebApp 3D / IoT System"
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-blue-500 transition-colors"
+                placeholder="Konsultasi WebApp 3D / Custom System"
+                className="w-full px-4 py-3 sm:py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm sm:text-xs focus:outline-none focus:border-blue-500 transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-2">Pesan & Detail Kebutuhan</label>
+              <label className="block text-xs font-semibold text-slate-300 mb-1.5 sm:mb-2">Pesan & Detail Kebutuhan</label>
               <textarea
                 rows={4}
                 required
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 placeholder="Jelaskan kebutuhan dan ide proyek Anda secara singkat..."
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-blue-500 transition-colors resize-none"
+                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm sm:text-xs focus:outline-none focus:border-blue-500 transition-colors resize-none"
               />
             </div>
 

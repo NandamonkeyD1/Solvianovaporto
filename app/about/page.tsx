@@ -16,7 +16,7 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-3 gap-5 sm:gap-8">
         {[
           {
             icon: ShieldCheck,
@@ -34,7 +34,7 @@ export default function AboutPage() {
             desc: "Kami mendampingi implementasi dari tahap ideasi, pengembangan, hingga pemeliharaan server & cloud secara penuh."
           }
         ].map((item, idx) => (
-          <div key={idx} className="bg-[#08183c]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-8 space-y-4 hover:border-blue-500/40 transition-all shadow-2xl">
+          <div key={idx} className="bg-[#08183c]/80 backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 space-y-3.5 sm:space-y-4 hover:border-blue-500/40 transition-all shadow-2xl">
             <div className="w-12 h-12 rounded-2xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-[#ffde59]">
               <item.icon className="w-6 h-6" />
             </div>

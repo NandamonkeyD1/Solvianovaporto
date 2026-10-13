@@ -355,7 +355,9 @@ export default function ChatbotNovi() {
             if (!isOpen) setShowPopup(false);
           }}
           aria-label="Buka Chat dengan Novi"
-          className="group relative w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-2xl shadow-blue-600/50 border border-blue-300/40 flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95"
+          className={`${
+            isOpen ? "hidden sm:flex" : "flex"
+          } group relative w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-2xl shadow-blue-600/50 border border-blue-300/40 items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95`}
         >
           {/* Animated Glow Halo */}
           <div className="absolute inset-0 rounded-2xl bg-blue-500/30 blur-md group-hover:blur-lg transition-all" />
@@ -373,10 +375,17 @@ export default function ChatbotNovi() {
         </button>
       </div>
 
-      {/* CHATBOT MODAL WINDOW */}
+      {/* CHATBOT MODAL WINDOW (Native-like bottom sheet on mobile, floating card on desktop) */}
       {isOpen && (
-        <div className="fixed inset-x-3 bottom-20 sm:inset-auto sm:bottom-24 sm:right-6 sm:w-[410px] h-[550px] max-h-[82vh] z-50 flex flex-col rounded-3xl bg-[#020611]/95 backdrop-blur-2xl border border-blue-400/40 shadow-2xl shadow-blue-950/90 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-          {/* Header with Dynamic Mood/Expression Status */}
+        <>
+          <div
+            onClick={() => setIsOpen(false)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 sm:hidden animate-in fade-in duration-200"
+          />
+          <div className="fixed inset-x-0 bottom-0 sm:inset-auto sm:bottom-24 sm:right-6 sm:w-[410px] h-[85vh] sm:h-[550px] z-[60] flex flex-col rounded-t-[28px] sm:rounded-3xl bg-[#020611]/98 backdrop-blur-2xl border-t sm:border border-blue-400/40 shadow-2xl shadow-blue-950/90 overflow-hidden animate-in fade-in slide-in-from-bottom-5 sm:zoom-in-95 duration-200 pb-[env(safe-area-inset-bottom,0px)]">
+            {/* Mobile Sheet Handle */}
+            <div className="w-10 h-1 bg-white/20 rounded-full mx-auto sm:hidden mt-2.5 -mb-1 shrink-0" />
+            {/* Header with Dynamic Mood/Expression Status */}
           <div className="bg-gradient-to-r from-blue-950/90 via-[#04102c]/95 to-blue-900/90 border-b border-blue-400/30 p-3.5 sm:p-4 flex items-center justify-between">
             <div className="flex items-center gap-3 min-w-0">
               <div className="relative w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 border border-blue-300/40 flex items-center justify-center shadow-lg shrink-0">
@@ -615,7 +624,8 @@ export default function ChatbotNovi() {
             </button>
           </form>
         </div>
-      )}
-    </>
+      </>
+    )}
+  </>
   );
 }

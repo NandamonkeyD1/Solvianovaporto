@@ -42,6 +42,27 @@ export default function TeamCarousel() {
     };
   }, [isPaused, activeIndex]);
 
+  const touchStartX = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    setIsPaused(true);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current !== null) {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diff = touchStartX.current - touchEndX;
+      if (diff > 40) {
+        nextSlide();
+      } else if (diff < -40) {
+        prevSlide();
+      }
+      touchStartX.current = null;
+    }
+    setIsPaused(false);
+  };
+
   // Helper to calculate circular distance for 3D depth effect
   const getCardStyle = (index: number) => {
     const total = orderedTeam.length;
@@ -54,7 +75,7 @@ export default function TeamCarousel() {
     if (diff === 0) {
       // CENTER ACTIVE CARD
       return {
-        transform: "translateX(0%) scale(1.04)",
+        transform: "translateX(0%) scale(1.02)",
         zIndex: 30,
         opacity: 1,
         filter: "brightness(1.1)",
@@ -62,7 +83,7 @@ export default function TeamCarousel() {
     } else if (diff === -1) {
       // IMMEDIATE LEFT
       return {
-        transform: "translateX(-68%) scale(0.86) rotateY(10deg)",
+        transform: "translateX(-55%) sm:translateX(-68%) scale(0.85) rotateY(8deg)",
         zIndex: 20,
         opacity: 0.75,
         filter: "brightness(0.85)",
@@ -70,7 +91,7 @@ export default function TeamCarousel() {
     } else if (diff === 1) {
       // IMMEDIATE RIGHT
       return {
-        transform: "translateX(68%) scale(0.86) rotateY(-10deg)",
+        transform: "translateX(55%) sm:translateX(68%) scale(0.85) rotateY(-8deg)",
         zIndex: 20,
         opacity: 0.75,
         filter: "brightness(0.85)",
@@ -78,30 +99,32 @@ export default function TeamCarousel() {
     } else if (diff < -1) {
       // FAR LEFT
       return {
-        transform: "translateX(-125%) scale(0.72) rotateY(20deg)",
+        transform: "translateX(-110%) scale(0.7) rotateY(16deg)",
         zIndex: 10,
-        opacity: 0.4,
-        filter: "brightness(0.6)",
+        opacity: 0.25,
+        filter: "brightness(0.5)",
       };
     } else {
       // FAR RIGHT
       return {
-        transform: "translateX(125%) scale(0.72) rotateY(-20deg)",
+        transform: "translateX(110%) scale(0.7) rotateY(-16deg)",
         zIndex: 10,
-        opacity: 0.4,
-        filter: "brightness(0.6)",
+        opacity: 0.25,
+        filter: "brightness(0.5)",
       };
     }
   };
 
   return (
     <div
-      className="relative max-w-6xl mx-auto px-4 py-4 select-none"
+      className="relative max-w-6xl mx-auto px-2 sm:px-4 py-4 select-none overflow-hidden md:overflow-visible"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
-      {/* 3D Centered Stage - No overflow-hidden so glow effects & 3D cards aren't clipped */}
-      <div className="relative h-[480px] md:h-[520px] flex items-center justify-center perspective-[1000px] py-6">
+      {/* 3D Centered Stage */}
+      <div className="relative h-[460px] md:h-[520px] flex items-center justify-center perspective-[1000px] py-6">
         {orderedTeam.map((member, idx) => {
           const isCenter = idx === activeIndex;
           const isFounder = member.id === founder.id;
@@ -112,7 +135,7 @@ export default function TeamCarousel() {
               key={member.id}
               onClick={() => setActiveIndex(idx)}
               style={cardStyle}
-              className={`absolute w-[280px] sm:w-[310px] md:w-[340px] rounded-3xl p-6 transition-all duration-700 ease-out cursor-pointer backdrop-blur-2xl flex flex-col justify-between ${
+              className={`absolute w-[265px] sm:w-[310px] md:w-[340px] rounded-3xl p-5 sm:p-6 transition-all duration-700 ease-out cursor-pointer backdrop-blur-2xl flex flex-col justify-between ${
                 isCenter
                   ? "bg-gradient-to-b from-[#08183c] via-[#020611] to-[#0b2866] border-2 border-[#4c91ff] shadow-[0_0_50px_rgba(76,145,255,0.45)]"
                   : "bg-[#020611]/85 border border-blue-500/25"

@@ -20,15 +20,15 @@ export default function PortfolioPage() {
       </div>
 
       {/* Grid of Portfolio Project Cards with Photo Thumbnails */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {portfolioData.map((project) => (
           <div
             key={project.id}
-            className="group bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-3xl overflow-hidden hover:border-blue-400/70 transition-all duration-300 shadow-2xl flex flex-col justify-between hover:-translate-y-1"
+            className="group bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-2xl sm:rounded-3xl overflow-hidden hover:border-blue-400/70 transition-all duration-300 shadow-2xl flex flex-col justify-between hover:-translate-y-1"
           >
             <div>
               {/* Photo Image Container */}
-              <div className="relative h-56 w-full bg-slate-900 overflow-hidden border-b border-blue-400/20">
+              <div className="relative h-48 sm:h-56 w-full bg-slate-900 overflow-hidden border-b border-blue-400/20">
                 <img
                   src={project.image}
                   alt={project.name}
@@ -57,7 +57,7 @@ export default function PortfolioPage() {
               </div>
 
               {/* Project Info & Tech Stack */}
-              <div className="p-6 space-y-4">
+              <div className="p-5 sm:p-6 space-y-4">
                 <p className="text-blue-100 text-xs leading-relaxed font-medium line-clamp-3">
                   {project.shortDesc}
                 </p>
@@ -81,7 +81,7 @@ export default function PortfolioPage() {
             </div>
 
             {/* Action Footer */}
-            <div className="p-6 pt-0">
+            <div className="p-5 sm:p-6 pt-0">
               <Link
                 href={`/portfolio/${project.slug}`}
                 className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/30"

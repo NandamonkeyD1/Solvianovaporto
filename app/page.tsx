@@ -127,27 +127,27 @@ export default function Home() {
       </section>
 
       {/* TRUST INDICATORS BLOCK */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-8 space-y-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {trustIndicatorsData.map((t, idx) => (
             <div
               key={idx}
-              className="bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-2xl p-6 hover:border-blue-400/70 transition-all shadow-xl space-y-3"
+              className="bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-2xl p-5 sm:p-6 hover:border-blue-400/70 transition-all shadow-xl space-y-2.5 sm:space-y-3"
             >
-              <div className="text-3xl font-black text-[#61adff]">{t.stat}</div>
-              <h3 className="text-white font-extrabold text-lg">{t.title}</h3>
+              <div className="text-2xl sm:text-3xl font-black text-[#61adff]">{t.stat}</div>
+              <h3 className="text-white font-extrabold text-base sm:text-lg">{t.title}</h3>
               <p className="text-blue-100 text-xs leading-relaxed font-medium">{t.description}</p>
             </div>
           ))}
         </div>
 
         {/* DIPERCAYA OLEH (CLIENT & PARTNER LOGOS) */}
-        <div className="bg-[#020611]/90 border border-blue-400/30 rounded-3xl p-8 lg:p-10 backdrop-blur-xl shadow-2xl space-y-6 text-center">
-          <div className="space-y-2 max-w-xl mx-auto">
-            <span className="text-blue-400 text-xs font-extrabold uppercase tracking-widest block">
+        <div className="bg-[#020611]/90 border border-blue-400/30 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-10 backdrop-blur-xl shadow-2xl space-y-5 sm:space-y-6 text-center">
+          <div className="space-y-1.5 sm:space-y-2 max-w-xl mx-auto">
+            <span className="text-blue-400 text-[10px] sm:text-xs font-extrabold uppercase tracking-widest block">
               DIPERCAYA OLEH MITRA & KLIEN
             </span>
-            <h3 className="text-2xl font-black text-white">
+            <h3 className="text-xl sm:text-2xl font-black text-white">
               Dipercaya Oleh Perusahaan & Industri <span className="text-nova-blue">Terkemuka</span>
             </h3>
           </div>
@@ -158,8 +158,8 @@ export default function Home() {
       </section>
 
       {/* ABOUT SECTION & CORE VALUES */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-8 space-y-12">
-        <div className="bg-gradient-to-br from-[#020611]/90 via-[#040d23]/90 to-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-3xl p-8 lg:p-12 space-y-12 shadow-2xl">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+        <div className="bg-gradient-to-br from-[#020611]/90 via-[#040d23]/90 to-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-12 space-y-8 sm:space-y-12 shadow-2xl">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-bold tracking-wider uppercase">
@@ -221,21 +221,21 @@ export default function Home() {
       </section>
 
       {/* SERVICES SECTION */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-8 space-y-12">
-        <div className="text-center space-y-4 max-w-2xl mx-auto">
-          <h2 className="text-3xl lg:text-5xl font-black text-white">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+        <div className="text-center space-y-3 sm:space-y-4 max-w-2xl mx-auto">
+          <h2 className="text-2xl sm:text-3xl lg:text-5xl font-black text-white">
             Solusi Digital yang Kami <span className="text-nova-blue">Hadirkan</span>
           </h2>
-          <p className="text-blue-100 text-sm lg:text-base font-medium">
+          <p className="text-blue-100 text-xs sm:text-sm lg:text-base font-medium">
             Dari website hingga sistem enterprise, kami membangun solusi yang relevan, scalable, dan berdampak nyata.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {servicesData.map((svc) => (
             <div
               key={svc.id}
-              className="group relative bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-2xl p-6 hover:border-blue-400/70 hover:bg-[#08183c]/95 transition-all duration-300 hover:-translate-y-1 shadow-xl flex flex-col justify-between"
+              className="group relative bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-2xl p-5 sm:p-6 hover:border-blue-400/70 hover:bg-[#08183c]/95 transition-all duration-300 hover:-translate-y-1 shadow-xl flex flex-col justify-between"
             >
               <div className="space-y-4">
                 <div className="w-12 h-12 rounded-xl bg-blue-600/30 border border-blue-400/40 flex items-center justify-center text-[#61adff] group-hover:bg-blue-600 group-hover:text-white transition-colors">
@@ -276,13 +276,13 @@ export default function Home() {
       </section>
 
       {/* PORTFOLIO SECTION */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-8 space-y-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-3 max-w-xl">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
+          <div className="space-y-2 sm:space-y-3 max-w-xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-[#61adff] text-xs font-bold tracking-wider uppercase">
               Portfolio
             </div>
-            <h2 className="text-3xl lg:text-4xl font-black text-white">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white">
               Karya yang Berbicara <span className="text-nova-blue">Sendiri</span>
             </h2>
           </div>
@@ -344,25 +344,25 @@ export default function Home() {
       </section>
 
       {/* TEAM SECTION (AUTO SLIDE CAROUSEL WITH FOUNDER IN CENTER) */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-8 space-y-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-4">
-          <div className="space-y-3 max-w-xl">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 pt-4">
+          <div className="space-y-2 sm:space-y-3 max-w-xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-bold tracking-wider uppercase">
               <Users className="w-3.5 h-3.5" />
               Tim Kami
             </div>
-            <h2 className="text-3xl lg:text-4xl font-black text-white leading-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight">
               Orang-Orang di Balik <span className="text-nova-blue">Solvia Nova</span>
             </h2>
-            <p className="text-blue-100 text-xs lg:text-sm font-medium">
+            <p className="text-blue-100 text-xs sm:text-sm font-medium">
               Tim profesional yang berdedikasi membangun solusi digital terbaik untuk bisnis Anda.
             </p>
           </div>
           <Link
             href="/team"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-950/50 hover:bg-blue-900/60 border border-blue-400/30 text-white text-xs font-bold rounded-xl transition-all"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-950/50 hover:bg-blue-900/60 border border-blue-400/30 text-white text-xs font-bold rounded-xl transition-all w-fit"
           >
-            Kenali tim lengkap kami
+            <span>Kenali tim lengkap kami</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -372,15 +372,15 @@ export default function Home() {
       </section>
 
       {/* TESTIMONIALS SECTION */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="bg-gradient-to-br from-[#020611] to-[#040d23] border border-blue-400/30 rounded-3xl p-8 lg:p-12 backdrop-blur-xl space-y-8 shadow-2xl">
-          <div className="text-center space-y-3 max-w-xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/20 text-[#61adff] text-xs font-bold uppercase">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gradient-to-br from-[#020611] to-[#040d23] border border-blue-400/30 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-12 backdrop-blur-xl space-y-6 sm:space-y-8 shadow-2xl">
+          <div className="text-center space-y-2 sm:space-y-3 max-w-xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/20 text-[#61adff] text-[10px] sm:text-xs font-bold uppercase">
               <MessageSquare className="w-3.5 h-3.5" />
               Testimoni
             </div>
-            <h2 className="text-2xl lg:text-3xl font-black text-white">Apa Kata Klien Kami</h2>
-            <p className="text-blue-100 text-xs lg:text-sm font-medium">Kepercayaan klien adalah ukuran keberhasilan kami yang sesungguhnya.</p>
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-white">Apa Kata Klien Kami</h2>
+            <p className="text-blue-100 text-xs sm:text-sm font-medium">Kepercayaan klien adalah ukuran keberhasilan kami yang sesungguhnya.</p>
           </div>
           {/* Infinite Auto-Sliding Testimonial Marquee */}
           <TestimonialCarousel />
@@ -388,15 +388,15 @@ export default function Home() {
       </section>
 
       {/* CTA SECTION */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-        <div className="bg-gradient-to-r from-blue-950/90 via-[#020611] to-blue-900/90 border border-blue-400/30 rounded-3xl p-10 lg:p-16 space-y-6 backdrop-blur-xl shadow-2xl">
-          <span className="px-4 py-1.5 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold uppercase tracking-wider">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="bg-gradient-to-r from-blue-950/90 via-[#020611] to-blue-900/90 border border-blue-400/30 rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-16 space-y-5 sm:space-y-6 backdrop-blur-xl shadow-2xl">
+          <span className="px-3.5 sm:px-4 py-1.5 rounded-full bg-blue-500/20 text-blue-300 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
             Mulai Sekarang
           </span>
-          <h2 className="text-3xl lg:text-5xl font-black text-white max-w-3xl mx-auto leading-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-5xl font-black text-white max-w-3xl mx-auto leading-tight">
             Bangun Sistem Digital yang Membuat Bisnis Anda Lebih <span className="text-nova-blue">Profesional.</span>
           </h2>
-          <p className="text-blue-100 text-sm lg:text-base max-w-xl mx-auto font-medium">
+          <p className="text-blue-100 text-xs sm:text-sm lg:text-base max-w-xl mx-auto font-medium">
             Konsultasikan kebutuhan digital bisnis Anda bersama tim Solvia Nova. Gratis, tanpa komitmen.
           </p>
           {/* UNIFIED CTA BUTTONS */}

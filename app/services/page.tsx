@@ -24,7 +24,7 @@ export default function ServicesPage() {
         {servicesData.map((svc) => (
           <div
             key={svc.id}
-            className="group bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-3xl p-6 sm:p-8 space-y-5 sm:space-y-6 hover:border-blue-400/70 hover:bg-[#08183c]/90 transition-all duration-300 shadow-2xl flex flex-col justify-between hover:-translate-y-1"
+            className="group bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-2xl sm:rounded-3xl p-5 sm:p-8 space-y-4 sm:space-y-6 hover:border-blue-400/70 hover:bg-[#08183c]/90 transition-all duration-300 shadow-2xl flex flex-col justify-between hover:-translate-y-1"
           >
             <div className="space-y-5">
               <div className="w-14 h-14 rounded-2xl bg-blue-600/30 border border-blue-400/40 flex items-center justify-center text-[#61adff] group-hover:bg-blue-600 group-hover:text-white transition-colors shadow-lg">
@@ -67,7 +67,7 @@ export default function ServicesPage() {
       </div>
 
       {/* Bottom Consultation Banner (Centered & Rich) */}
-      <div className="bg-gradient-to-r from-blue-950/90 via-[#020611] to-blue-900/90 border border-blue-400/30 rounded-3xl p-8 sm:p-12 text-center max-w-4xl mx-auto space-y-6 backdrop-blur-xl shadow-2xl">
+      <div className="bg-gradient-to-r from-blue-950/90 via-[#020611] to-blue-900/90 border border-blue-400/30 rounded-2xl sm:rounded-3xl p-6 sm:p-12 text-center max-w-4xl mx-auto space-y-5 sm:space-y-6 backdrop-blur-xl shadow-2xl">
         <div className="w-12 h-12 rounded-2xl bg-blue-600/30 border border-blue-400/30 flex items-center justify-center text-[#61adff] mx-auto">
           <Sparkles className="w-6 h-6" />
         </div>

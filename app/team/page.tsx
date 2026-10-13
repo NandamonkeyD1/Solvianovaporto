@@ -29,7 +29,7 @@ export default function TeamPage() {
       </div>
 
       {/* UNIFORM TEAM GRID */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {teamData.map((member) => {
           const isFounder = member.position.includes("Founder") || member.name.includes("Solvia");
           const IconComp = getRoleIcon(member.name, member.position);
@@ -37,7 +37,7 @@ export default function TeamPage() {
           return (
             <div
               key={member.id}
-              className={`bg-[#020611]/90 backdrop-blur-xl border rounded-3xl p-7 space-y-6 transition-all duration-300 shadow-xl flex flex-col justify-between group hover:-translate-y-1 ${
+              className={`bg-[#020611]/90 backdrop-blur-xl border rounded-2xl sm:rounded-3xl p-5 sm:p-7 space-y-5 sm:space-y-6 transition-all duration-300 shadow-xl flex flex-col justify-between group hover:-translate-y-1 ${
                 isFounder
                   ? "border-blue-400/60 hover:border-blue-400 shadow-blue-600/20"
                   : "border-blue-400/30 hover:border-blue-400/70"

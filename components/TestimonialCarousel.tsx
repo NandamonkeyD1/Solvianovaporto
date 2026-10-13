@@ -17,7 +17,7 @@ export default function TestimonialCarousel() {
         {doubledTestimonials.map((t, idx) => (
           <div
             key={`${t.id}-${idx}`}
-            className="w-80 sm:w-96 shrink-0 bg-blue-950/40 border border-blue-400/25 hover:border-blue-400/70 rounded-2xl p-6 space-y-4 transition-all duration-300 group hover:scale-[1.02] hover:bg-blue-900/40 shadow-xl cursor-pointer"
+            className="w-72 sm:w-96 shrink-0 bg-blue-950/40 border border-blue-400/25 hover:border-blue-400/70 rounded-2xl p-5 sm:p-6 space-y-4 transition-all duration-300 group hover:scale-[1.02] hover:bg-blue-900/40 shadow-xl cursor-pointer"
           >
             {/* Rating Stars */}
             <div className="flex text-[#61adff] gap-1 text-sm">

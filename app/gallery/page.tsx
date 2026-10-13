@@ -25,15 +25,15 @@ export default function GalleryPage() {
       </div>
 
       {/* Gallery Cards Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {galleryData.map((item) => (
           <div
             key={item.id}
             onClick={() => setSelectedItem(item)}
-            className="group bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-3xl overflow-hidden hover:border-blue-400 transition-all duration-300 shadow-xl flex flex-col justify-between cursor-pointer hover:-translate-y-1"
+            className="group bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-2xl sm:rounded-3xl overflow-hidden hover:border-blue-400 transition-all duration-300 shadow-xl flex flex-col justify-between cursor-pointer hover:-translate-y-1"
           >
             {/* Image Box */}
-            <div className="relative h-56 bg-slate-900 overflow-hidden border-b border-blue-400/20">
+            <div className="relative h-48 sm:h-56 bg-slate-900 overflow-hidden border-b border-blue-400/20">
               <img
                 src={item.image}
                 alt={item.title}
@@ -48,7 +48,7 @@ export default function GalleryPage() {
             </div>
 
             {/* Content info */}
-            <div className="p-6 space-y-3">
+            <div className="p-5 sm:p-6 space-y-2.5 sm:space-y-3">
               <div className="flex items-center gap-2 text-blue-300 text-xs font-medium">
                 <Calendar className="w-3.5 h-3.5 text-blue-400" />
                 <span>{item.date}</span>
@@ -62,7 +62,7 @@ export default function GalleryPage() {
       </div>
 
       {/* 3D INTERACTIVE ASSETS SHOWCASE */}
-      <div className="bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-3xl p-8 lg:p-12 space-y-8 shadow-2xl">
+      <div className="bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-12 space-y-6 sm:space-y-8 shadow-2xl">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-[#61adff] text-xs font-bold uppercase">

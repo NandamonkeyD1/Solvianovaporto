@@ -18,6 +18,23 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Auto-close menu on route navigation
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll when mobile menu is active
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
   const navLinks = [
     { href: "/", label: "Beranda" },
     { href: "/services", label: "Layanan" },
@@ -90,50 +107,56 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer & Backdrop */}
       {mobileOpen && (
-        <div className="md:hidden bg-[#020611]/95 backdrop-blur-2xl border-b border-blue-500/20 px-6 py-6 space-y-4 shadow-2xl animate-in fade-in slide-in-from-top-4 duration-200">
-          <div className="grid grid-cols-1 gap-1.5">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
+        <>
+          <div
+            onClick={() => setMobileOpen(false)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[-1] md:hidden animate-in fade-in duration-200"
+          />
+          <div className="md:hidden bg-[#020611]/98 backdrop-blur-2xl border-b border-blue-500/20 px-5 py-5 space-y-4 shadow-2xl max-h-[calc(100vh-70px)] overflow-y-auto animate-in fade-in slide-in-from-top-3 duration-200">
+            <div className="grid grid-cols-1 gap-1.5">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all active:scale-98 ${
+                    pathname === link.href
+                      ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30 border border-blue-400/40"
+                      : "text-slate-300 hover:bg-blue-900/30 hover:text-white border border-transparent"
+                  }`}
+                >
+                  <span>{link.label}</span>
+                  <ArrowUpRight className="w-4 h-4 opacity-50" />
+                </Link>
+              ))}
+            </div>
+
+            {/* Mobile Specific Action Buttons */}
+            <div className="pt-3 border-t border-blue-500/20 space-y-2.5">
+              <a
+                href="https://wa.me/6283148801578?text=Halo%20Solvia%20Nova,%20saya%20tertarik%20konsultasi%20proyek."
+                target="_blank"
+                rel="noreferrer"
                 onClick={() => setMobileOpen(false)}
-                className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all active:scale-98 ${
-                  pathname === link.href
-                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30 border border-blue-400/40"
-                    : "text-slate-300 hover:bg-blue-900/30 hover:text-white border border-transparent"
-                }`}
+                className="flex items-center justify-center gap-2.5 w-full py-3.5 px-4 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 shadow-lg shadow-emerald-900/40 border border-emerald-400/30 active:scale-95 transition-all text-center"
               >
-                <span>{link.label}</span>
-                <ArrowUpRight className="w-4 h-4 opacity-50" />
+                <Sparkles className="w-4 h-4 text-emerald-200" />
+                <span>Chat WhatsApp (Respon Cepat)</span>
+              </a>
+
+              <Link
+                href="/contact"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-center gap-2 w-full py-3.5 px-4 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-blue-600 to-indigo-600 shadow-md border border-blue-400/30 active:scale-95 transition-all text-center"
+              >
+                <span>Form Konsultasi Proyek</span>
+                <ArrowUpRight className="w-4 h-4" />
               </Link>
-            ))}
+            </div>
           </div>
-
-          {/* Mobile Specific Action Buttons */}
-          <div className="pt-3 border-t border-blue-500/20 space-y-2.5">
-            <a
-              href="https://wa.me/6283148801578?text=Halo%20Solvia%20Nova,%20saya%20tertarik%20konsultasi%20proyek."
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-center gap-2.5 w-full py-3.5 px-4 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 shadow-lg shadow-emerald-900/40 border border-emerald-400/30 active:scale-95 transition-all text-center"
-            >
-              <Sparkles className="w-4 h-4 text-emerald-200" />
-              <span>Chat WhatsApp (Respon Cepat)</span>
-            </a>
-
-            <Link
-              href="/contact"
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-center gap-2 w-full py-3.5 px-4 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-blue-600 to-indigo-600 shadow-md border border-blue-400/30 active:scale-95 transition-all text-center"
-            >
-              <span>Form Konsultasi Proyek</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
+        </>
       )}
     </header>
   );

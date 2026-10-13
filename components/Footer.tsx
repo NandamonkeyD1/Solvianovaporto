@@ -3,9 +3,9 @@ import { Sparkles, Mail, Phone, MapPin, Github, Instagram, Linkedin } from "luci
 
 export default function Footer() {
   return (
-    <footer className="relative z-10 border-t border-blue-500/20 bg-[#020611]/90 backdrop-blur-xl pt-16 pb-12">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-blue-400/20">
+    <footer className="relative z-10 border-t border-blue-500/20 bg-[#020611]/90 backdrop-blur-xl pt-12 sm:pt-16 pb-28 sm:pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-10 pb-10 sm:pb-12 border-b border-blue-400/20">
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="inline-flex items-center gap-2.5">
@@ -97,9 +97,9 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-blue-300 font-medium">
+        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-blue-300 font-medium text-center md:text-left">
           <p>© {new Date().getFullYear()} Solvia Nova — Digital Solution Studio. All rights reserved.</p>
-          <div className="flex gap-6 items-center">
+          <div className="flex flex-wrap gap-4 sm:gap-6 items-center justify-center">
             <Link href="/privacy" className="hover:text-white transition-colors">Kebijakan Privasi</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Syarat & Ketentuan</Link>
             <Link href="/sso" className="px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-[#61adff] hover:bg-blue-600 hover:text-white transition-all font-bold">

@@ -17,20 +17,20 @@ export default function ArticlesPage() {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
         {articlesData.map((art) => (
           <div
             key={art.id}
-            className="bg-[#08183c]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-8 space-y-6 hover:border-blue-500/40 transition-all shadow-2xl flex flex-col justify-between"
+            className="bg-[#08183c]/80 backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 space-y-4 sm:space-y-6 hover:border-blue-500/40 transition-all shadow-2xl flex flex-col justify-between"
           >
-            <div className="space-y-4">
+            <div className="space-y-3.5 sm:space-y-4">
               <div className="flex items-center justify-between text-xs text-slate-400">
-                <span className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 font-medium">
+                <span className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 font-medium text-[11px] sm:text-xs">
                   {art.category}
                 </span>
-                <span>{art.date} • {art.readTime}</span>
+                <span className="text-[11px] sm:text-xs">{art.date} • {art.readTime}</span>
               </div>
-              <h2 className="text-2xl font-bold text-white hover:text-[#ffde59] transition-colors">
+              <h2 className="text-xl sm:text-2xl font-bold text-white hover:text-[#ffde59] transition-colors leading-snug">
                 <Link href={`/articles/${art.slug}`}>{art.title}</Link>
               </h2>
               <p className="text-slate-300 text-sm leading-relaxed">{art.summary}</p>

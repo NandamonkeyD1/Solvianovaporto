@@ -17,7 +17,7 @@ export default function PartnerCarousel() {
         {doubledClients.map((client, idx) => (
           <div
             key={`${client.id}-${idx}`}
-            className="w-52 shrink-0 bg-blue-950/40 border border-blue-400/20 hover:border-blue-400/70 rounded-2xl p-5 flex flex-col items-center justify-center space-y-2.5 transition-all duration-300 group hover:scale-105 hover:bg-blue-900/40 cursor-pointer shadow-lg"
+            className="w-40 sm:w-52 shrink-0 bg-blue-950/40 border border-blue-400/20 hover:border-blue-400/70 rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center space-y-2.5 transition-all duration-300 group hover:scale-105 hover:bg-blue-900/40 cursor-pointer shadow-lg"
           >
             <div className="w-11 h-11 rounded-xl bg-blue-600/30 border border-blue-400/30 flex items-center justify-center text-[#61adff] font-black text-xs tracking-wider group-hover:bg-blue-600 group-hover:text-white transition-colors shadow-md">
               {client.logoText.slice(0, 3)}
