@@ -203,8 +203,8 @@ export default function Scene3D() {
     ribbonGroup.add(mesh3);
     ribbons.push({ mesh: mesh3, material: mat3 });
 
-    // 5. Optimized Ambient Floating Particles (380 points instead of 1600)
-    const particleCount = isMobile ? 180 : 380;
+    // 5. Optimized Ambient Floating Particles (Lightweight & smooth)
+    const particleCount = isMobile ? 80 : 200;
     const particlePos = new Float32Array(particleCount * 3);
     const particleCol = new Float32Array(particleCount * 3);
 
@@ -263,13 +263,24 @@ export default function Scene3D() {
     window.addEventListener("resize", handleResize);
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // 7. Throttled Animation Loop (Paused when tab hidden)
+    // 7. Throttled Animation Loop (Capped at 30 FPS for gentle ambient waves, paused deep in page or tab hidden)
     const clock = new THREE.Clock();
     let animId: number;
+    const targetInterval = 1000 / 30; // 30 FPS cap for background ambient canvas = 50% GPU savings
+    let lastRenderTime = 0;
 
-    const animate = () => {
+    const animate = (currentTime: number) => {
       animId = requestAnimationFrame(animate);
+
+      // Skip render if tab is hidden
       if (!isTabVisible) return;
+
+      // Skip render if user is scrolled deep into content (> 1500px) where full cards obscure the canvas
+      if (targetScrollY > 1500 && currentScrollY > 1500) return;
+
+      // Frame rate limiter
+      if (currentTime - lastRenderTime < targetInterval) return;
+      lastRenderTime = currentTime;
 
       const elapsed = clock.getElapsedTime();
 
@@ -293,7 +304,7 @@ export default function Scene3D() {
       renderer.render(scene, camera);
     };
 
-    animate();
+    animId = requestAnimationFrame(animate);
 
     return () => {
       cancelAnimationFrame(animId);

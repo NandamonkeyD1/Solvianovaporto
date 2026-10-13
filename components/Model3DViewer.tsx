@@ -37,7 +37,7 @@ interface Model3DViewerProps {
   className?: string;
 }
 
-// Module-level cache for loaded GLTF objects
+// Module-level cache for loaded GLTF objects to avoid re-parsing
 const gltfObjectCache = new Map<string, THREE.Group>();
 
 export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
@@ -49,9 +49,14 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
   const [loadProgress, setLoadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
+  // References to switch visible models smoothly without tearing down the WebGL context
+  const activeIndexRef = useRef(0);
+  const azureSubGroupRef = useRef<THREE.Group | null>(null);
+  const ribbonSubGroupRef = useRef<THREE.Group | null>(null);
+
   const currentModel = SHOWCASE_MODELS[activeIndex];
 
-  // Autonomous automation: Automatically rotate/alternate between 3D assets every 9 seconds
+  // Rotate between showcase models every 9s
   useEffect(() => {
     const autoTimer = setInterval(() => {
       setActiveIndex((prev) => (prev === 0 ? 1 : 0));
@@ -60,6 +65,18 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
     return () => clearInterval(autoTimer);
   }, []);
 
+  // Update visibility ref and sub-groups smoothly without re-initializing Three.js
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+    if (azureSubGroupRef.current) {
+      azureSubGroupRef.current.visible = activeIndex === 0;
+    }
+    if (ribbonSubGroupRef.current) {
+      ribbonSubGroupRef.current.visible = activeIndex === 1;
+    }
+  }, [activeIndex]);
+
+  // Main Three.js Scene Lifecycle (Initialized ONCE on mount)
   useEffect(() => {
     const container = containerRef.current;
     const canvas = canvasRef.current;
@@ -90,18 +107,17 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
 
     const width = container.clientWidth;
     const height = container.clientHeight || 480;
+    const isMobile = window.innerWidth < 768;
 
     // 1. Scene Setup
     const scene = new THREE.Scene();
-
-    const isMobile = window.innerWidth < 768;
 
     // 2. Camera Setup (Adjusted framing for mobile vs desktop)
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(0, isMobile ? 1.0 : 1.2, isMobile ? 5.4 : 4.8);
     camera.lookAt(0, 0, 0);
 
-    // 3. WebGL Renderer (Lightweight & optimized pixel ratio)
+    // 3. WebGL Renderer (Ultra-optimized pixel ratio & memory limits)
     const renderer = new THREE.WebGLRenderer({
       canvas,
       antialias: !isMobile,
@@ -114,40 +130,46 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
 
-    // 4. Studio Lighting with Solvia Nova Palette (Royal Blue & Golden Yellow #FFDE59)
+    // 4. Lighting with Solvia Palette (Royal Blue & Golden Yellow #FFDE59)
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.6);
     scene.add(ambientLight);
 
     const hemiLight = new THREE.HemisphereLight(0x7ebbff, 0x0a1936, 1.8);
     scene.add(hemiLight);
 
-    // Key Light
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.6);
     keyLight.position.set(5, 7, 6);
     scene.add(keyLight);
 
-    // Fill Light (Solvia Electric Blue)
     const blueFill = new THREE.DirectionalLight(0x38bdf8, 2.2);
     blueFill.position.set(-6, 3, -4);
     scene.add(blueFill);
 
-    // Rim Accent Light (Golden Yellow #FFDE59)
     const goldRim = new THREE.PointLight(0xffde59, 4.2, 18);
     goldRim.position.set(3, -1.5, 3);
     scene.add(goldRim);
 
-    // Cyan Bottom Uplight
     const cyanUplight = new THREE.PointLight(0x2563eb, 3.2, 16);
     cyanUplight.position.set(-3, -2, 2);
     scene.add(cyanUplight);
 
-    // 5. Model Root Group
+    // 5. Model Groups (Persistent containers for model switching)
     const modelGroup = new THREE.Group();
     scene.add(modelGroup);
 
+    const azureSubGroup = new THREE.Group();
+    const ribbonSubGroup = new THREE.Group();
+    modelGroup.add(azureSubGroup);
+    modelGroup.add(ribbonSubGroup);
+
+    azureSubGroupRef.current = azureSubGroup;
+    ribbonSubGroupRef.current = ribbonSubGroup;
+
+    azureSubGroup.visible = activeIndexRef.current === 0;
+    ribbonSubGroup.visible = activeIndexRef.current === 1;
+
     const loader = new GLTFLoader();
 
-    // Helper to normalize and center GLTF object
     const normalizeModel = (object: THREE.Group, targetScaleFactor: number) => {
       const box = new THREE.Box3().setFromObject(object);
       const center = box.getCenter(new THREE.Vector3());
@@ -164,8 +186,6 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
       object.traverse((child) => {
         if ((child as THREE.Mesh).isMesh) {
           const mesh = child as THREE.Mesh;
-          mesh.castShadow = true;
-          mesh.receiveShadow = true;
           if (mesh.material) {
             const mat = mesh.material as THREE.MeshStandardMaterial;
             mat.roughness = Math.min(mat.roughness ?? 0.35, 0.55);
@@ -176,21 +196,21 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
       return object;
     };
 
-    const targetUrl = currentModel.path;
-
-    if (gltfObjectCache.has(targetUrl)) {
-      const cached = gltfObjectCache.get(targetUrl)!.clone(true);
+    // Load Model 0 (Azure Emblem - 14.5 MB) immediately
+    const azureUrl = SHOWCASE_MODELS[0].path;
+    if (gltfObjectCache.has(azureUrl)) {
+      const cached = gltfObjectCache.get(azureUrl)!.clone(true);
       normalizeModel(cached, 2.3);
-      modelGroup.add(cached);
+      azureSubGroup.add(cached);
       setLoading(false);
     } else {
       loader.load(
-        targetUrl,
+        azureUrl,
         (gltf) => {
           const raw = gltf.scene;
-          gltfObjectCache.set(targetUrl, raw.clone(true));
+          gltfObjectCache.set(azureUrl, raw.clone(true));
           normalizeModel(raw, 2.3);
-          modelGroup.add(raw);
+          azureSubGroup.add(raw);
           setLoading(false);
         },
         (xhr) => {
@@ -199,20 +219,48 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
           }
         },
         (err) => {
-          console.error("Failed to load 3D model:", err);
+          console.error("Failed to load 3D Azure model:", err);
           setError("Model 3D otomatis dialihkan ke mode fallback");
           setLoading(false);
         }
       );
     }
 
+    // Load Model 1 (Radiant Ribbon Runner):
+    // On desktop, load in background after initial render so it never blocks page load.
+    // On mobile, keep it super light using the procedural glowing ribbon mesh to save 101 MB data and GPU RAM.
+    const ribbonUrl = SHOWCASE_MODELS[1].path;
+    if (!isMobile) {
+      setTimeout(() => {
+        if (gltfObjectCache.has(ribbonUrl)) {
+          const cached = gltfObjectCache.get(ribbonUrl)!.clone(true);
+          normalizeModel(cached, 2.3);
+          ribbonSubGroup.add(cached);
+        } else {
+          loader.load(
+            ribbonUrl,
+            (gltf) => {
+              const raw = gltf.scene;
+              gltfObjectCache.set(ribbonUrl, raw.clone(true));
+              normalizeModel(raw, 2.3);
+              ribbonSubGroup.add(raw);
+            },
+            undefined,
+            (err) => {
+              console.warn("Background load of heavy 3D ribbon runner bypassed:", err);
+            }
+          );
+        }
+      }, 1200);
+    }
+
     // 6. Dynamic Procedural Silk Ribbons (Swirling Ambient Accents)
     const ribbonContainer = new THREE.Group();
     scene.add(ribbonContainer);
 
-    // Ribbon Path 1: Primary Flowing Blue Ribbon
+    // Primary Flowing Blue Ribbon
     const ribbonPoints1: THREE.Vector3[] = [];
-    const pointsCount1 = 120;
+    const pointsCount1 = isMobile ? 60 : 100;
     for (let i = 0; i <= pointsCount1; i++) {
       const t = i / pointsCount1;
       const angle = t * Math.PI * 4.2;
@@ -223,7 +271,7 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
       ribbonPoints1.push(new THREE.Vector3(x, y, z));
     }
     const curve1 = new THREE.CatmullRomCurve3(ribbonPoints1);
-    const tubeGeo1 = new THREE.TubeGeometry(curve1, 80, 0.07, 10, false);
+    const tubeGeo1 = new THREE.TubeGeometry(curve1, isMobile ? 40 : 70, 0.07, isMobile ? 6 : 8, false);
 
     const ribbonVertexShader = `
       varying vec2 vUv;
@@ -286,9 +334,9 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
     const ribbonMesh1 = new THREE.Mesh(tubeGeo1, ribbonMat1);
     ribbonContainer.add(ribbonMesh1);
 
-    // Ribbon Path 2: Golden Accent Silk Ribbon (Counter-Twisting)
+    // Secondary Accent Ribbon (Counter-Twisting)
     const ribbonPoints2: THREE.Vector3[] = [];
-    const pointsCount2 = 100;
+    const pointsCount2 = isMobile ? 50 : 80;
     for (let i = 0; i <= pointsCount2; i++) {
       const t = i / pointsCount2;
       const angle = -t * Math.PI * 3.8 + 1.2;
@@ -299,7 +347,7 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
       ribbonPoints2.push(new THREE.Vector3(x, y, z));
     }
     const curve2 = new THREE.CatmullRomCurve3(ribbonPoints2);
-    const tubeGeo2 = new THREE.TubeGeometry(curve2, 70, 0.04, 10, false);
+    const tubeGeo2 = new THREE.TubeGeometry(curve2, isMobile ? 35 : 60, 0.04, isMobile ? 6 : 8, false);
 
     const ribbonMat2 = new THREE.ShaderMaterial({
       vertexShader: ribbonVertexShader,
@@ -319,11 +367,11 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
     const ribbonMesh2 = new THREE.Mesh(tubeGeo2, ribbonMat2);
     ribbonContainer.add(ribbonMesh2);
 
-    // 7. Holographic Base Rings (Pedestal)
+    // 7. Holographic Base Rings
     const baseGroup = new THREE.Group();
     scene.add(baseGroup);
 
-    const ringOuterGeo = new THREE.RingGeometry(1.7, 1.76, 48);
+    const ringOuterGeo = new THREE.RingGeometry(1.7, 1.76, isMobile ? 32 : 48);
     const ringOuterMat = new THREE.MeshBasicMaterial({
       color: 0x38bdf8,
       side: THREE.DoubleSide,
@@ -335,7 +383,7 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
     ringOuter.position.y = -1.35;
     baseGroup.add(ringOuter);
 
-    const ringInnerGeo = new THREE.RingGeometry(1.2, 1.24, 48);
+    const ringInnerGeo = new THREE.RingGeometry(1.2, 1.24, isMobile ? 32 : 48);
     const ringInnerMat = new THREE.MeshBasicMaterial({
       color: 0xffde59,
       side: THREE.DoubleSide,
@@ -347,8 +395,8 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
     ringInner.position.y = -1.35;
     baseGroup.add(ringInner);
 
-    // Floating Stardust Particles
-    const dustCount = 100;
+    // Lightweight Floating Dust Particles (60 points instead of 100)
+    const dustCount = isMobile ? 40 : 60;
     const dustPositions = new Float32Array(dustCount * 3);
     const dustColors = new Float32Array(dustCount * 3);
     const cGold = new THREE.Color(0xffde59);
@@ -381,7 +429,7 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
     const dust = new THREE.Points(dustGeo, dustMat);
     scene.add(dust);
 
-    // 8. Resize Handler
+    // 8. Resize & Visibility Handlers
     const handleResize = () => {
       if (!container) return;
       const w = container.clientWidth;
@@ -392,8 +440,9 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
     };
     window.addEventListener("resize", handleResize);
 
-    // Visibility Check (Performance Optimization)
     let isVisible = true;
+    let isTabVisible = true;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         isVisible = entry.isIntersecting;
@@ -402,13 +451,26 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
     );
     observer.observe(container);
 
-    // 9. Fully Autonomous Animation Loop
+    const handleVisibilityChange = () => {
+      isTabVisible = !document.hidden;
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // 9. Fully Autonomous Animation Loop with Smart FPS Capping
     let animId: number;
     const clock = new THREE.Clock();
+    const targetInterval = isMobile ? 1000 / 32 : 1000 / 60;
+    let lastRenderTime = 0;
 
-    const animate = () => {
+    const animate = (currentTime: number) => {
       animId = requestAnimationFrame(animate);
-      if (!isVisible) return;
+
+      // Skip render completely if off-screen or tab in background
+      if (!isVisible || !isTabVisible) return;
+
+      // Frame rate limiter (prevents high refresh rate GPU heating)
+      if (currentTime - lastRenderTime < targetInterval) return;
+      lastRenderTime = currentTime;
 
       const elapsed = clock.getElapsedTime();
 
@@ -434,12 +496,13 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
       renderer.render(scene, camera);
     };
 
-    animate();
+    animId = requestAnimationFrame(animate);
 
     return () => {
       cancelAnimationFrame(animId);
       observer.disconnect();
       window.removeEventListener("resize", handleResize);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
 
       // Memory cleanup
       tubeGeo1.dispose();
@@ -454,7 +517,7 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
       dustMat.dispose();
       renderer.dispose();
     };
-  }, [activeIndex]);
+  }, []); // Run ONCE on mount! No context tearing!
 
   return (
     <div
@@ -467,9 +530,8 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
         className="w-full h-full block pointer-events-none z-10"
       />
 
-      {/* Top Automated Presentation Status Bar (No manual buttons) */}
+      {/* Top Automated Presentation Status Bar */}
       <div className="absolute top-3.5 left-3.5 right-3.5 z-20 flex items-center justify-between pointer-events-none">
-        {/* Left Badge with pulse */}
         <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#020611]/90 border border-blue-400/40 backdrop-blur-md shadow-lg">
           <div className="w-2 h-2 rounded-full bg-[#ffde59] shadow-[0_0_10px_#ffde59] animate-pulse" />
           <span className="text-[10px] sm:text-[11px] font-extrabold text-white tracking-wide uppercase">
@@ -477,7 +539,6 @@ export default function Model3DViewer({ className = "" }: Model3DViewerProps) {
           </span>
         </div>
 
-        {/* Right Automated Status Indicator */}
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#020611]/85 border border-blue-400/30 backdrop-blur-md shadow-lg">
           <span className="text-[10px] font-mono text-blue-300 font-bold">
             Auto-Showcase {activeIndex + 1}/{SHOWCASE_MODELS.length}

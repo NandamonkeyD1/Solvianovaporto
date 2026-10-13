@@ -154,7 +154,7 @@ export default function ChatbotNovi() {
 
     const interval = setInterval(() => {
       setExpressionIndex((prev) => (prev + 1) % NOVI_EXPRESSIONS.length);
-    }, 7000);
+    }, 12000);
 
     return () => clearInterval(interval);
   }, [isOpen]);
