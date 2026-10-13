@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -26,6 +26,23 @@ import {
 export default function SSOLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
+  // Auto-close on route navigation
+  useEffect(() => {
+    setMobileSidebarOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll when mobile sidebar is active
+  useEffect(() => {
+    if (mobileSidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileSidebarOpen]);
 
   // If on the login page /sso (exact), do not render the sidebar layout
   if (pathname === "/sso" || pathname === "/sso/") {
@@ -72,9 +89,9 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
         />
       )}
 
-      {/* Left Sidebar (Matching Screenshots) */}
+      {/* Left Sidebar (Permanently Fixed to Viewport, Does NOT scroll with page) */}
       <aside
-        className={`fixed md:sticky top-0 left-0 bottom-0 z-50 w-64 bg-[#0A0E1A] border-r border-slate-800/80 flex flex-col justify-between transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 h-screen bg-[#0A0E1A] border-r border-slate-800/80 flex flex-col justify-between transition-transform duration-300 ease-in-out ${
           mobileSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
@@ -135,7 +152,7 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Main Right Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 md:pl-64 min-h-screen">
         {/* Top Header Bar */}
         <header className="sticky top-0 z-30 bg-[#0A0E1A]/90 backdrop-blur-md border-b border-slate-800/80 px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
